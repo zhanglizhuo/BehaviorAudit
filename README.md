@@ -89,6 +89,21 @@ python3 run_audit.py --dataset mm_tba --output-dir generated/mm_tba
 5. Regenerate manuscript figures with `python3 release/behavioraudit/regenerate_figures.py` and verify figures in `outputs/paper_figures/`.
 6. Cross-check that tracked paper-level result JSONs under `paper/` match the intended submission snapshot.
 
+## Reviewer Quick Verify
+
+Run the command below to perform a minimal end-to-end sanity check (single dataset audit + figure regeneration + key output existence checks):
+
+```bash
+python3 run_audit.py --dataset mm_tba --output-dir generated/mm_tba \
+	&& python3 release/behavioraudit/regenerate_figures.py \
+	&& ls -l generated/mm_tba outputs/paper_figures/fig1_framework_overview.pdf
+```
+
+Expected outcome:
+- `run_audit.py` finishes without errors and writes JSON/CSV artifacts under `generated/mm_tba/`
+- figure regeneration finishes without errors and produces PDFs under `outputs/paper_figures/`
+- the final `ls` command prints existing paths (non-empty output)
+
 ## What To Track
 
 Recommended to keep in Git:
