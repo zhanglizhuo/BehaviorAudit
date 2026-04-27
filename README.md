@@ -9,7 +9,7 @@ The current repository has two goals:
 
 ## Published Paper
 
-This repository accompanies the manuscript "A Four-Dimension Pre-Modeling Audit Protocol for Educational Prediction Benchmarks" (Yan Ma & Lizhuo Zhang). The canonical manuscript source and manuscript markdown are available in the local file paper/behavioraudit.md. Please cite the manuscript when using or building on these analyses.
+This repository accompanies the manuscript "A Four-Dimension Pre-Modeling Audit Protocol for Educational Prediction Benchmarks" (Yan Ma & Lizhuo Zhang). The canonical manuscript source is maintained in `paper/behavioraudit.tex` (with main content in `paper/behavioraudit_body.tex`), and the current compiled manuscript is `paper/behavioraudit.pdf`. Please cite the manuscript when using or building on these analyses.
 
 ## Layout
 
