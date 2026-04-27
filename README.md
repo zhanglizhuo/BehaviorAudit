@@ -75,20 +75,38 @@ Rebuild the main MM-TBA manuscript figures:
 python3 release/behavioraudit/regenerate_figures.py
 ```
 
+## Minimal Reproduction Checklist
+
+1. Install dependencies with `python3 -m pip install -r requirements.txt`.
+2. Place required datasets under expected local paths (or pass `--dataset-root` for each run).
+3. Run one adapter audit end-to-end, for example:
+
+```bash
+python3 run_audit.py --dataset mm_tba --output-dir generated/mm_tba
+```
+
+4. Confirm output artifacts are generated under `generated/` (JSON and CSV metrics).
+5. Regenerate manuscript figures with `python3 release/behavioraudit/regenerate_figures.py` and verify figures in `outputs/paper_figures/`.
+6. Cross-check that tracked paper-level result JSONs under `paper/` match the intended submission snapshot.
+
 ## What To Track
 
 Recommended to keep in Git:
 
-- experiment code under `experiments/`, `framework/`, and `release/`
-- manuscript sources under `paper/`
-- canonical figure assets under `analysis/figures_and_diagnostics/`
-- canonical result JSONs under `generated/mm_tba/`
+- audit and experiment code under `experiments/`, `framework/`, `release/`, and root entry scripts (for example `run_*.py`, `generate_figures.py`)
+- manuscript source files under `paper/`
+- figure-generation scripts and final figure assets used in the manuscript (for example `analysis/figures_and_diagnostics/` and `outputs/paper_figures/`)
+- final result artifacts used in the paper (JSON/CSV under `generated/` and paper-level canonical result JSONs under `paper/`)
+- reproducibility metadata such as `requirements.txt` and dataset adapter definitions under `framework/adapters/`
 
 Recommended not to add:
 
-- raw MM-TBA or OULAD datasets
-- Python cache directories and local bytecode files
-- ad hoc rebuild outputs not intended as canonical artifacts
+- raw datasets under `datasets/` (unless redistribution rights are explicit)
+- Python cache directories, local bytecode files, and local virtual-environment artifacts
+- LaTeX intermediate build files and temporary packaging outputs
+- ad hoc exploratory outputs not referenced by the paper
+
+Here, "canonical" means the final version directly used in the submitted manuscript and reproducible from tracked scripts.
 
 ## Notes
 
