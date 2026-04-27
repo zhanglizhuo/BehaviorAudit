@@ -1,0 +1,60 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# ── Datasets (not included) ───────────────────────────────────────────────────
+data/
+datasets/
+dataset_zip/
+MM-TBA/
+
+# ── LaTeX auxiliary files ─────────────────────────────────────────────────────
+paper/*.aux
+paper/*.log
+paper/*.blg
+paper/*.out
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.synctex.gz
+paper/*.toc
+paper/*.lof
+paper/*.lot
+paper/mdpi/*.aux
+paper/mdpi/*.log
+paper/mdpi/*.out
+paper/mdpi/*.toc
+
+# ── Backup / stale files ──────────────────────────────────────────────────────
+paper/*.bak*
+audit_7dataset_results.json.bak*
+paper/audit_7dataset_results.json.bak*
+paper/supplementary_mdpi.tex.bak
+paper/BehaviorAudit_submission_20260412.zip
+paper/Definitions
+paper/Figure[0-9]*.pdf
+paper/Figure[0-9]*.png
+paper/PLOS_latex_template.zip
+paper/figure5_radar_audit_profiles.png
+paper/mdpi/
+paper/plos/
+paper/cover_letter_plos_one.tex
+
+# ── Generated intermediate outputs ───────────────────────────────────────────
+outputs/
+release/behavioraudit/generated_figures/
+
+# ── Misc ──────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+*.swo

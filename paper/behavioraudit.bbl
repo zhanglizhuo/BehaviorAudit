@@ -1,0 +1,194 @@
+\begin{thebibliography}{10}
+
+\bibitem{Northcutt2021}
+Northcutt CG, Athalye A, Mueller J.
+\newblock Pervasive Label Errors in Test Sets Destabilize Machine Learning
+  Benchmarks.
+\newblock In: Advances in Neural Information Processing Systems 34 (NeurIPS
+  2021). Red Hook, NY, USA: Curran Associates; 2021. p. 10929-43.
+
+\bibitem{Recht2019}
+Recht B, Roelofs R, Schmidt L, Shankar V.
+\newblock Do {ImageNet} Classifiers Generalize to {ImageNet}?
+\newblock In: Proceedings of the 36th International Conference on Machine
+  Learning (ICML 2019). Long Beach, CA, USA: PMLR; 2019. p. 5389-400.
+
+\bibitem{Bouthillier2021}
+Bouthillier X, Delaunay P, Bronzi M, Trofimov A, Nichyporuk B, Szeto J, et~al.
+\newblock Accounting for Variance in Machine Learning Benchmarks.
+\newblock In: Proceedings of Machine Learning and Systems (MLSys) 2021; 2021.
+  p. 747-69.
+
+\bibitem{Ioannidis2005}
+Ioannidis JPA.
+\newblock Why Most Published Research Findings Are False.
+\newblock PLoS Medicine. 2005;2(8):e124.
+\newblock \href {http://dx.doi.org/10.1371/journal.pmed.0020124}
+  {doi:10.1371/journal.pmed.0020124}.
+
+\bibitem{Gebru2021}
+Gebru T, Morgenstern J, Vecchione B, Vaughan JW, Wallach H, Daum{\'e}~III H,
+  et~al.
+\newblock Datasheets for Datasets.
+\newblock Communications of the ACM. 2021;64(12):86-92.
+\newblock \href {http://dx.doi.org/10.1145/3458723} {doi:10.1145/3458723}.
+
+\bibitem{Sambasivan2021}
+Sambasivan N, Kapania S, Highfill H, Akrong D, Paritosh P, Aroyo LM.
+\newblock Everyone Wants to Do the Model Work, Not the Data Work: Data Cascades
+  in High-Stakes {AI}.
+\newblock In: Proceedings of the 2021 CHI Conference on Human Factors in
+  Computing Systems. Yokohama, Japan; 2021. p. 1-15.
+\newblock \href {http://dx.doi.org/10.1145/3411764.3445518}
+  {doi:10.1145/3411764.3445518}.
+
+\bibitem{Romero2020}
+Romero C, Ventura S.
+\newblock Educational Data Mining and Learning Analytics: An Updated Survey.
+\newblock WIREs Data Mining and Knowledge Discovery. 2020;10(3):e1355.
+\newblock \href {http://dx.doi.org/10.1002/widm.1355} {doi:10.1002/widm.1355}.
+
+\bibitem{Baker2014}
+Baker RSJd, Inventado PS.
+\newblock Educational Data Mining and Learning Analytics.
+\newblock In: Learning Analytics: From Research to Practice. New York, NY, USA:
+  Springer; 2014. p. 61-75.
+\newblock \href {http://dx.doi.org/10.1007/978-1-4614-3305-7\_4}
+  {doi:10.1007/978-1-4614-3305-7\_4}.
+
+\bibitem{Gardner2019}
+Gardner J, Brooks C, Baker R.
+\newblock Evaluating the Fairness of Predictive Student Models Through Slicing
+  Analysis.
+\newblock In: Proceedings of the 9th International Learning Analytics and
+  Knowledge Conference. Tempe, AZ, USA; 2019. p. 225-34.
+\newblock \href {http://dx.doi.org/10.1145/3303772.3303791}
+  {doi:10.1145/3303772.3303791}.
+
+\bibitem{Chejara2023}
+Chejara P, Prieto L, Rodriguez-Triana M, Kasepalu R, Ruiz-Calleja A, Shankar
+  SK.
+\newblock How to Build More Generalizable Models for Collaboration Quality?
+\newblock In: Proceedings of the 13th International Learning Analytics and
+  Knowledge Conference. Arlington, TX, USA; 2023. p. 111-21.
+\newblock \href {http://dx.doi.org/10.1145/3576050.3576144}
+  {doi:10.1145/3576050.3576144}.
+
+\bibitem{Chejara2024}
+Chejara P, Prieto LP, Dimitriadis Y, Rodriguez-Triana M, Ruiz-Calleja A,
+  Kasepalu R, et~al.
+\newblock The Impact of Attribute Noise on the Automated Estimation of
+  Collaboration Quality Using Multimodal Learning Analytics in Authentic
+  Classrooms.
+\newblock Journal of Learning Analytics. 2024;11(1):73-90.
+\newblock \href {http://dx.doi.org/10.18608/jla.2024.8253}
+  {doi:10.18608/jla.2024.8253}.
+
+\bibitem{Brennan2001}
+Brennan RL.
+\newblock Generalizability Theory.
+\newblock New York, NY, USA: Springer; 2001.
+\newblock \href {http://dx.doi.org/10.1007/978-1-4757-3456-0}
+  {doi:10.1007/978-1-4757-3456-0}.
+
+\bibitem{Messick1995}
+Messick S.
+\newblock Validity of Psychological Assessment: Validation of Inferences from
+  Persons' Responses and Performances as Scientific Inquiry into Score Meaning.
+\newblock American Psychologist. 1995;50(9):741-9.
+\newblock \href {http://dx.doi.org/10.1037/0003-066X.50.9.741}
+  {doi:10.1037/0003-066X.50.9.741}.
+
+\bibitem{Kane2006}
+Kane MT.
+\newblock Validation.
+\newblock In: Brennan RL, editor. Educational Measurement. 4th ed. Westport,
+  CT, USA: American Council on Education/Praeger; 2006. p. 17-64.
+
+\bibitem{Zheng2023}
+Zheng L, Chiang WL, Sheng Y, Zhuang S, Wu Z, Zhuang Y, et~al.
+\newblock Judging {LLM}-as-a-Judge with {MT-Bench} and {Chatbot Arena}.
+\newblock In: Advances in Neural Information Processing Systems 36 (NeurIPS
+  2023). Red Hook, NY, USA: Curran Associates; 2023. p. 46595-623.
+
+\bibitem{Wang2024}
+Wang P, Li L, Chen L, Huang Z, Zhu D, Lin B, et~al.
+\newblock Large Language Models Are Not Fair Evaluators.
+\newblock In: Proceedings of the 62nd Annual Meeting of the Association for
+  Computational Linguistics (ACL 2024). Bangkok, Thailand: Association for
+  Computational Linguistics; 2024. p. 12554-72.
+\newblock \href {http://dx.doi.org/10.18653/v1/2024.acl-long.511}
+  {doi:10.18653/v1/2024.acl-long.511}.
+
+\bibitem{Huang2024llm}
+Huang H, Bu X, Zhou H, Qu Y, Liu J, Yang M, et~al.
+\newblock An Empirical Study of {LLM}-as-a-Judge for {LLM} Evaluation:
+  Fine-Tuned Judge Model Is Not a General Substitute for {GPT-4}.
+\newblock arXiv preprint arXiv:240302839. 2024.
+
+\bibitem{Huang2025}
+Huang C, Zhu J, Ji Y, Shi W, Min Y, Guo H, et~al.
+\newblock A Multi-Modal Dataset for Teacher Behavior Analysis in Offline
+  Classrooms.
+\newblock Scientific Data. 2025;12:1115.
+\newblock \href {http://dx.doi.org/10.1038/s41597-025-05426-6}
+  {doi:10.1038/s41597-025-05426-6}.
+
+\bibitem{Yilmaz2020}
+Yilmaz N, Sekeroglu B.
+\newblock Student Performance Classification Using Artificial Intelligence
+  Techniques.
+\newblock In: International Conference on Theory and Application of Soft
+  Computing, Computing with Words and Perceptions. Cham, Switzerland: Springer;
+  2020. p. 596-603.
+\newblock \href {http://dx.doi.org/10.1007/978-3-030-35249-3\_76}
+  {doi:10.1007/978-3-030-35249-3\_76}.
+
+\bibitem{Amrieh2016}
+Amrieh EA, Hamtini T, Aljarah I.
+\newblock Mining Educational Data to Predict Student's Academic Performance
+  Using Ensemble Methods.
+\newblock International Journal of Database Theory and Application.
+  2016;9(8):119-36.
+\newblock \href {http://dx.doi.org/10.14257/ijdta.2016.9.8.13}
+  {doi:10.14257/ijdta.2016.9.8.13}.
+
+\bibitem{Bora2021}
+Bora A, Dey AK. Student Performance on an Entrance Examination; 2021.
+\newblock UCI Machine Learning Repository.
+\newblock \href {http://dx.doi.org/10.24432/C5VS55} {doi:10.24432/C5VS55}.
+
+\bibitem{Cortez2008}
+Cortez P, Silva A.
+\newblock Using Data Mining to Predict Secondary School Student Performance.
+\newblock In: Proceedings of the 5th FUture BUsiness TEChnology Conference
+  (FUBUTEC 2008). Porto, Portugal; 2008. p. 5-12.
+
+\bibitem{Realinho2022}
+Realinho V, Machado J, Baptista L, Martins MV.
+\newblock Predicting Student Dropout and Academic Success.
+\newblock Data. 2022;7(11):146.
+\newblock \href {http://dx.doi.org/10.3390/data7110146}
+  {doi:10.3390/data7110146}.
+
+\bibitem{Kuzilek2017}
+Kuzilek J, Hlosta M, Zdrahal Z.
+\newblock Open University Learning Analytics Dataset.
+\newblock Scientific Data. 2017;4:170171.
+\newblock \href {http://dx.doi.org/10.1038/sdata.2017.171}
+  {doi:10.1038/sdata.2017.171}.
+
+\bibitem{Mitchell2019}
+Mitchell M, Wu S, Zaldivar A, Barnes P, Vasserman L, Hutchinson B, et~al.
+\newblock Model Cards for Model Reporting.
+\newblock In: Proceedings of the Conference on Fairness, Accountability, and
+  Transparency (FAT* 2019). Atlanta, GA, USA: ACM; 2019. p. 220-9.
+\newblock \href {http://dx.doi.org/10.1145/3287560.3287596}
+  {doi:10.1145/3287560.3287596}.
+
+\bibitem{Holland2020}
+Holland S, Hosny A, Newman S, Joseph J, Chmielinski K.
+\newblock The Dataset Nutrition Label.
+\newblock In: Data Protection and Privacy. Hart Publishing; 2020. p. 1-25.
+
+\end{thebibliography}

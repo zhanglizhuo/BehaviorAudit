@@ -1,0 +1,33 @@
+{
+  "dataset_name": "MM-TBA Teacher Lecture Evaluation",
+  "dataset_root": "/home/broadsense/works/lizhuo/AutoResearchClaw/MM-TBA",
+  "found_files": [
+    "/home/broadsense/works/lizhuo/AutoResearchClaw/MM-TBA/metadata.xlsx",
+    "/home/broadsense/works/lizhuo/AutoResearchClaw/MM-TBA/Teacher_Lecture_Evaluation/gpt_report/train",
+    "/home/broadsense/works/lizhuo/AutoResearchClaw/MM-TBA/Teacher_Lecture_Evaluation/gpt_report/eval"
+  ],
+  "total_samples": 186,
+  "missing_data": false,
+  "synthetic_fallback": false,
+  "target_name": "mean_rubric_score",
+  "num_features": 13,
+  "feature_names": [
+    "char_count",
+    "sentence_count",
+    "avg_sentence_length",
+    "question_count",
+    "exclamation_count",
+    "pause_marker_count",
+    "digit_count",
+    "math_keyword_count",
+    "gender",
+    "qualification",
+    "experience_years",
+    "grade_index",
+    "subject_index"
+  ],
+  "has_teacher_ids": false,
+  "num_teachers": 0,
+  "annotation_note": "Samples are built from MM-TBA lecture transcripts, GPT rubric reports, and metadata.xlsx. No synthetic fallback is allowed.",
+  "error": null
+}
