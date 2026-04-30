@@ -39,6 +39,7 @@ audit_7dataset_results.json.bak*
 paper/audit_7dataset_results.json.bak*
 paper/supplementary_mdpi.tex.bak
 paper/BehaviorAudit_submission_20260412.zip
+paper/*.zip
 paper/Definitions
 paper/Figure[0-9]*.pdf
 paper/Figure[0-9]*.png
