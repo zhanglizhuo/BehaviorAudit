@@ -181,18 +181,20 @@ The two Strong datasets confirm that the audit cleanly passes structurally sound
 
 The full model-complexity ablation (detailed results in Supplementary Table S1) reports instability ratio and beat rate for linear, ridge, RF, and GBT models across all seven datasets. The key patterns are as follows. On fragile data (MM-TBA), ensemble models amplify instability ($I$ rising from 2.2 to 4.6). On partially passing data (Higher Ed), ensemble models reduce iid instability ($I$ dropping from 0.90 to 0.18--0.23) and improve iid $R^2$ from 0.04 to 0.52, but collapse equally under group holdout. On structurally sound data (OULAD, Dropout), ensemble models yield genuine gains (e.g., OULAD RF MAE $0.193$ vs. linear $0.296$) without introducing instability. Fig~\ref{fig:instability_strip} plots the instability ratio across all datasets and models on a logarithmic scale, making the $I = 1$ failure boundary visually salient.
 
-\begin{figure}[!t]
+\subsection{Classification-Metric Sensitivity Check}
+
+To verify that the regression-framing audit conclusions are not an artifact of metric choice, the four datasets with binary or ordinal targets were re-evaluated under classification-appropriate metrics (Table 4).
+
+Classification-metric results confirm the regression-framing conclusions (Table 4). OULAD and Dropout retain Strong profiles (iid accuracy 0.84--0.91, $I_{\mathrm{acc}} \leq 0.035$, group-holdout AUC $> 0.92$). xAPI-Edu remains Mostly Passing (RF group-holdout accuracy 75.0\%, AUC $= 0.895$). Entrance Exam shows the weakest performance (Logistic iid accuracy 51.1\% on a 4-class task with majority baseline 30.5\%, group-holdout AUC $= 0.69$--$0.75$), consistent with the regression-framing assessment of moderate but fragile signal; the low absolute accuracy partly reflects the inherent difficulty of 4-class ordinal prediction.
+
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=0.95\textwidth]{fig5_instability_strip.pdf}
 \caption{Instability ratio ($I$) for all seven datasets and four models (log scale). The dashed red line marks $I = 1$, the failure threshold where between-split variance equals the mean advantage over baseline. MM-TBA's Gradient Boosting ($I = 4.6$) and Random Forest ($I = 4.0$) are extreme outliers; structurally sound datasets (OULAD, Dropout) cluster near $I = 0.01$.}
 \label{fig:instability_strip}
 \end{figure}
 
-\subsection{Classification-Metric Sensitivity Check}
-
-To verify that the regression-framing audit conclusions are not an artifact of metric choice, the four datasets with binary or ordinal targets were re-evaluated under classification-appropriate metrics (Table 4).
-
-\begin{table*}[htbp]
+\begin{table*}[!ht]
 \centering
 \caption{Classification-metric sensitivity check on the four datasets with binary or ordinal targets. Accuracy and AUC-ROC are reported for each classifier under iid 100-split resampling and group-aware holdout. $I_{\mathrm{acc}}$ is the accuracy-based instability ratio.}
 \label{tab:classification_sensitivity}
@@ -219,8 +221,6 @@ Entrance Exam & Logistic & $0.511 \pm 0.039$ & $0.761$ & $0.191$ & $0.420$ & $0.
 \bottomrule
 \end{tabular}}%
 \end{table*}
-
-Classification-metric results confirm the regression-framing conclusions (Table 4). OULAD and Dropout retain Strong profiles (iid accuracy 0.84--0.91, $I_{\mathrm{acc}} \leq 0.035$, group-holdout AUC $> 0.92$). xAPI-Edu remains Mostly Passing (RF group-holdout accuracy 75.0\%, AUC $= 0.895$). Entrance Exam shows the weakest performance (Logistic iid accuracy 51.1\% on a 4-class task with majority baseline 30.5\%, group-holdout AUC $= 0.69$--$0.75$), consistent with the regression-framing assessment of moderate but fragile signal; the low absolute accuracy partly reflects the inherent difficulty of 4-class ordinal prediction.
 
 \FloatBarrier
 \clearpage
