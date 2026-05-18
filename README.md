@@ -46,6 +46,22 @@ Place each downloaded dataset under the following paths relative to the reposito
 
 The `datasets/` directory is intentionally ignored by Git. This keeps the public repository focused on code, metadata, and reproducible outputs without redistributing third-party data.
 
+## Dataset Sources and Licensing
+
+The table below lists the upstream landing pages used during repository preparation. For the four UCI-hosted datasets, the UCI landing pages currently provide direct downloads and list a `CC BY 4.0` license. For datasets distributed outside UCI, this repository intentionally shares code and reproduction instructions rather than mirroring the raw data.
+
+| Dataset | Upstream source | Licensing / reuse note |
+| --- | --- | --- |
+| MM-TBA | Dataset paper: <https://doi.org/10.1038/s41597-025-05426-6> | This repository does not redistribute the raw TEACH media. The local `datasets/MM-TBA/README.md` describes the structure of the release, but it does not include a standalone redistribution license. Use the release channel described by the dataset authors and obtain permission before re-hosting raw files. |
+| Higher Ed (UCI ID 856) | <https://archive.ics.uci.edu/dataset/856/higher+education+students+performance+evaluation> | UCI currently lists this dataset under `CC BY 4.0`. Download the archive from the UCI landing page and place `higher_ed_856.csv` under `datasets/StudentExam/`. |
+| xAPI-Edu | Author-linked public page: <https://www.kaggle.com/datasets/aljarah/xAPI-Edu-Data> | The public Kaggle page is maintained under Ibrahim Aljarah's account and currently lists `CC BY-SA 4.0`. Mirrors of this dataset vary; when possible, prefer the author-linked page and cite Amrieh et al. (2016). |
+| Entrance Exam (UCI ID 582) | <https://archive.ics.uci.edu/dataset/582/student+performance+on+an+entrance+examination> | UCI currently lists this dataset under `CC BY 4.0`. Download the archive from UCI and place `student_entrance_582.csv` under `datasets/StudentExam/`. |
+| UCI Student (UCI ID 320) | <https://archive.ics.uci.edu/dataset/320/student+performance> | UCI currently lists this dataset under `CC BY 4.0`. The adapters use `student-por.csv` by default and can also fall back to `student-mat.csv`. |
+| Student Dropout (UCI ID 697) | <https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success> | UCI currently lists this dataset under `CC BY 4.0`. Download the archive from UCI and place `student_dropout.csv` under `datasets/StudentDropout/`. |
+| OULAD | Dataset paper: <https://doi.org/10.1038/sdata.2017.171>; historical project page: <https://analyse.kmi.open.ac.uk/open_dataset> | The Open University project page has historically hosted the CSV release, but availability can change over time. This repository does not bundle an explicit license statement for OULAD; follow the upstream terms attached to the original release and avoid redistributing the raw CSV files unless those terms clearly permit it. |
+
+When in doubt about licensing, the safest pattern is to share code, checksums, and placement instructions, but not the raw dataset files themselves.
+
 ## Reproduce the Main Audit
 
 After placing the datasets, run:
