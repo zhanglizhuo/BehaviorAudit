@@ -1,10 +1,8 @@
-"""Sensitivity analysis: classification-appropriate metrics for binary/ordinal datasets.
+"""Classification-metric sensitivity analysis for binary and ordinal datasets.
 
-Runs AUC-ROC (binary), accuracy, and ordinal-appropriate metrics alongside MAE/R²
-to verify that the audit conclusions (instability ratio, group-holdout findings)
-hold under classification-appropriate metrics.
-
-Tests: OULAD (binary), Dropout (binary), xAPI-Edu (3-class), Entrance Exam (4-class)
+The main audit uses a regression framing for cross-task comparability. This
+script reruns the four binary or ordinal datasets with classifiers and reports
+accuracy, AUC-ROC, split instability, and group-aware holdout metrics.
 """
 from __future__ import annotations
 
@@ -28,7 +26,7 @@ from framework.adapters import (
 )
 from framework.baselines import split_indices
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent
 
 
 def fit_models_classify(X_train, y_train, X_test, seed=0):

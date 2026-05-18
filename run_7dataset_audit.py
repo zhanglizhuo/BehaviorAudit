@@ -1,20 +1,9 @@
-"""Unified 7-dataset audit experiment.
+"""Run the seven-dataset BehaviorAudit experiment.
 
-Runs the full 4-dimension audit + model-complexity ablation on ALL datasets:
-  1. MM-TBA (N=186)          — existing
-  2. UCI Student (N=649)     — existing 
-  3. OULAD (N=32593)         — existing
-  4. xAPI-Edu (N=480)        — NEW
-  5. Student Dropout (N=3630)— NEW
-  6. Entrance Exam (N=666)   — NEW
-  7. Higher Ed (N=145)       — NEW
-
-For each dataset, computes:
-  - 100 repeated 80/20 splits: MAE, R², Pearson r, beat rate, I ratio
-  - 4 models: mean, linear, ridge, RF, GBT
-  - Group holdout (where grouping available)
-  - Permutation null (500 draws on first 10 splits)
-  - Summary table for cross-dataset comparison
+The script reproduces the four audit dimensions reported in the manuscript:
+baseline gap, split instability, null separation, and metadata adequacy under
+group-aware holdout. It also evaluates model complexity with mean, linear,
+ridge, random-forest, and gradient-boosting models.
 """
 from __future__ import annotations
 
@@ -43,6 +32,8 @@ from framework.baselines import (
 )
 
 ROOT = Path(__file__).resolve().parent  # BehaviorAudit root (datasets/ live here)
+PERMUTATION_SPLITS = 30
+PERMUTATION_DRAWS = 500
 
 
 def fit_rf(X_train, y_train, X_test, seed=0):
@@ -258,8 +249,8 @@ def audit_dataset(name, adapter, dataset_root, n_repeats=100):
         gh_summary = None
 
     # 3. Permutation null
-    print(f"\n  --- Permutation Null (10 splits × 500 draws) ---")
-    perm = run_permutation_null(X, y, n_splits=10, n_perm=500)
+    print(f"\n  --- Permutation Null ({PERMUTATION_SPLITS} splits × {PERMUTATION_DRAWS} draws) ---")
+    perm = run_permutation_null(X, y, n_splits=PERMUTATION_SPLITS, n_perm=PERMUTATION_DRAWS)
     print(f"  sig_rate={perm['sig_rate']:.2f}  median_p={perm['median_p']:.4f}  mean_obs_r={perm['mean_obs_r']:.4f}")
     for p in perm["splits"]:
         star = "*" if p["p_value"] < 0.05 else " "
@@ -335,8 +326,8 @@ def print_comparison_table(profiles):
             d4 = False  # no grouping = fail
         dim_pass += d4
 
-        labels = {0: "Fragile(0/4)", 1: "Weak(1/4)", 2: "Partial(2/4)",
-                  3: "Mostly OK(3/4)", 4: "Strong(4/4)"}
+        labels = {0: "Fragile(0/4)", 1: "Partial(1/4)", 2: "Partial(2/4)",
+              3: "Mostly Passing(3/4)", 4: "Strong(4/4)"}
         profile_label = labels[dim_pass]
         flags = f"[{'✓' if d1 else '✗'}{'✓' if d2 else '✗'}{'✓' if d3 else '✗'}{'✓' if d4 else '✗'}]"
 

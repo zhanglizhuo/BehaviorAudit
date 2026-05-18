@@ -1,131 +1,125 @@
-# A Four-Dimension Pre-Modeling Audit Protocol for Educational Prediction Benchmarks
+# BehaviorAudit
 
-This repository contains the code, experiments, and manuscript sources for the paper "A Four-Dimension Pre-Modeling Audit Protocol for Educational Prediction Benchmarks" (Yan Ma & Lizhuo Zhang), which uses MM-TBA as a worked example. The repository preserves the MM-TBA paper assets and provides an adapter-based framework for extending the audit to additional public educational datasets.
+BehaviorAudit contains the code and manuscript assets for the study "Are Educational Prediction Benchmarks Structurally Reliable? A Four-Dimension Audit Across Seven Public Datasets" by Yan Ma and Lizhuo Zhang.
 
-The current repository has two goals:
+The repository supports two levels of reproduction:
 
-- preserve the exact MM-TBA paper assets, experiment scripts, and key run outputs in one place;
-- provide a small adapter-based framework for extending the audit to additional public educational datasets.
+- figure-level reproduction from the tracked result artifacts; and
+- full audit reruns when the seven public datasets are placed in the expected local directories.
 
-## Published Paper
+Raw datasets are not redistributed in this repository. The scripts assume that users obtain the public datasets from their original maintainers and place them under `datasets/` as described below.
 
-This repository accompanies the manuscript "A Four-Dimension Pre-Modeling Audit Protocol for Educational Prediction Benchmarks" (Yan Ma & Lizhuo Zhang). The canonical manuscript source is maintained in `paper/behavioraudit.tex` (with main content in `paper/behavioraudit_body.tex`), and the current compiled manuscript is `paper/behavioraudit.pdf`. Please cite the manuscript when using or building on these analyses.
+## Repository Layout
 
-## Layout
+- `framework/`: dataset adapters, baseline models, metrics, and the lightweight audit runner.
+- `run_7dataset_audit.py`: full four-dimension audit used for the main manuscript results.
+- `run_classification_sensitivity.py`: classification-metric sensitivity analysis for binary and ordinal targets.
+- `run_audit.py`: quick single-dataset adapter runner for smoke tests and small reruns.
+- `generate_figures.py`: regenerates figure files from tracked result artifacts.
+- `scripts/`: helper scripts for split-level metrics and structural-pattern analysis.
+- `generated/`: tracked split-level CSV artifacts used by figure scripts.
+- `paper/`: manuscript source, compiled PDF, bibliography, and final figure assets.
 
-- `experiments/mm_tba_stage13/`: archived executable MM-TBA experiment script and raw result JSONs.
-- `analysis/figures_and_diagnostics/`: manuscript figures, figure-regeneration script, and draft diagnostics.
-- `analysis/quality_gate/`: final paper quality-gate outputs.
-- `paper/`: canonical manuscript markdown, reviewer responses, and MDPI `.tex`/`.pdf` files.
-- `release/behavioraudit/`: public-facing release bundle for lightweight reproduction.
-- `framework/`: reusable audit runner, baseline utilities, and dataset adapters.
-- `run_audit.py`: CLI entrypoint for the adapter-based audit runner.
-- `generated/`: output location for rerun JSONs.
+## Installation
 
-## Current Adapter Support
-
-The repository currently supports `mm_tba` and `oulad`. New datasets should be added under `framework/adapters/` by implementing the adapter protocol defined in `framework/types.py`.
-
-## Datasets — included vs. external
-
-The manuscript audits seven datasets. Below is the status of those datasets in this workspace and where to place external copies for reproducibility runs.
-
-- Present (local paths):
-	- MM-TBA: `MM-TBA/` (see `MM-TBA/README.md` for file descriptions)
-	- OULAD: `OULAD/` (CSV files: `assessments.csv`, `studentInfo.csv`, ...)
-	- UCI Student (Portuguese): `UCI/` (`student-mat.csv`, `student-por.csv`)
-	- Dropout: `StudentDropout/student_dropout.csv`
-	- xAPI-Edu: `xAPI-Edu-Data/xAPI-Edu-Data.csv`
-
-- External (you must download and place under these paths):
-	- Higher Ed (Yilmaz & Sekeroglu, 2020): place dataset files under `data/higher_ed/` or `BehaviorAudit/data/higher_ed/` before running the audit adapter for `higher_ed`.
-	- Entrance Exam (Bora & Dey, 2021): place dataset files under `data/entrance_exam/` or `BehaviorAudit/data/entrance_exam/`.
-
-Notes:
-- Some local folders (e.g., `MM-TBA/`) include preprocessing scripts, README, and metadata but may not contain redistributed raw data depending on licensing — check the folder README before assuming raw media are present.
-- Do not commit raw datasets to the public release bundle unless you have explicit redistribution rights; follow the guidance in `release/behavioraudit/README.md`.
-
-## Quick Start
-
-Install the minimal dependencies:
+Use Python 3.10 or newer.
 
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 ```
 
-**Note:** This repository does not include the MM-TBA or OULAD raw datasets. You must obtain the datasets yourself (e.g., by contacting the original maintainers or following the official release channel). All code and results can be reproduced once the dataset path is set.
+## Dataset Placement
 
-Run the adapter-based MM-TBA audit:
+Place each downloaded dataset under the following paths relative to the repository root:
 
-```bash
-python3 run_audit.py --dataset mm_tba --output-dir generated/mm_tba
-```
+| Dataset | Expected path |
+| --- | --- |
+| MM-TBA | `datasets/MM-TBA/` |
+| Higher Ed (UCI ID 856) | `datasets/StudentExam/higher_ed_856.csv` |
+| xAPI-Edu | `datasets/xAPI-Edu/xAPI-Edu-Data.csv` |
+| Entrance Exam (UCI ID 582) | `datasets/StudentExam/student_entrance_582.csv` |
+| UCI Student | `datasets/UCI/student-por.csv` and/or `datasets/UCI/student-mat.csv` |
+| Student Dropout (UCI ID 697) | `datasets/StudentDropout/student_dropout.csv` |
+| OULAD | `datasets/OULAD/*.csv` |
 
-If the dataset is not under `MM-TBA/` at the repository root, pass `--dataset-root /path/to/MM-TBA` or set `MM_TBA_ROOT`.
+The `datasets/` directory is intentionally ignored by Git. This keeps the public repository focused on code, metadata, and reproducible outputs without redistributing third-party data.
 
-Run the adapter-based OULAD audit:
+## Reproduce the Main Audit
 
-```bash
-python3 run_audit.py --dataset oulad --dataset-root /path/to/OULAD --output-dir generated/oulad
-```
-
-Rebuild the main MM-TBA manuscript figures:
-
-```bash
-python3 release/behavioraudit/regenerate_figures.py
-```
-
-## Minimal Reproduction Checklist
-
-1. Install dependencies with `python3 -m pip install -r requirements.txt`.
-2. Place required datasets under expected local paths (or pass `--dataset-root` for each run).
-3. Run one adapter audit end-to-end, for example:
+After placing the datasets, run:
 
 ```bash
-python3 run_audit.py --dataset mm_tba --output-dir generated/mm_tba
+python3 run_7dataset_audit.py
 ```
 
-4. Confirm output artifacts are generated under `generated/` (JSON and CSV metrics).
-5. Regenerate manuscript figures with `python3 release/behavioraudit/regenerate_figures.py` and verify figures in `outputs/paper_figures/`.
-6. Cross-check that tracked paper-level result JSONs under `paper/` match the intended submission snapshot.
+The script writes the seven-dataset audit JSON to both:
 
-## Reviewer Quick Verify
+- `audit_7dataset_results.json`
+- `paper/audit_7dataset_results.json`
 
-Run the command below to perform a minimal end-to-end sanity check (single dataset audit + figure regeneration + key output existence checks):
+It uses 100 repeated 80/20 splits, 30 permutation-tested splits with 500 draws each, and leave-one-group-out validation where grouping metadata are available.
+
+## Reproduce Sensitivity Analyses
+
+Classification-metric sensitivity:
 
 ```bash
-python3 run_audit.py --dataset mm_tba --output-dir generated/mm_tba \
-	&& python3 release/behavioraudit/regenerate_figures.py \
-	&& ls -l generated/mm_tba outputs/paper_figures/fig1_framework_overview.pdf
+python3 run_classification_sensitivity.py
 ```
 
-Expected outcome:
-- `run_audit.py` finishes without errors and writes JSON/CSV artifacts under `generated/mm_tba/`
-- figure regeneration finishes without errors and produces PDFs under `outputs/paper_figures/`
-- the final `ls` command prints existing paths (non-empty output)
+Structural-pattern figure and CSV:
 
-## What To Track
+```bash
+python3 scripts/structural_pattern_analysis.py
+```
 
-Recommended to keep in Git:
+Split-level linear metrics used by distribution plots:
 
-- audit and experiment code under `experiments/`, `framework/`, `release/`, and root entry scripts (for example `run_*.py`, `generate_figures.py`)
-- manuscript source files under `paper/`
-- figure-generation scripts and final figure assets used in the manuscript (for example `analysis/figures_and_diagnostics/` and `outputs/paper_figures/`)
-- final result artifacts used in the paper (JSON/CSV under `generated/` and paper-level canonical result JSONs under `paper/`)
-- reproducibility metadata such as `requirements.txt` and dataset adapter definitions under `framework/adapters/`
+```bash
+python3 scripts/export_linear_split_r2.py
+python3 scripts/merge_linear_metrics.py
+```
 
-Recommended not to add:
+## Regenerate Figures
 
-- raw datasets under `datasets/` (unless redistribution rights are explicit)
-- Python cache directories, local bytecode files, and local virtual-environment artifacts
-- LaTeX intermediate build files and temporary packaging outputs
-- ad hoc exploratory outputs not referenced by the paper
+The tracked JSON and CSV artifacts are sufficient to regenerate the manuscript figures without rerunning the full audit:
 
-Here, "canonical" means the final version directly used in the submitted manuscript and reproducible from tracked scripts.
+```bash
+python3 generate_figures.py
+python3 scripts/structural_pattern_analysis.py
+```
 
-## Notes
+The figure scripts write working copies under `outputs/` and update the manuscript figure files under `paper/`, including `fig1_protocol.pdf`, `fig2_audit_heatmap.pdf`, `fig3_iid_vs_group.pdf`, `fig4_null_separation.pdf`, `fig5_instability_strip.pdf`, `fig6_structural_patterns.pdf`, and the supplementary `figS*.pdf` files.
 
-- Files here are aggregated copies. Original source files remain in their existing repository locations.
-- The adapter framework is intentionally small. It is meant to make the second-dataset integration easy once new data are prepared, not to redesign the whole paper pipeline.
-- The current codebase is kept compatible with the main `python3` environment. No virtual environment is required.
-- `analysis/figures_and_diagnostics/draft_quality.json` is a historical diagnostic artifact automatically generated during manuscript drafting. It is kept for provenance and does not affect main results.
+## Quick Smoke Test
+
+To verify that the adapter framework can load a single local dataset and write outputs, run one dataset with a small number of seeds:
+
+```bash
+python3 run_audit.py --dataset uci_student --seeds 0 1 --n-permutations 2 --output-dir generated/smoke_uci
+```
+
+Change `--dataset` to one of `mm_tba`, `higher_ed`, `xapi_edu`, `entrance_exam`, `uci_student`, `student_dropout`, or `oulad`.
+
+## Manuscript Build
+
+The Scientific Reports manuscript source is `paper/behavioraudit.tex`. From the `paper/` directory:
+
+```bash
+pdflatex -interaction=nonstopmode behavioraudit.tex
+bibtex behavioraudit
+pdflatex -interaction=nonstopmode behavioraudit.tex
+pdflatex -interaction=nonstopmode behavioraudit.tex
+```
+
+Supplementary material can be built with:
+
+```bash
+pdflatex -interaction=nonstopmode supplementary.tex
+```
+
+## Citation
+
+Please cite the manuscript when using this code or adapting the audit framework. The canonical manuscript source and compiled PDF are maintained in `paper/behavioraudit.tex` and `paper/behavioraudit.pdf`.

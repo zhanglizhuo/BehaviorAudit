@@ -1,9 +1,8 @@
-"""Model-complexity ablation: RF and Gradient Boosting vs linear baselines.
+"""Focused model-complexity ablation for three representative datasets.
 
-Core argument: if black-box models show the SAME fragility patterns as linear
-baselines, the problem is in the data, not the model.
-
-Runs on all three datasets: MM-TBA, UCI Student Performance, OULAD.
+The full seven-dataset model-complexity results are produced by
+``run_7dataset_audit.py``. This helper keeps the original three-dataset ablation
+available for quick inspection of MM-TBA, UCI Student, and OULAD.
 """
 from __future__ import annotations
 
@@ -123,11 +122,10 @@ def run_ablation(X, y, group_ids, dataset_name, n_repeats=100):
 
 
 def main():
-    PY = Path(__file__).resolve().parent
+    repo_root = Path(__file__).resolve().parent
 
-    # ---- MM-TBA ----
     adapter = MMTBAAdapter()
-    bundle = adapter.load(dataset_root=str(PY.parent / "datasets" / "MM-TBA"))
+    bundle = adapter.load(dataset_root=str(repo_root / "datasets" / "MM-TBA"))
     if bundle.X is not None:
         # Standardize
         scaler = StandardScaler()
@@ -136,9 +134,8 @@ def main():
     else:
         print(f"MM-TBA load error: {bundle.error}")
 
-    # ---- UCI ----
     adapter = UCIStudentAdapter()
-    bundle = adapter.load(dataset_root=str(PY.parent / "datasets" / "UCI"))
+    bundle = adapter.load(dataset_root=str(repo_root / "datasets" / "UCI"))
     if bundle.X is not None:
         scaler = StandardScaler()
         X = scaler.fit_transform(bundle.X)
@@ -146,9 +143,8 @@ def main():
     else:
         print(f"UCI load error: {bundle.error}")
 
-    # ---- OULAD ----
     adapter = OULADAdapter()
-    bundle = adapter.load(dataset_root=str(PY.parent / "datasets" / "OULAD"))
+    bundle = adapter.load(dataset_root=str(repo_root / "datasets" / "OULAD"))
     if bundle.X is not None:
         scaler = StandardScaler()
         X = scaler.fit_transform(bundle.X)

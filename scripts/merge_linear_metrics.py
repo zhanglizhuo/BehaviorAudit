@@ -1,4 +1,7 @@
+"""Merge per-dataset linear split metrics into one combined CSV."""
+
 from pathlib import Path
+
 import pandas as pd
 
 

@@ -9,6 +9,7 @@ import pandas as pd
 
 from ..types import AuditDatasetBundle
 
+
 class OULADAdapter:
     name = "oulad"
 
@@ -33,25 +34,19 @@ class OULADAdapter:
                     missing_data=True,
                     error=f"Missing file: {fname}"
                 )
-        # 1. 基础信息
         info = pd.read_csv(root / "studentInfo.csv")
-        # 2. 行为统计
         vle = pd.read_csv(root / "studentVle.csv")
-        # 每个学生的总访问次数、活跃周数
         vle_agg = vle.groupby("id_student").agg(
-            vle_total_clicks = ("sum_click", "sum"),
-            vle_active_weeks = ("date", "nunique")
+            vle_total_clicks=("sum_click", "sum"),
+            vle_active_weeks=("date", "nunique"),
         ).reset_index()
-        # 3. 作业/考试成绩
         assess = pd.read_csv(root / "studentAssessment.csv")
         assess_agg = assess.groupby("id_student").agg(
-            assessment_count = ("id_assessment", "count"),
-            assessment_score_mean = ("score", "mean"),
-            assessment_score_std = ("score", "std")
+            assessment_count=("id_assessment", "count"),
+            assessment_score_mean=("score", "mean"),
+            assessment_score_std=("score", "std"),
         ).reset_index()
-        # 4. 合并特征
         df = info.merge(vle_agg, on="id_student", how="left").merge(assess_agg, on="id_student", how="left")
-        # 5. 选取特征（行为+元数据）
         features = [
             "age_band", "gender", "region", "highest_education", "imd_band", "num_of_prev_attempts",
             "vle_total_clicks", "vle_active_weeks", "assessment_count", "assessment_score_mean", "assessment_score_std"
@@ -59,18 +54,15 @@ class OULADAdapter:
         X_df = pd.get_dummies(df[features], dummy_na=True)
         X_df = X_df.fillna(0).astype(float)
         X = X_df.values
-        # 6. 标签（论文主流程为回归/二分类，这里用 Pass/Distinction=1, Fail/Withdrawn=0）
         y = df["final_result"].map({"Pass": 1, "Distinction": 1, "Fail": 0, "Withdrawn": 0}).fillna(0).values
-        # 7. 分组变量
         group_ids = df["code_module"].astype(str) + "_" + df["code_presentation"].astype(str)
-        # 8. 数据卡
         data_card = {
             "n_samples": len(df),
             "features": features,
-            "n_pass": int((y==1).sum()),
-            "n_fail": int((y==0).sum()),
+            "n_pass": int((y == 1).sum()),
+            "n_fail": int((y == 0).sum()),
             "mean_vle_clicks": float(np.nanmean(df["vle_total_clicks"])),
-            "mean_assess_score": float(np.nanmean(df["assessment_score_mean"]))
+            "mean_assess_score": float(np.nanmean(df["assessment_score_mean"])),
         }
         return AuditDatasetBundle(
             dataset_name="oulad",

@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+"""Export linear-model split-level metrics for figure regeneration.
+
+The manuscript's split-instability figure uses per-split MAE, R², and Pearson r
+from 100 repeated 80/20 splits. This script writes one CSV per dataset under
+``generated/<Dataset>/linear_split_metrics.csv``.
+"""
+
 import csv
 from pathlib import Path
 

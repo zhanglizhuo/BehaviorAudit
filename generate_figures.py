@@ -1,27 +1,9 @@
-"""generate_all_figures.py
-=========================
-Publication-ready figures for the BehaviorAudit paper.
-All data driven from:
-  • audit_7dataset_results.json  (audit metrics, group holdout, instability)
-  • result.csv                   (100-split raw R² distributions)
+"""Generate manuscript and supplementary figures for BehaviorAudit.
 
-Figures produced
-----------------
-Figure 1  – Protocol overview flowchart
-Figure 2  – Baseline gap (grouped bar + error bars, 7 datasets)
-Figure 3  – Split instability violin + boxplot (100-split R² distributions)
-Figure 4  – Null separation density (3 representative datasets)
-Figure 5  – iid vs group-holdout R² for 4 models × 6 datasets (grouped bar)
-Figure 6  – Instability ratio strip plot, 7 datasets × 4 models (log scale)
-Figure 7  – Summary audit heatmap (4 dimensions × 7 datasets)
-Figure 8  – Threshold sensitivity (I cutoff & beat-rate sweep)
-
-Usage
------
-Place this script in the same directory as the two data files, then run:
-    python generate_all_figures.py
-
-Output PNGs are written to ./outputs/
+Inputs are the tracked result artifacts at the repository root:
+``audit_7dataset_results.json`` and ``result.csv``. Working copies are written
+to ``outputs/``; manuscript-ready PDFs are written to ``paper/`` using the
+filenames referenced by ``paper/behavioraudit.tex`` and ``paper/supplementary.tex``.
 """
 from __future__ import annotations
 import json, math
@@ -102,7 +84,7 @@ SHORT = {
 
 PROFILE_MAP = {
     "MM-TBA (N=186)":       "Fragile (0/4)",
-    "Higher Ed (N=145)":    "Partial (2/4)",
+    "Higher Ed (N=145)":    "Partial (1/4)",
     "UCI Student (N=649)":  "Mostly (3/4)",
     "Entrance Exam (N=666)":"Mostly (3/4)",
     "xAPI-Edu (N=480)":     "Mostly (3/4)",
@@ -114,7 +96,7 @@ LABEL = {k: f"{SHORT[k]}\n({PROFILE_MAP[k]})" for k in ORDER}
 
 PROFILE_COLOR = {
     "Fragile (0/4)":  "#E24B4A",
-    "Partial (2/4)":  "#EF9F27",
+    "Partial (1/4)":  "#EF9F27",
     "Mostly (3/4)":   "#FAC775",
     "Strong (4/4)":   "#1D9E75",
 }
@@ -143,7 +125,7 @@ plt.rcParams.update({
     "savefig.facecolor":  "white",
 })
 
-def _save(name: str):
+def _save(name: str, paper_name: str | None = None):
     png_path = OUT_DIR / f"{name}.png"
     pdf_path = OUT_DIR / f"{name}.pdf"
     plt.savefig(png_path, dpi=FIG_DPI)
@@ -152,131 +134,116 @@ def _save(name: str):
     except Exception:
         # some backends may not support PDF; ignore
         pass
+    if paper_name:
+        paper_dir = HERE / "paper"
+        plt.savefig(paper_dir / f"{paper_name}.pdf", dpi=FIG_DPI,
+                    bbox_inches="tight", facecolor="white")
+        plt.savefig(paper_dir / f"{paper_name}.png", dpi=FIG_DPI,
+                    bbox_inches="tight", facecolor="white")
+        print(f"  wrote paper/{paper_name}.pdf")
     plt.close()
-    print(f"  ✓  {name}.png")
-    print(f"  ✓  {name}.pdf")
+    print(f"  wrote {name}.png")
+    print(f"  wrote {name}.pdf")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Figure 1 – Protocol Overview (flowchart)
 # ══════════════════════════════════════════════════════════════════════════════
 def fig1_protocol():
-    """Clean four-row flowchart with no overlapping text or arrows."""
-    fig, ax = plt.subplots(figsize=(14, 8.6))
-    ax.set_xlim(0, 15); ax.set_ylim(0, 10.6); ax.axis("off")
+    """Protocol flowchart styled to match Figures 2--6."""
+    fig, ax = plt.subplots(figsize=(14, 8.2))
+    ax.set_xlim(0, 15)
+    ax.set_ylim(0, 10.1)
+    ax.axis("off")
 
-    def rbox(cx, cy, w, h, text, color, fc=10, tc="white", r=0.25):
-        p = mpatches.FancyBboxPatch(
-            (cx - w/2, cy - h/2), w, h,
-            boxstyle=f"round,pad={r}", lw=1.2,
-            edgecolor="#444", facecolor=color, zorder=3)
-        ax.add_patch(p)
-        ax.text(cx, cy, text, ha="center", va="center",
-                fontsize=fc, fontweight="bold", color=tc,
-                zorder=4, multialignment="center")
+    edge = "#3A3A3A"
+    arrow_col = "#666666"
+    blue = "#1F77B4"
+    blue2 = "#4C9AD4"
+    dim_colors = ["#E24B4A", "#EF9F27", "#1D9E75", "#534AB7"]
+    profile_colors = ["#E24B4A", "#EF9F27", "#FAC775", "#1D9E75"]
+    profile_text = ["white", "white", "#5A3A00", "white"]
 
-    def arr(x1, y1, x2, y2, lw=1.4):
+    def rbox(cx, cy, w, h, text, color, fc=10.0, tc="white", lw=1.0):
+        patch = mpatches.FancyBboxPatch(
+            (cx - w / 2, cy - h / 2), w, h,
+            boxstyle="round,pad=0.18,rounding_size=0.12",
+            lw=lw, edgecolor=edge, facecolor=color, alpha=0.96, zorder=3)
+        ax.add_patch(patch)
+        ax.text(cx, cy, text, ha="center", va="center", fontsize=fc,
+                fontweight="bold", color=tc, linespacing=1.16,
+                multialignment="center", zorder=4)
+
+    def arrow(x1, y1, x2, y2, lw=1.25):
         ax.annotate("", xy=(x2, y2), xytext=(x1, y1),
-                    arrowprops=dict(arrowstyle="->", color="#555", lw=lw),
-                    zorder=2)
+                    arrowprops=dict(arrowstyle="->", color=arrow_col, lw=lw,
+                                    shrinkA=0, shrinkB=0), zorder=2)
 
-    # ── Row A: Input (y ≈ 9.55) ───────────────────────────────────────────
-    rbox(7.5, 9.55, 6.0, 0.85,
-         "7 Public Educational Datasets   (N = 145 → 32,593)",
-         "#185FA5", 11)
+    rbox(7.5, 9.18, 6.2, 0.74,
+         "7 Public Educational Datasets\nN = 145 to 32,593",
+         blue, fc=10.6)
 
-    # ── Row B: Splits & Models (y ≈ 7.30, larger gap to Row A) ────────────
-    rbox(4.5, 7.30, 4.4, 0.85, "100 × Random 80/20 Splits", "#378ADD", 10.5)
-    rbox(10.5, 7.30, 4.4, 0.85,
-         "4 Models: Linear / Ridge / RF / GBT", "#378ADD", 10.5)
-    arr(7.5, 9.10, 4.5, 7.78)
-    arr(7.5, 9.10, 10.5, 7.78)
+    rbox(4.35, 7.55, 4.5, 0.78, "100 Random 80/20 Splits", blue2, fc=10.0)
+    rbox(10.65, 7.55, 4.5, 0.78, "Linear / Ridge / RF / GBT", blue2, fc=10.0)
+    arrow(7.1, 8.80, 4.35, 7.95)
+    arrow(7.9, 8.80, 10.65, 7.95)
 
-    # Connector bus spanning all four dim columns (no gaps under outer dims)
-    dim_cx = [1.875, 5.625, 9.375, 13.125]   # evenly spaced (step = 3.75)
-    y_busB = 6.30
-    ax.plot([dim_cx[0], dim_cx[-1]], [y_busB, y_busB],
-            color="#888", lw=1.0, zorder=1)
-    # Down-arrows from each Row-B box into the bus (so the flow direction is
-    # explicit instead of an ambiguous plain line).
-    for cx in (4.5, 10.5):
-        arr(cx, 6.85, cx, y_busB + 0.02, lw=1.1)
+    dim_x = [1.875, 5.625, 9.375, 13.125]
+    y_bus_top = 6.63
+    ax.plot([dim_x[0], dim_x[-1]], [y_bus_top, y_bus_top],
+            color=arrow_col, lw=1.0, zorder=1)
+    arrow(4.35, 7.16, 4.35, y_bus_top)
+    arrow(10.65, 7.16, 10.65, y_bus_top)
 
-    # ── Row C: Four Dimensions (y ≈ 4.85; box height 1.40) ────────────────
     dims = [
-        ("Dim 1\nBaseline Gap",
-         "ΔMAE > 0   |   Beat rate ≥ 0.90",   "#E24B4A"),
-        ("Dim 2\nSplit Instability",
-         "I = SD/|ΔMAE|   |   Pass: I < 1.0", "#EF9F27"),
-        ("Dim 3\nNull Separation",
-         "Permutation p < 0.05\non ≥ 80 % of splits",       "#1D9E75"),
-        ("Dim 4\nMetadata Adequacy",
-         "Group-holdout R²\n≥ 50 % of iid R²",              "#534AB7"),
+        ("Dim 1\nBaseline Gap", "ΔMAE > 0\nBeat rate ≥ 0.90"),
+        ("Dim 2\nSplit Instability", "I = SD / |ΔMAE|\nPass if I < 1"),
+        ("Dim 3\nNull Separation", "Permutation p < 0.05\nin ≥ 80% splits"),
+        ("Dim 4\nMetadata Adequacy", "Group-holdout R²\n≥ 50% iid R²"),
     ]
-    box_w, box_h = 2.95, 1.40
-    y_dim = 4.85
-    for cx, (title, metric, color) in zip(dim_cx, dims):
-        # Outer card
-        rbox(cx, y_dim, box_w, box_h, "", color, 0, "white", r=0.25)
-        # Title (upper portion, white) — moved up toward the top of the card
-        ax.text(cx, y_dim + 0.45, title, ha="center", va="center",
-                fontsize=10.5, fontweight="bold", color="white",
-                zorder=5, multialignment="center")
-        # Inner light strip for threshold text (better contrast)
-        strip_h = 0.62
-        strip_y = y_dim - box_h/2 + 0.14   # bottom edge of strip
-        strip_cy = strip_y + strip_h/2     # vertical centre of strip
-        strip = mpatches.FancyBboxPatch(
-            (cx - box_w/2 + 0.18, strip_y),
-            box_w - 0.36, strip_h,
-            boxstyle="round,pad=0.02", lw=0,
-            facecolor="white", alpha=0.92, zorder=4)
-        ax.add_patch(strip)
-        # Threshold text vertically centred inside the white strip
-        ax.text(cx, strip_cy, metric, ha="center", va="center",
-                fontsize=8.5, color="#222", style="italic",
-                zorder=6, multialignment="center")
-        # Arrow from connector bus to top of card
-        arr(cx, y_busB, cx, y_dim + box_h/2 + 0.02)
+    y_dim = 5.05
+    for cx, color, (title, metric) in zip(dim_x, dim_colors, dims):
+        arrow(cx, y_bus_top, cx, y_dim + 0.78)
+        rbox(cx, y_dim, 3.05, 1.36, "", color, fc=0)
+        ax.text(cx, y_dim + 0.34, title, ha="center", va="center",
+                fontsize=10.0, fontweight="bold", color="white",
+                linespacing=1.12, multialignment="center", zorder=5)
+        metric_box = mpatches.FancyBboxPatch(
+            (cx - 1.28, y_dim - 0.53), 2.56, 0.50,
+            boxstyle="round,pad=0.04,rounding_size=0.08",
+            lw=0, facecolor="white", alpha=0.93, zorder=4)
+        ax.add_patch(metric_box)
+        ax.text(cx, y_dim - 0.28, metric, ha="center", va="center",
+                fontsize=8.2, color="#333333", linespacing=1.12,
+                multialignment="center", zorder=6)
 
-    # ── Row D: Profiles (y ≈ 1.30) ────────────────────────────────────────
-    # Score-aggregation bus between Row C and Row D
-    y_busD = 2.95
-    ax.plot([dim_cx[0], dim_cx[-1]], [y_busD, y_busD],
-            color="#888", lw=1.0, zorder=1)
-    # Down-arrows from each Dim card bottom into the aggregation bus.
-    for cx in dim_cx:
-        arr(cx, y_dim - box_h/2 - 0.02, cx, y_busD + 0.02, lw=1.1)
+    y_bus_bottom = 3.25
+    ax.plot([dim_x[0], dim_x[-1]], [y_bus_bottom, y_bus_bottom],
+            color=arrow_col, lw=1.0, zorder=1)
+    for cx in dim_x:
+        arrow(cx, y_dim - 0.78, cx, y_bus_bottom)
 
-    # Aggregation label on the bus
-    ax.text(7.5, y_busD + 0.30,
-            "Score = # passed dimensions  (0 → 4)",
-            ha="center", va="bottom", fontsize=10,
-            color="#333", style="italic", zorder=4,
-            bbox=dict(boxstyle="round,pad=0.25",
-                      facecolor="white", edgecolor="#888", lw=0.8))
+    ax.text(7.5, 3.62, "Score = number of passed dimensions",
+            ha="center", va="center", fontsize=9.4, color="#333333",
+            style="italic", zorder=5,
+            bbox=dict(boxstyle="round,pad=0.24", facecolor="white",
+                      edgecolor="#777777", lw=0.8))
 
-    profiles = [
-        (1.875,  "Fragile\n(0/4)",         "#E24B4A", "white"),
-        (5.625,  "Partial\n(1–2/4)",       "#EF9F27", "white"),
-        (9.375,  "Mostly Passing\n(3/4)",  "#FAC775", "#6B4200"),
-        (13.125, "Strong\n(4/4)",          "#1D9E75", "white"),
-    ]
-    y_prof = 1.30
-    for cx, lbl, col, tc in profiles:
-        rbox(cx, y_prof, box_w, 0.95, lbl, col, 10.5, tc, r=0.20)
-        arr(cx, y_busD, cx, y_prof + 0.50)
+    profiles = ["Fragile\n(0/4)", "Partial\n(1-2/4)",
+                "Mostly Passing\n(3/4)", "Strong\n(4/4)"]
+    y_prof = 1.55
+    for cx, label, color, tc in zip(dim_x, profiles, profile_colors, profile_text):
+        arrow(cx, y_bus_bottom, cx, y_prof + 0.56)
+        rbox(cx, y_prof, 3.05, 0.92, label, color, fc=10.2, tc=tc)
 
-    ax.text(7.5, 0.30, "Audit Decision: Dataset Readiness Profile",
-            ha="center", va="center", fontsize=11,
-            color="#222", style="italic", fontweight="bold")
+    ax.text(7.5, 0.43, "Audit Decision: Dataset Readiness Profile",
+            ha="center", va="center", fontsize=10.4,
+            fontweight="bold", style="italic", color="#222222")
 
-    fig.suptitle(
-        "Four-Dimension Pre-Modeling Audit Protocol",
-        fontsize=13.5, fontweight="bold", y=0.985)
-    # Avoid tight_layout (interferes with absolute positioning)
-    plt.subplots_adjust(left=0.02, right=0.98, top=0.95, bottom=0.02)
-    _save("Figure1_Protocol_Overview")
+    fig.suptitle("Four-Dimension Pre-Modeling Audit Protocol",
+                 fontsize=13.5, fontweight="bold", y=0.985)
+    plt.subplots_adjust(left=0.025, right=0.98, top=0.94, bottom=0.035)
+    _save("Figure1_Protocol_Overview", paper_name="fig1_protocol")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -314,11 +281,11 @@ def fig2_baseline_gap():
     ax.set_ylabel("R²")
     ax.set_ylim(-0.28, 0.88)
     ax.set_title(
-        "Linear Model Consistently Beats Trivial Baseline,\n"
-        "but Gains Vary Substantially Across Datasets", pad=8)
+        "Linear-Model Baseline Gap Varies Across Datasets,\n"
+        "with MM-TBA Below the Trivial Baseline", pad=8)
     ax.legend(fontsize=9, loc="upper left")
     plt.tight_layout()
-    _save("Figure2_Baseline_Gap")
+    _save("Figure2_Baseline_Gap", paper_name="figS1_baseline_gap")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -369,13 +336,13 @@ def fig3_split_instability():
     # I-annotation labels on the right (Dropout / OULAD).
     ax.legend(fontsize=9, loc="lower left")
     plt.tight_layout()
-    _save("Figure3_Split_Instability")
+    _save("Figure3_Split_Instability", paper_name="figS2_split_instability")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Figure 4 – Null Separation  (real permutation distributions, 3 representative datasets)
 #
-# Uses the 500-draw × 10-split empirical permutation null saved in
+# Uses the empirical permutation null saved in
 # audit_7dataset_results.json under each dataset's "permutation" → "splits" →
 # "null_r2" arrays.  No synthetic noise is involved.
 # ══════════════════════════════════════════════════════════════════════════════
@@ -387,7 +354,9 @@ def fig4_null_separation():
     ]
     fig, axes = plt.subplots(1, 3, figsize=(13, 4.8))
 
-    for ax, (d, lbl) in zip(axes, reps):
+    for (ax, (d, lbl)), panel_letter in zip(zip(axes, reps), ["a", "b", "c"]):
+        ax.text(0.04, 0.96, panel_letter, transform=ax.transAxes,
+                fontsize=12, fontweight="bold", va="top", ha="left", zorder=10)
         record = BY_NAME[d]
         perm = record.get("permutation") or {}
         splits = perm.get("splits") or []
@@ -397,8 +366,8 @@ def fig4_null_separation():
             ax.set_title(lbl, fontsize=9.5, pad=6)
             continue
 
-        # Pool empirical null R² across all 10 audit splits → 5,000 draws.
-        # Pool observed R² across the same splits.
+        # Pool empirical null R² across all audit splits and pool observed R²
+        # across the same splits.
         null_vals = np.concatenate([np.asarray(s["null_r2"], dtype=float)
                                      for s in splits])
         obs_vals  = np.asarray([s["obs_r2"] for s in splits], dtype=float)
@@ -451,13 +420,19 @@ def fig4_null_separation():
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
 
+    split_counts = [
+        len((BY_NAME[d].get("permutation") or {}).get("splits") or [])
+        for d, _ in reps
+    ]
+    n_splits = min(split_counts) if split_counts else 0
+    n_draws = len(((BY_NAME[reps[0][0]].get("permutation") or {}).get("splits") or [{}])[0].get("null_r2", []))
     fig.suptitle(
         "Empirical Permutation Null vs. Observed R² "
-        "(500 draws × 10 splits per dataset)\n"
+        f"({n_draws} draws × {n_splits} splits per dataset)\n"
         "Strong datasets show clean separation; fragile datasets do not",
         fontsize=12, fontweight="bold")
     plt.tight_layout()
-    _save("Figure4_Null_Separation")
+    _save("Figure4_Null_Separation", paper_name="fig4_null_separation")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -477,8 +452,10 @@ def fig5_iid_vs_group():
     ax = axes[0]
     for i, (m, ml, mc) in enumerate(zip(MODELS, MODEL_LABELS, MODEL_COLORS)):
         vals = [BY_NAME[d]["summaries"][m]["r2_mean"] for d in ds_grp]
-        ax.bar(x + i*w, vals, w, label=ml, color=mc, alpha=0.85,
-               edgecolor="#333", lw=0.6)
+        stds = [BY_NAME[d]["summaries"][m]["r2_std"] for d in ds_grp]
+        ax.bar(x + i*w, vals, w, yerr=stds, capsize=3,
+               error_kw={"elinewidth": 1.0, "ecolor": "#555"},
+               label=ml, color=mc, alpha=0.85, edgecolor="#333", lw=0.6)
     ax.set_xticks(x + 1.5*w)
     ax.set_xticklabels([SHORT[d] for d in ds_grp], fontsize=10)
     ax.set_ylabel("R²  (iid split)")
@@ -535,7 +512,7 @@ def fig5_iid_vs_group():
         fontsize=13, fontweight="bold", y=1.00)
     # Leave generous bottom space for the stacked off-scale annotations
     plt.subplots_adjust(left=0.06, right=0.98, top=0.90, bottom=0.22, wspace=0.18)
-    _save("Figure5_iid_vs_GroupHoldout")
+    _save("Figure5_iid_vs_GroupHoldout", paper_name="fig3_iid_vs_group")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -577,7 +554,7 @@ def fig6_instability_strip():
     ax.grid(axis="x", alpha=0.3, ls="--")
     ax.spines["top"].set_visible(False); ax.spines["right"].set_visible(False)
     plt.tight_layout()
-    _save("Figure6_Instability_Strip")
+    _save("Figure6_Instability_Strip", paper_name="fig5_instability_strip")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -668,7 +645,7 @@ def fig7_heatmap():
         pad=12, fontsize=11)
     # Reserve right margin so profile labels are not clipped
     plt.subplots_adjust(left=0.10, right=0.76, top=0.88, bottom=0.10)
-    _save("Figure7_Summary_Heatmap")
+    _save("Figure7_Summary_Heatmap", paper_name="fig2_audit_heatmap")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -697,7 +674,7 @@ def fig8_threshold_sensitivity():
     ax.set_xlabel("Instability threshold  (I cutoff)")
     ax.set_ylabel("Number of datasets flagged")
     ax.set_title("Panel A:  Instability Threshold Sensitivity\n"
-                 "(I = 1.0 choice is stable over a wide range)", fontsize=10)
+                 "(only the highest-instability dataset remains flagged at I = 1.0)", fontsize=10)
     ax.set_ylim(-0.3, 7.8); ax.set_yticks(range(8))
     ax.legend(fontsize=9)
     ax.grid(axis="y", alpha=0.3, ls="--")
@@ -720,7 +697,7 @@ def fig8_threshold_sensitivity():
     ax.set_xlabel("Beat-rate threshold")
     ax.set_ylabel("Number of datasets flagged")
     ax.set_title("Panel B:  Beat-Rate Threshold Sensitivity\n"
-                 "(conclusion robust for thresholds 0.80–0.95)", fontsize=10)
+                 "(two datasets are flagged once the cutoff reaches about 0.84)", fontsize=10)
     ax.set_ylim(-0.3, 7.8); ax.set_yticks(range(8))
     ax.legend(fontsize=9)
     ax.grid(axis="y", alpha=0.3, ls="--")
@@ -728,10 +705,10 @@ def fig8_threshold_sensitivity():
 
     fig.suptitle(
         "Audit Conclusions Are Robust to Threshold Choice\n"
-        "Across a Wide Range of Operational Cutoffs",
+        "but Flagged-Count Details Shift at Lenient Cutoffs",
         fontsize=12, fontweight="bold")
     plt.tight_layout()
-    _save("Figure8_Threshold_Sensitivity")
+    _save("Figure8_Threshold_Sensitivity", paper_name="figS3_threshold_sensitivity")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -747,4 +724,4 @@ if __name__ == "__main__":
     fig6_instability_strip()
     fig7_heatmap()
     fig8_threshold_sensitivity()
-    print("\nDone — all 8 figures saved.")
+    print("\nDone: all figure files were saved.")

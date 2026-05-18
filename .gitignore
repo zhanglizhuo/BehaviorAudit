@@ -43,6 +43,9 @@ paper/*.zip
 paper/Definitions
 paper/Figure[0-9]*.pdf
 paper/Figure[0-9]*.png
+paper/fig*.png
+paper/*_plos.tex
+paper/*_plos.pdf
 paper/PLOS_latex_template.zip
 paper/figure5_radar_audit_profiles.png
 paper/mdpi/

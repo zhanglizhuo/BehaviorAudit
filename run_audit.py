@@ -4,13 +4,32 @@ import argparse
 import json
 from pathlib import Path
 
-from framework.adapters import MMTBAAdapter, OULADAdapter, UCIStudentAdapter
+from framework.adapters import (
+    EntranceExamAdapter,
+    HigherEdAdapter,
+    MMTBAAdapter,
+    OULADAdapter,
+    StudentDropoutAdapter,
+    UCIStudentAdapter,
+    XAPIEduAdapter,
+)
 from framework.runner import AuditConfig, run_behavior_audit
 
 
+DATASET_REGISTRY = {
+    "mm_tba": (MMTBAAdapter, "datasets/MM-TBA", "generated/mm_tba"),
+    "higher_ed": (HigherEdAdapter, "datasets/StudentExam", "generated/higher_ed"),
+    "xapi_edu": (XAPIEduAdapter, "datasets/xAPI-Edu", "generated/xapi_edu"),
+    "entrance_exam": (EntranceExamAdapter, "datasets/StudentExam", "generated/entrance_exam"),
+    "uci_student": (UCIStudentAdapter, "datasets/UCI", "generated/uci_student"),
+    "student_dropout": (StudentDropoutAdapter, "datasets/StudentDropout", "generated/student_dropout"),
+    "oulad": (OULADAdapter, "datasets/OULAD", "generated/oulad"),
+}
+
+
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run a BehaviorAudit dataset adapter.")
-    parser.add_argument("--dataset", choices=["mm_tba", "oulad", "uci_student"], default="mm_tba")
+    parser = argparse.ArgumentParser(description="Run one BehaviorAudit dataset adapter.")
+    parser.add_argument("--dataset", choices=sorted(DATASET_REGISTRY), default="mm_tba")
     parser.add_argument("--dataset-root", default=None, help="Optional dataset root override.")
     parser.add_argument(
         "--output-dir",
@@ -27,22 +46,9 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    # Resolve adapter and default dataset root inside `datasets/` if no override provided
     repo_root = Path(__file__).resolve().parent
-    if args.dataset == "mm_tba":
-        adapter = MMTBAAdapter()
-        default_output = str(Path("generated") / "mm_tba")
-        default_dataset_root = str(repo_root / "datasets" / "MM-TBA")
-    elif args.dataset == "oulad":
-        adapter = OULADAdapter()
-        default_output = str(Path("generated") / "oulad")
-        default_dataset_root = str(repo_root / "datasets" / "OULAD")
-    elif args.dataset == "uci_student":
-        adapter = UCIStudentAdapter()
-        default_output = str(Path("generated") / "uci_student")
-        default_dataset_root = str(repo_root / "datasets" / "UCI")
-    else:
-        raise ValueError(f"Unknown dataset: {args.dataset}")
+    adapter_cls, default_dataset_root, default_output = DATASET_REGISTRY[args.dataset]
+    adapter = adapter_cls()
     output_dir = args.output_dir or default_output
     config = AuditConfig(
         train_split_ratio=args.train_ratio,
@@ -51,7 +57,7 @@ def main() -> None:
         feature_subset_size=args.feature_subset_size,
         seeds=tuple(args.seeds),
     )
-    dataset_root_to_use = args.dataset_root or default_dataset_root
+    dataset_root_to_use = args.dataset_root or str(repo_root / default_dataset_root)
     results = run_behavior_audit(
         adapter=adapter,
         output_dir=output_dir,
