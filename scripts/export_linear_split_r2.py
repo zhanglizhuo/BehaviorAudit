@@ -4,7 +4,7 @@ from __future__ import annotations
 
 The manuscript's split-instability figure uses per-split MAE, R², and Pearson r
 from 100 repeated 80/20 splits. This script writes one CSV per dataset under
-``generated/<Dataset>/linear_split_metrics.csv``.
+``diagnostics/<Dataset>/linear_split_metrics.csv``.
 """
 
 import csv

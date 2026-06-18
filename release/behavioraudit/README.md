@@ -9,18 +9,18 @@ The current repository has two goals:
 
 ## Published Paper
 
-This repository accompanies the manuscript "A Four-Dimension Pre-Modeling Audit Protocol for Educational Prediction Benchmarks" (Yan Ma & Lizhuo Zhang). The canonical manuscript source and manuscript markdown are available in the local file paper/behavioraudit.md. Please cite the manuscript when using or building on these analyses.
+This repository accompanies the manuscript "Limited Structural Reliability in Public Educational Prediction Benchmarks: A Four-Dimension Audit of Seven Datasets" (Yan Ma & Lizhuo Zhang). Please cite the manuscript when using or building on these analyses.
 
 ## Layout
 
 - `experiments/mm_tba_stage13/`: archived executable MM-TBA experiment script and raw result JSONs.
 - `analysis/figures_and_diagnostics/`: manuscript figures, figure-regeneration script, and draft diagnostics.
 - `analysis/quality_gate/`: final paper quality-gate outputs.
-- `paper/`: canonical manuscript markdown, reviewer responses, and MDPI `.tex`/`.pdf` files.
+
 - `release/behavioraudit/`: public-facing release bundle for lightweight reproduction.
 - `framework/`: reusable audit runner, baseline utilities, and dataset adapters.
 - `run_audit.py`: CLI entrypoint for the adapter-based audit runner.
-- `generated/`: output location for rerun JSONs.
+- `diagnostics/`: output location for rerun JSONs.
 
 ## Datasets (for release users)
 
@@ -48,7 +48,7 @@ python3 -m pip install -r requirements.txt
 Run the adapter-based MM-TBA audit:
 
 ```bash
-python3 run_audit.py --dataset mm_tba --output-dir generated/mm_tba
+python3 run_audit.py --dataset mm_tba --output-dir diagnostics/mm_tba
 ```
 
 If the dataset is not under `MM-TBA/` at the repository root, pass `--dataset-root /path/to/MM-TBA` or set `MM_TBA_ROOT`.
@@ -56,7 +56,7 @@ If the dataset is not under `MM-TBA/` at the repository root, pass `--dataset-ro
 Run the adapter-based OULAD audit:
 
 ```bash
-python3 run_audit.py --dataset oulad --dataset-root /path/to/OULAD --output-dir generated/oulad
+python3 run_audit.py --dataset oulad --dataset-root /path/to/OULAD --output-dir diagnostics/oulad
 ```
 
 Rebuild the main MM-TBA manuscript figures:
@@ -70,9 +70,9 @@ python3 release/behavioraudit/regenerate_figures.py
 Recommended to keep in Git:
 
 - experiment code under `experiments/`, `framework/`, and `release/`
-- manuscript sources under `paper/`
+- manuscript sources
 - canonical figure assets under `analysis/figures_and_diagnostics/`
-- canonical result JSONs under `generated/mm_tba/`
+- canonical result JSONs under `diagnostics/mm_tba/`
 
 Recommended not to add:
 

@@ -227,7 +227,7 @@ def main():
         })
 
     # Save results
-    out_path = Path(__file__).parent / "paper" / "classification_sensitivity_results.json"
+    out_path = Path(__file__).parent / "classification_sensitivity_results.json"
     with open(out_path, "w") as f:
         json.dump(all_results, f, indent=2, default=str)
     print(f"\nResults saved to {out_path}")

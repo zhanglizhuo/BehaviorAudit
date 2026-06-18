@@ -17,13 +17,13 @@ from framework.runner import AuditConfig, run_behavior_audit
 
 
 DATASET_REGISTRY = {
-    "mm_tba": (MMTBAAdapter, "datasets/MM-TBA", "generated/mm_tba"),
-    "higher_ed": (HigherEdAdapter, "datasets/StudentExam", "generated/higher_ed"),
-    "xapi_edu": (XAPIEduAdapter, "datasets/xAPI-Edu", "generated/xapi_edu"),
-    "entrance_exam": (EntranceExamAdapter, "datasets/StudentExam", "generated/entrance_exam"),
-    "uci_student": (UCIStudentAdapter, "datasets/UCI", "generated/uci_student"),
-    "student_dropout": (StudentDropoutAdapter, "datasets/StudentDropout", "generated/student_dropout"),
-    "oulad": (OULADAdapter, "datasets/OULAD", "generated/oulad"),
+    "mm_tba": (MMTBAAdapter, "datasets/MM-TBA", "diagnostics/mm_tba"),
+    "higher_ed": (HigherEdAdapter, "datasets/StudentExam", "diagnostics/higher_ed"),
+    "xapi_edu": (XAPIEduAdapter, "datasets/xAPI-Edu", "diagnostics/xapi_edu"),
+    "entrance_exam": (EntranceExamAdapter, "datasets/StudentExam", "diagnostics/entrance_exam"),
+    "uci_student": (UCIStudentAdapter, "datasets/UCI", "diagnostics/uci_student"),
+    "student_dropout": (StudentDropoutAdapter, "datasets/StudentDropout", "diagnostics/student_dropout"),
+    "oulad": (OULADAdapter, "datasets/OULAD", "diagnostics/oulad"),
 }
 
 

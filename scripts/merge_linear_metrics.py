@@ -9,7 +9,7 @@ def main():
     gen = Path("generated")
     files = sorted(gen.glob("*/linear_split_metrics.csv"))
     if not files:
-        print("No files found under generated/*/linear_split_metrics.csv")
+        print("No files found under diagnostics/*/linear_split_metrics.csv")
         return
 
     dfs = []

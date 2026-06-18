@@ -1,9 +1,8 @@
 """Generate manuscript and supplementary figures for BehaviorAudit.
 
 Inputs are the tracked result artifacts at the repository root:
-``audit_7dataset_results.json`` and ``result.csv``. Working copies are written
-to ``outputs/``; manuscript-ready PDFs are written to ``paper/`` using the
-filenames referenced by ``paper/behavioraudit.tex`` and ``paper/supplementary.tex``.
+``audit_7dataset_results.json`` and ``result.csv``.
+Generated figures are written to ``outputs/``.
 """
 from __future__ import annotations
 import json, math
@@ -134,13 +133,6 @@ def _save(name: str, paper_name: str | None = None):
     except Exception:
         # some backends may not support PDF; ignore
         pass
-    if paper_name:
-        paper_dir = HERE / "paper"
-        plt.savefig(paper_dir / f"{paper_name}.pdf", dpi=FIG_DPI,
-                    bbox_inches="tight", facecolor="white")
-        plt.savefig(paper_dir / f"{paper_name}.png", dpi=FIG_DPI,
-                    bbox_inches="tight", facecolor="white")
-        print(f"  wrote paper/{paper_name}.pdf")
     plt.close()
     print(f"  wrote {name}.png")
     print(f"  wrote {name}.pdf")

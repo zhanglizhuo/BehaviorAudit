@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Add r2_std (per-dataset) to paper/audit_7dataset_results.json using
-generated/combined_linear_split_metrics.csv as the source of per-split r2.
+"""Add r2_std (per-dataset) to audit_7dataset_results.json using
+diagnostics/combined_linear_split_metrics.csv as the source of per-split r2.
 
 Places the computed std into each entry at `summaries.linear.r2_std`.
 Backs up the original JSON before writing.
@@ -17,8 +17,8 @@ except Exception:
 
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-JSON_PATH = os.path.join(ROOT, "paper", "audit_7dataset_results.json")
-CSV_PATH = os.path.join(ROOT, "generated", "combined_linear_split_metrics.csv")
+JSON_PATH = os.path.join(ROOT, "audit_7dataset_results.json")
+CSV_PATH = os.path.join(ROOT, "diagnostics", "combined_linear_split_metrics.csv")
 
 
 def load_json(path):

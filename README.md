@@ -16,9 +16,9 @@ Raw datasets are not redistributed in this repository. The scripts assume that u
 - `run_classification_sensitivity.py`: classification-metric sensitivity analysis for binary and ordinal targets.
 - `run_audit.py`: quick single-dataset adapter runner for smoke tests and small reruns.
 - `generate_figures.py`: regenerates figure files from tracked result artifacts.
+- `diagnostics/`: tracked per-split CSV artifacts used by figure scripts.
 - `scripts/`: helper scripts for split-level metrics and structural-pattern analysis.
-- `generated/`: tracked split-level CSV artifacts used by figure scripts.
-- `paper/`: manuscript source, compiled PDF, bibliography, and final figure assets.
+- `release/`: minimal reproduction bundle for lightweight reuse.
 
 ## Installation
 
@@ -46,6 +46,16 @@ Place each downloaded dataset under the following paths relative to the reposito
 
 The `datasets/` directory is intentionally ignored by Git. This keeps the public repository focused on code, metadata, and reproducible outputs without redistributing third-party data.
 
+### Automated Dataset Download
+
+Run the download script to fetch all publicly available datasets:
+
+```bash
+bash scripts/download_datasets.sh
+```
+
+The script downloads each dataset from its original source and places it in the correct directory. See each dataset's original license for terms of use.
+
 ## Dataset Sources and Licensing
 
 The table below lists the upstream landing pages used during repository preparation. For the four UCI-hosted datasets, the UCI landing pages currently provide direct downloads and list a `CC BY 4.0` license. For datasets distributed outside UCI, this repository intentionally shares code and reproduction instructions rather than mirroring the raw data.
@@ -70,12 +80,7 @@ After placing the datasets, run:
 python3 run_7dataset_audit.py
 ```
 
-The script writes the seven-dataset audit JSON to both:
-
-- `audit_7dataset_results.json`
-- `paper/audit_7dataset_results.json`
-
-It uses 100 repeated 80/20 splits, 30 permutation-tested splits with 500 draws each, and leave-one-group-out validation where grouping metadata are available.
+The script writes the seven-dataset audit JSON to `audit_7dataset_results.json`. It uses 100 repeated 80/20 splits, 30 permutation-tested splits with 500 draws each, and leave-one-group-out validation where grouping metadata are available.
 
 ## Reproduce Sensitivity Analyses
 
@@ -107,35 +112,22 @@ python3 generate_figures.py
 python3 scripts/structural_pattern_analysis.py
 ```
 
-The figure scripts write working copies under `outputs/` and update the manuscript figure files under `paper/`, including `fig1_protocol.pdf`, `fig2_audit_heatmap.pdf`, `fig3_iid_vs_group.pdf`, `fig4_null_separation.pdf`, `fig5_instability_strip.pdf`, `fig6_structural_patterns.pdf`, and the supplementary `figS*.pdf` files.
+Generated figures are written to `outputs/`.
 
 ## Quick Smoke Test
 
 To verify that the adapter framework can load a single local dataset and write outputs, run one dataset with a small number of seeds:
 
 ```bash
-python3 run_audit.py --dataset uci_student --seeds 0 1 --n-permutations 2 --output-dir generated/smoke_uci
+python3 run_audit.py --dataset uci_student --seeds 0 1 --n-permutations 2 --output-dir diagnostics/smoke_uci
 ```
 
 Change `--dataset` to one of `mm_tba`, `higher_ed`, `xapi_edu`, `entrance_exam`, `uci_student`, `student_dropout`, or `oulad`.
 
-## Manuscript Build
-
-The Scientific Reports manuscript source is `paper/behavioraudit.tex`. From the `paper/` directory:
-
-```bash
-pdflatex -interaction=nonstopmode behavioraudit.tex
-bibtex behavioraudit
-pdflatex -interaction=nonstopmode behavioraudit.tex
-pdflatex -interaction=nonstopmode behavioraudit.tex
-```
-
-Supplementary material can be built with:
-
-```bash
-pdflatex -interaction=nonstopmode supplementary.tex
-```
-
 ## Citation
 
-Please cite the manuscript when using this code or adapting the audit framework. The canonical manuscript source and compiled PDF are maintained in `paper/behavioraudit.tex` and `paper/behavioraudit.pdf`.
+Please cite the manuscript when using this code or adapting the audit framework.
+
+## License
+
+The code in this repository is released under the MIT License. See `LICENSE` for details.
