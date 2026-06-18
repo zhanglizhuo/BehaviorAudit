@@ -26,7 +26,6 @@ audit_7dataset_results.json.bak*
 
 # ── Generated intermediate outputs ───────────────────────────────────────────
 outputs/
-release/behavioraudit/generated_figures/
 
 # ── Misc ──────────────────────────────────────────────────────────────────────
 .DS_Store

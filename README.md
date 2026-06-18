@@ -18,7 +18,6 @@ Raw datasets are not redistributed in this repository. The scripts assume that u
 - `generate_figures.py`: regenerates figure files from tracked result artifacts.
 - `diagnostics/`: tracked per-split CSV artifacts used by figure scripts.
 - `scripts/`: helper scripts for split-level metrics and structural-pattern analysis.
-- `release/`: minimal reproduction bundle for lightweight reuse.
 
 ## Installation
 
