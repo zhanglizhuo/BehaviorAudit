@@ -1,6 +1,6 @@
 # BehaviorAudit
 
-BehaviorAudit contains the code and manuscript assets for the study "Are Educational Prediction Benchmarks Structurally Reliable? A Four-Dimension Audit Across Seven Public Datasets" by Yan Ma and Lizhuo Zhang.
+BehaviorAudit contains the code and analysis scripts for the study "Are Educational Prediction Benchmarks Structurally Reliable? A Four-Dimension Audit Across Seven Public Datasets" by Yan Ma and Lizhuo Zhang.
 
 The repository supports two levels of reproduction:
 
