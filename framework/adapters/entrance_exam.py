@@ -61,6 +61,9 @@ class EntranceExamAdapter:
             "reference": "Bora & Dey (2021)",
         }
 
+        group_col_idxs = [i for i, col in enumerate(X_df.columns)
+                          if col.startswith("Class_ten_education_")]
+
         return AuditDatasetBundle(
             dataset_name=self.name,
             dataset_root=str(root),
@@ -69,4 +72,5 @@ class EntranceExamAdapter:
             data_card=data_card,
             feature_names=list(X_df.columns),
             missing_data=False, error=None,
+            group_column_indices=group_col_idxs or None,
         )

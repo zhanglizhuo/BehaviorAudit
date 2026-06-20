@@ -6,7 +6,7 @@ from typing import Dict, List, Optional, Protocol
 import numpy as np
 
 
-@dataclass(frozen=True)
+@dataclass
 class AuditDatasetBundle:
     dataset_name: str
     dataset_root: Optional[str]
@@ -17,6 +17,7 @@ class AuditDatasetBundle:
     feature_names: List[str]
     missing_data: bool
     error: Optional[str] = None
+    group_column_indices: Optional[list[int]] = None
 
 
 class DatasetAdapter(Protocol):

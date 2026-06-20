@@ -1,0 +1,326 @@
+[
+  {
+    "dataset": "OULAD (N=32593, binary)",
+    "n_classes": 2,
+    "summaries": {
+      "majority": {
+        "acc_mean": 0.5279920233164597,
+        "acc_std": 0.006502291318083646,
+        "auc_mean": null,
+        "auc_std": null,
+        "delta_acc": 0.0,
+        "I_acc": NaN,
+        "beat_rate_acc": NaN
+      },
+      "logistic": {
+        "acc_mean": 0.837060898910876,
+        "acc_std": 0.0040733965817385765,
+        "auc_mean": 0.9098137268576987,
+        "auc_std": 0.003146225814793512,
+        "delta_acc": 0.3090688755944163,
+        "I_acc": 0.013179575077266099,
+        "beat_rate_acc": 1.0
+      },
+      "ridge_clf": {
+        "acc_mean": 0.8374581991102934,
+        "acc_std": 0.00446579294160849,
+        "auc_mean": null,
+        "auc_std": null,
+        "delta_acc": 0.30946617579383373,
+        "I_acc": 0.01443063296286464,
+        "beat_rate_acc": 1.0
+      },
+      "rf_clf": {
+        "acc_mean": 0.8493388556527076,
+        "acc_std": 0.003877519151614831,
+        "auc_mean": 0.9224954063120859,
+        "auc_std": 0.0027502298078157213,
+        "delta_acc": 0.32134683233624795,
+        "I_acc": 0.012066461034515188,
+        "beat_rate_acc": 1.0
+      },
+      "gbt_clf": {
+        "acc_mean": 0.8613974535971775,
+        "acc_std": 0.003825444592986762,
+        "auc_mean": 0.9376760703502504,
+        "auc_std": 0.0025138743608393256,
+        "delta_acc": 0.3334054302807178,
+        "I_acc": 0.011473851745687916,
+        "beat_rate_acc": 1.0
+      }
+    },
+    "group_holdout": {
+      "logistic": {
+        "acc_mean": 0.8164852742289933,
+        "acc_std": 0.08775068928335313,
+        "acc_worst": 0.6057441253263708,
+        "auc_mean": 0.9196503815152132,
+        "n_groups": 22
+      },
+      "ridge_clf": {
+        "acc_mean": 0.82024282663605,
+        "acc_std": 0.0761254185074819,
+        "acc_worst": 0.6055846422338569,
+        "auc_mean": null,
+        "n_groups": 22
+      },
+      "rf_clf": {
+        "acc_mean": 0.8249260971442651,
+        "acc_std": 0.07007038159032793,
+        "acc_worst": 0.6226003490401396,
+        "auc_mean": 0.9260950677768104,
+        "n_groups": 22
+      },
+      "gbt_clf": {
+        "acc_mean": 0.8423062132295019,
+        "acc_std": 0.06777549292475057,
+        "acc_worst": 0.6068935427574171,
+        "auc_mean": 0.9386378703395284,
+        "n_groups": 22
+      }
+    }
+  },
+  {
+    "dataset": "Dropout (N=3630, binary)",
+    "n_classes": 2,
+    "summaries": {
+      "majority": {
+        "acc_mean": 0.6068870523415978,
+        "acc_std": 0.015351794269495471,
+        "auc_mean": null,
+        "auc_std": null,
+        "delta_acc": 0.0,
+        "I_acc": NaN,
+        "beat_rate_acc": NaN
+      },
+      "logistic": {
+        "acc_mean": 0.9115702479338843,
+        "acc_std": 0.009457104073703511,
+        "auc_mean": 0.9527954775622528,
+        "auc_std": 0.0078116207823282725,
+        "delta_acc": 0.3046831955922865,
+        "I_acc": 0.031039138029677248,
+        "beat_rate_acc": 1.0
+      },
+      "ridge_clf": {
+        "acc_mean": 0.9040358126721764,
+        "acc_std": 0.009790385175694385,
+        "auc_mean": null,
+        "auc_std": null,
+        "delta_acc": 0.2971487603305786,
+        "I_acc": 0.03294775598365278,
+        "beat_rate_acc": 1.0
+      },
+      "rf_clf": {
+        "acc_mean": 0.9068870523415977,
+        "acc_std": 0.010369989104528219,
+        "auc_mean": 0.9516900083154297,
+        "auc_std": 0.00757107505454943,
+        "delta_acc": 0.29999999999999993,
+        "I_acc": 0.034566629196206435,
+        "beat_rate_acc": 1.0
+      },
+      "gbt_clf": {
+        "acc_mean": 0.9094352617079887,
+        "acc_std": 0.010051086033712367,
+        "auc_mean": 0.9540558075920468,
+        "auc_std": 0.007356459186821692,
+        "delta_acc": 0.30254820936639093,
+        "I_acc": 0.033221435098054024,
+        "beat_rate_acc": 1.0
+      }
+    },
+    "group_holdout": {
+      "logistic": {
+        "acc_mean": 0.8973837096099591,
+        "acc_std": 0.06851343443350257,
+        "acc_worst": 0.6573033707865169,
+        "auc_mean": 0.9431044794273221,
+        "n_groups": 16
+      },
+      "ridge_clf": {
+        "acc_mean": 0.8844917012122031,
+        "acc_std": 0.0973230842843063,
+        "acc_worst": 0.5449438202247191,
+        "auc_mean": null,
+        "n_groups": 16
+      },
+      "rf_clf": {
+        "acc_mean": 0.8851925186576913,
+        "acc_std": 0.09169031990221518,
+        "acc_worst": 0.550561797752809,
+        "auc_mean": 0.9277261654057607,
+        "n_groups": 16
+      },
+      "gbt_clf": {
+        "acc_mean": 0.886396688616781,
+        "acc_std": 0.09404958276538423,
+        "acc_worst": 0.5449438202247191,
+        "auc_mean": 0.9375780705917856,
+        "n_groups": 16
+      }
+    }
+  },
+  {
+    "dataset": "xAPI-Edu (N=480, 3-class)",
+    "n_classes": 3,
+    "summaries": {
+      "majority": {
+        "acc_mean": 0.45000000000000007,
+        "acc_std": 0.04210704777376612,
+        "auc_mean": null,
+        "auc_std": null,
+        "delta_acc": 0.0,
+        "I_acc": NaN,
+        "beat_rate_acc": NaN
+      },
+      "logistic": {
+        "acc_mean": 0.7358333333333331,
+        "acc_std": 0.03739916999970275,
+        "auc_mean": 0.8692482792344162,
+        "auc_std": 0.02872017076989633,
+        "delta_acc": 0.28583333333333305,
+        "I_acc": 0.13084257268085267,
+        "beat_rate_acc": 1.0
+      },
+      "ridge_clf": {
+        "acc_mean": 0.6384375,
+        "acc_std": 0.050006401499930214,
+        "auc_mean": null,
+        "auc_std": null,
+        "delta_acc": 0.18843749999999992,
+        "I_acc": 0.2653739242252258,
+        "beat_rate_acc": 1.0
+      },
+      "rf_clf": {
+        "acc_mean": 0.7946875000000001,
+        "acc_std": 0.03517981463337874,
+        "auc_mean": 0.9159567419115543,
+        "auc_std": 0.02262405416621079,
+        "delta_acc": 0.34468750000000004,
+        "I_acc": 0.10206292253925517,
+        "beat_rate_acc": 1.0
+      },
+      "gbt_clf": {
+        "acc_mean": 0.7568749999999999,
+        "acc_std": 0.04262491854016329,
+        "auc_mean": 0.8831624224303423,
+        "auc_std": 0.028210241410791852,
+        "delta_acc": 0.3068749999999998,
+        "I_acc": 0.1388999336901474,
+        "beat_rate_acc": 1.0
+      }
+    },
+    "group_holdout": {
+      "logistic": {
+        "acc_mean": 0.7055001273760785,
+        "acc_std": 0.08431855765494448,
+        "acc_worst": 0.6,
+        "auc_mean": 0.8560187375787365,
+        "n_groups": 12
+      },
+      "ridge_clf": {
+        "acc_mean": 0.6109746377623666,
+        "acc_std": 0.10562279118009943,
+        "acc_worst": 0.3333333333333333,
+        "auc_mean": null,
+        "n_groups": 12
+      },
+      "rf_clf": {
+        "acc_mean": 0.7298248590424694,
+        "acc_std": 0.0560572306191132,
+        "acc_worst": 0.631578947368421,
+        "auc_mean": 0.8962035843463856,
+        "n_groups": 12
+      },
+      "gbt_clf": {
+        "acc_mean": 0.6721687596660703,
+        "acc_std": 0.06879576576930765,
+        "acc_worst": 0.5416666666666666,
+        "auc_mean": 0.857058683762082,
+        "n_groups": 12
+      }
+    }
+  },
+  {
+    "dataset": "Entrance Exam (N=666, 4-class)",
+    "n_classes": 4,
+    "summaries": {
+      "majority": {
+        "acc_mean": 0.30503759398496233,
+        "acc_std": 0.03371331650662975,
+        "auc_mean": null,
+        "auc_std": null,
+        "delta_acc": 0.0,
+        "I_acc": NaN,
+        "beat_rate_acc": NaN
+      },
+      "logistic": {
+        "acc_mean": 0.5124812030075188,
+        "acc_std": 0.03903580982287077,
+        "auc_mean": 0.7616304228772159,
+        "auc_std": 0.02925935066791254,
+        "delta_acc": 0.20744360902255643,
+        "I_acc": 0.1881755149028045,
+        "beat_rate_acc": 1.0
+      },
+      "ridge_clf": {
+        "acc_mean": 0.5160150375939848,
+        "acc_std": 0.040120444476752185,
+        "auc_mean": null,
+        "auc_std": null,
+        "delta_acc": 0.21097744360902249,
+        "I_acc": 0.19016460664608395,
+        "beat_rate_acc": 1.0
+      },
+      "rf_clf": {
+        "acc_mean": 0.48676691729323307,
+        "acc_std": 0.037573227352024195,
+        "auc_mean": 0.7249351071463436,
+        "auc_std": 0.026778745819689517,
+        "delta_acc": 0.18172932330827074,
+        "I_acc": 0.2067537841471528,
+        "beat_rate_acc": 1.0
+      },
+      "gbt_clf": {
+        "acc_mean": 0.5020300751879699,
+        "acc_std": 0.03995382885623876,
+        "auc_mean": 0.7492871052366565,
+        "auc_std": 0.02776656958059185,
+        "delta_acc": 0.1969924812030076,
+        "I_acc": 0.20281904458513064,
+        "beat_rate_acc": 1.0
+      }
+    },
+    "group_holdout": {
+      "logistic": {
+        "acc_mean": 0.3896871758317541,
+        "acc_std": 0.10741153195971952,
+        "acc_worst": 0.23809523809523808,
+        "auc_mean": 0.6976544692037789,
+        "n_groups": 3
+      },
+      "ridge_clf": {
+        "acc_mean": 0.389301795928302,
+        "acc_std": 0.11027937201776791,
+        "acc_worst": 0.23809523809523808,
+        "auc_mean": null,
+        "n_groups": 3
+      },
+      "rf_clf": {
+        "acc_mean": 0.41627259398343736,
+        "acc_std": 0.04674242652847467,
+        "acc_worst": 0.38095238095238093,
+        "auc_mean": 0.68156132046558,
+        "n_groups": 3
+      },
+      "gbt_clf": {
+        "acc_mean": 0.4928458422434326,
+        "acc_std": 0.022731471189834814,
+        "acc_worst": 0.46987951807228917,
+        "auc_mean": 0.7339768577671472,
+        "n_groups": 3
+      }
+    }
+  }
+]

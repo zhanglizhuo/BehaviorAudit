@@ -5,7 +5,7 @@ Inputs are the tracked result artifacts at the repository root:
 Generated figures are written to ``outputs/``.
 """
 from __future__ import annotations
-import json, math
+import json, math, shutil
 from pathlib import Path
 
 import numpy as np
@@ -86,7 +86,7 @@ PROFILE_MAP = {
     "Higher Ed (N=145)":    "Partial (1/4)",
     "UCI Student (N=649)":  "Mostly (3/4)",
     "Entrance Exam (N=666)":"Mostly (3/4)",
-    "xAPI-Edu (N=480)":     "Mostly (3/4)",
+    "xAPI-Edu (N=480)":     "Strong (4/4)",
     "Dropout (N=3630)":     "Strong (4/4)",
     "OULAD (N=32593)":      "Strong (4/4)",
 }
@@ -130,12 +130,16 @@ def _save(name: str, paper_name: str | None = None):
     plt.savefig(png_path, dpi=FIG_DPI)
     try:
         plt.savefig(pdf_path, dpi=FIG_DPI)
+        if paper_name:
+            paper_pdf = OUT_DIR / f"{paper_name}.pdf"
+            shutil.copy2(pdf_path, paper_pdf)
     except Exception:
-        # some backends may not support PDF; ignore
         pass
     plt.close()
-    print(f"  wrote {name}.png")
-    print(f"  wrote {name}.pdf")
+    msg = f"  wrote {name}.png / {name}.pdf"
+    if paper_name:
+        msg += f" / {paper_name}.pdf"
+    print(msg)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -250,12 +254,12 @@ def fig2_baseline_gap():
     stds  = [CSV_DF[CSV_DF["full_name"] == d]["r2"].std() for d in ORDER]
 
     ax.bar(x - w/2, 0, w, label="Mean Baseline (R²=0)",
-           color="#B4B2A9", edgecolor="#444", lw=0.8)
+           color="#B4B2A9", edgecolor="#444444", lw=0.8)
     ax.bar(x + w/2, means, w,
            yerr=stds, capsize=4,
-           error_kw={"elinewidth": 1.2, "ecolor": "#333"},
+           error_kw={"elinewidth": 1.2, "ecolor": "#333333"},
            color=[DS_COLOR[d] for d in ORDER],
-           edgecolor="#444", lw=0.8,
+           edgecolor="#444444", lw=0.8,
            label="Linear Model  (mean ± SD, 100 splits)")
 
     for i, (m, s) in enumerate(zip(means, stds)):
@@ -265,9 +269,9 @@ def fig2_baseline_gap():
         sign = "+" if m >= 0 else ""
         ax.text(i + w/2, ypos,
                 f"Δ={sign}{m:.3f}", ha="center", va="bottom",
-                fontsize=8.5, color="#333")
+                fontsize=8.5, color="#333333")
 
-    ax.axhline(0, color="#555", lw=1.0, ls="--")
+    ax.axhline(0, color="#555555", lw=1.0, ls="--")
     ax.set_xticks(x)
     ax.set_xticklabels([LABEL[d] for d in ORDER], fontsize=9)
     ax.set_ylabel("R²")
@@ -292,18 +296,18 @@ def fig3_split_instability():
                        widths=0.65, showmedians=False, showextrema=False)
     for i, body in enumerate(vp["bodies"]):
         body.set_facecolor(DS_COLOR[ORDER[i]])
-        body.set_alpha(0.40); body.set_edgecolor("#444"); body.set_lw(0.8)
+        body.set_alpha(0.40); body.set_edgecolor("#444444"); body.set_lw(0.8)
 
     bp = ax.boxplot(data_list, positions=range(len(ORDER)),
                     widths=0.17, patch_artist=True,
                     medianprops=dict(color="black", lw=2.0),
-                    whiskerprops=dict(color="#444", lw=1.2),
-                    capprops=dict(color="#444", lw=1.2),
+                    whiskerprops=dict(color="#444444", lw=1.2),
+                    capprops=dict(color="#444444", lw=1.2),
                     flierprops=dict(marker="o", ms=3,
-                                   markerfacecolor="#999", alpha=0.5))
+                                   markerfacecolor="#999999", alpha=0.5))
     for i, patch in enumerate(bp["boxes"]):
         patch.set_facecolor(DS_COLOR[ORDER[i]])
-        patch.set_alpha(0.85); patch.set_edgecolor("#333")
+        patch.set_alpha(0.85); patch.set_edgecolor("#333333")
 
     # annotate I values from JSON
     for i, d in enumerate(ORDER):
@@ -311,9 +315,9 @@ def fig3_split_instability():
         ymax  = data_list[i].max()
         ax.text(i, ymax + 0.035, f"I={I_val:.3f}",
                 ha="center", va="bottom", fontsize=8.5,
-                color="#333", fontweight="bold")
+                color="#333333", fontweight="bold")
 
-    ax.axhline(0, color="#999", lw=0.8, ls=":", alpha=0.6,
+    ax.axhline(0, color="#999999", lw=0.8, ls=":", alpha=0.6,
                label="R²=0  (no predictive signal)")
     ax.axvspan(4.5, 6.5, alpha=0.06, color="#1D9E75")
 
@@ -405,7 +409,7 @@ def fig4_null_separation():
                 transform=ax.transAxes, ha="right", va="top", fontsize=9,
                 fontweight="bold",
                 bbox=dict(boxstyle="round,pad=0.3", facecolor="#f5f5f5",
-                          edgecolor="#ccc", alpha=0.9))
+                          edgecolor="#cccccc", alpha=0.9))
         ax.set_title(lbl, fontsize=9.5, pad=6)
         ax.set_xlabel("R²"); ax.set_ylabel("Density")
         ax.legend(fontsize=7.2, loc="upper left")
@@ -446,8 +450,8 @@ def fig5_iid_vs_group():
         vals = [BY_NAME[d]["summaries"][m]["r2_mean"] for d in ds_grp]
         stds = [BY_NAME[d]["summaries"][m]["r2_std"] for d in ds_grp]
         ax.bar(x + i*w, vals, w, yerr=stds, capsize=3,
-               error_kw={"elinewidth": 1.0, "ecolor": "#555"},
-               label=ml, color=mc, alpha=0.85, edgecolor="#333", lw=0.6)
+               error_kw={"elinewidth": 1.0, "ecolor": "#555555"},
+               label=ml, color=mc, alpha=0.85, edgecolor="#333333", lw=0.6)
     ax.set_xticks(x + 1.5*w)
     ax.set_xticklabels([SHORT[d] for d in ds_grp], fontsize=10)
     ax.set_ylabel("R²  (iid split)")
@@ -469,7 +473,7 @@ def fig5_iid_vs_group():
         vals_raw = [BY_NAME[d]["group_holdout"][m]["r2_mean"] for d in ds_grp]
         vals_clp = [max(v, FLOOR) for v in vals_raw]
         ax.bar(x + i*w, vals_clp, w, label=ml, color=mc, alpha=0.85,
-               edgecolor="#333", lw=0.6)
+               edgecolor="#333333", lw=0.6)
         for j, vo in enumerate(vals_raw):
             if vo < FLOOR:
                 per_dataset_offscale[j].append((ml, mc, vo))
@@ -546,7 +550,7 @@ def fig6_instability_strip():
     ax.grid(axis="x", alpha=0.3, ls="--")
     ax.spines["top"].set_visible(False); ax.spines["right"].set_visible(False)
     plt.tight_layout()
-    _save("Figure6_Instability_Strip", paper_name="fig5_instability_strip")
+    _save("Figure6_Instability_Strip", paper_name="fig6_instability_strip")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -608,7 +612,7 @@ def fig7_heatmap():
         for j in range(4):
             v   = arr[i, j]
             lbl = "PASS" if v >= THRESH[j] else "FAIL"
-            tc  = "white" if (v < 0.40 or v > 0.72) else "#222"
+            tc  = "white" if (v < 0.40 or v > 0.72) else "#222222"
             ax.text(j, i, f"{v:.2f}\n{lbl}",
                     ha="center", va="center",
                     fontsize=9, fontweight="bold", color=tc)
@@ -632,8 +636,8 @@ def fig7_heatmap():
         ax2.get_yticklabels()[i].set_fontweight("bold")
 
     ax.set_title(
-        "Audit Heatmap: Five of Seven Datasets Fail Metadata Adequacy;\n"
-        "Only OULAD and Dropout Pass All Four Dimensions",
+        "Audit Heatmap: Three of Seven Datasets Pass All Four Dimensions;\n"
+        "xAPI-Edu Upgraded After Correcting Group-Identifier Encoding",
         pad=12, fontsize=11)
     # Reserve right margin so profile labels are not clipped
     plt.subplots_adjust(left=0.10, right=0.76, top=0.88, bottom=0.10)
@@ -656,13 +660,13 @@ def fig8_threshold_sensitivity():
     ax.plot(I_thrs, flagged_I, color="#E24B4A", lw=2.5,
             marker="o", ms=4, label="# datasets flagged")
     ax.fill_between(I_thrs, flagged_I, alpha=0.12, color="#E24B4A")
-    ax.axvline(1.0, color="#555", lw=1.6, ls="--",
+    ax.axvline(1.0, color="#555555", lw=1.6, ls="--",
                label="Paper threshold  (I = 1.0)")
     n1 = sum(1 for I in I_list if I >= 1.0)
     ax.annotate(f"{n1} dataset{'s' if n1 != 1 else ''}\nflagged at I=1",
                 xy=(1.0, n1), xytext=(1.7, n1 + 0.6),
-                fontsize=9, color="#333",
-                arrowprops=dict(arrowstyle="->", color="#555", lw=1.2))
+                fontsize=9, color="#333333",
+                arrowprops=dict(arrowstyle="->", color="#555555", lw=1.2))
     ax.set_xlabel("Instability threshold  (I cutoff)")
     ax.set_ylabel("Number of datasets flagged")
     ax.set_title("Panel A:  Instability Threshold Sensitivity\n"
@@ -679,13 +683,13 @@ def fig8_threshold_sensitivity():
     ax.plot(BR_thrs, flagged_BR, color="#378ADD", lw=2.5,
             marker="o", ms=3, label="# datasets flagged")
     ax.fill_between(BR_thrs, flagged_BR, alpha=0.12, color="#378ADD")
-    ax.axvline(0.90, color="#555", lw=1.6, ls="--",
+    ax.axvline(0.90, color="#555555", lw=1.6, ls="--",
                label="Paper threshold  (beat rate = 0.90)")
     n2 = sum(1 for br in BR_list if br < 0.90)
     ax.annotate(f"{n2} dataset{'s' if n2 != 1 else ''}\nflagged at 0.90",
                 xy=(0.90, n2), xytext=(0.70, n2 + 0.9),
-                fontsize=9, color="#333",
-                arrowprops=dict(arrowstyle="->", color="#555", lw=1.2))
+                fontsize=9, color="#333333",
+                arrowprops=dict(arrowstyle="->", color="#555555", lw=1.2))
     ax.set_xlabel("Beat-rate threshold")
     ax.set_ylabel("Number of datasets flagged")
     ax.set_title("Panel B:  Beat-Rate Threshold Sensitivity\n"

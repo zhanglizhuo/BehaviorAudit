@@ -107,6 +107,11 @@ class UCIStudentAdapter:
             "metadata_cols": metadata_cols,
         }
 
+        # Identify group-identifier columns (school one-hot) for exclusion
+        # during group holdout to prevent zero-variance predictors
+        group_col_idxs = [i for i, col in enumerate(X_df.columns)
+                          if col.startswith("school_")]
+
         return AuditDatasetBundle(
             dataset_name="uci_student",
             dataset_root=str(root),
@@ -117,4 +122,5 @@ class UCIStudentAdapter:
             feature_names=list(X_df.columns),
             missing_data=False,
             error=None,
+            group_column_indices=group_col_idxs or None,
         )

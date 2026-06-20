@@ -203,9 +203,14 @@ def main():
                 f"ΔAcc={s['delta_acc']:+.4f}  I_acc={s['I_acc']:.4f}  beat={s['beat_rate_acc']:.2f}"
             )
 
-        # 2. Group holdout
+        # 2. Group holdout (exclude group-identifier columns to match main audit)
         print(f"\n  --- Group Holdout (classification) ---")
-        gh = run_classification_group_holdout(X, y, group_ids, n_classes)
+        if bundle.group_column_indices:
+            X_gh = np.delete(X, bundle.group_column_indices, axis=1)
+            print(f"  Excluding {len(bundle.group_column_indices)} group-identifier column(s) for group holdout")
+        else:
+            X_gh = X
+        gh = run_classification_group_holdout(X_gh, y, group_ids, n_classes)
         if gh:
             for name, gs in gh.items():
                 auc_str = f"AUC={gs['auc_mean']:.4f}" if gs["auc_mean"] else "AUC=N/A"

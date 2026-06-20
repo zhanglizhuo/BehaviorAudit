@@ -202,7 +202,7 @@ def plot_patterns(df: pd.DataFrame) -> None:
         fontsize=8.5,
     )
     for ext in ("pdf", "png"):
-        out_path = OUT_DIR / f"fig6_structural_patterns.{ext}"
+        out_path = OUT_DIR / f"fig5_structural_patterns.{ext}"
         fig.savefig(out_path, dpi=FIG_DPI, bbox_inches="tight", facecolor="white")
         print(f"Wrote {out_path}")
     plt.close(fig)

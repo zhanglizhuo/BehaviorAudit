@@ -116,7 +116,7 @@ class MMTBAAdapter:
 
         behavioraudit_root = Path(__file__).resolve().parents[2]
         repo_root = behavioraudit_root.parent
-        for base in [Path.cwd().resolve(), behavioraudit_root, repo_root, *repo_root.parents[:2]]:
+        for base in [Path.cwd().resolve(), behavioraudit_root, repo_root, *list(repo_root.parents)[:2]]:
             candidates.append(base / "MM-TBA")
 
         unique_candidates: List[Path] = []

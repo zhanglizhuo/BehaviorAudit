@@ -231,9 +231,15 @@ def audit_dataset(name, adapter, dataset_root, n_repeats=100):
             f"Δ_MAE={s['delta_mae']:+.4f}  I={s['I']:.4f}  beat={s['beat_rate']:.2f}"
         )
 
-    # 2. Group holdout
+    # 2. Group holdout (exclude group-identifier features to avoid
+    #    zero-variance predictors in the training partition)
+    if bundle.group_column_indices:
+        X_gh = np.delete(X, bundle.group_column_indices, axis=1)
+        print(f"  Excluding {len(bundle.group_column_indices)} group-identifier column(s) from X for group holdout")
+    else:
+        X_gh = X
     print(f"\n  --- Group Holdout ---")
-    gh = run_group_holdout(X, y, group_ids)
+    gh = run_group_holdout(X_gh, y, group_ids)
     if gh is not None:
         gh_summary, gh_detail = gh
         for mname in ["linear", "ridge", "rf", "gbt"]:
