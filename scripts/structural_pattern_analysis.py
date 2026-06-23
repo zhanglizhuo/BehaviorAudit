@@ -178,8 +178,7 @@ def plot_patterns(df: pd.DataFrame) -> None:
         row["iid_to_group_r2_gap"] + xerr_vals[idx]
         for idx, (_, row) in enumerate(collapse_df.iterrows())
     )
-    x_max = max(35, max_right + 10)
-    ax2.set_xlim(0, x_max)
+    ax2.set_xlim(0, 20)
     # Place annotations just to the right of the error-bar right cap,
     # with a white background box to prevent overlap with the cap line itself.
     for idx, (y, (_, row)) in enumerate(zip(y_pos, collapse_df.iterrows())):

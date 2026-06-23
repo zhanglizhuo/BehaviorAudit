@@ -351,25 +351,19 @@ def fig4_null_separation():
     fig, axes = plt.subplots(1, 3, figsize=(13, 4.8))
 
     for (ax, (d, lbl)), panel_letter in zip(zip(axes, reps), ["a", "b", "c"]):
-        ax.text(0.04, 0.96, panel_letter, transform=ax.transAxes,
-                fontsize=12, fontweight="bold", va="top", ha="left", zorder=10)
         record = BY_NAME[d]
         perm = record.get("permutation") or {}
         splits = perm.get("splits") or []
         if not splits:
             ax.text(0.5, 0.5, "No permutation data", ha="center", va="center",
                     transform=ax.transAxes, fontsize=11, color="#888")
-            ax.set_title(lbl, fontsize=9.5, pad=6)
+            ax.set_title(f"({panel_letter}) {lbl}", fontsize=9.5, pad=6)
             continue
 
-        # Pool empirical null R² across all audit splits and pool observed R²
-        # across the same splits.
         null_vals = np.concatenate([np.asarray(s["null_r2"], dtype=float)
                                      for s in splits])
         obs_vals  = np.asarray([s["obs_r2"] for s in splits], dtype=float)
 
-        # Trim extreme negative tails (R² is unbounded below; clip at the
-        # empirical 0.1th percentile of the null for a readable x-range).
         lower_tail = np.percentile(null_vals, 0.1)
         plot_null = null_vals[null_vals >= lower_tail]
 
@@ -377,8 +371,6 @@ def fig4_null_separation():
         xmax = max(plot_null.max(), obs_vals.max()) + 0.05
         xs   = np.linspace(xmin, xmax, 400)
 
-        # KDEs over real data (use Scott's rule by default; tighter bw on
-        # tightly concentrated null distributions for visibility).
         null_bw = 0.25 if plot_null.std() < 0.05 else 0.4
         kde_n = gaussian_kde(plot_null, bw_method=null_bw)
         kde_t = gaussian_kde(obs_vals, bw_method=0.4) if len(obs_vals) > 1 else None
@@ -391,7 +383,6 @@ def fig4_null_separation():
             ax.fill_between(xs, kde_t(xs), alpha=0.45, color=color)
             ax.plot(xs, kde_t(xs), color=color, lw=2.0,
                     label=f"Observed R² (n={len(obs_vals)} splits)")
-        # Mark each observed R² as a rug tick
         for r in obs_vals:
             ax.axvline(r, color=color, lw=0.7, alpha=0.5, zorder=1)
 
@@ -410,7 +401,7 @@ def fig4_null_separation():
                 fontweight="bold",
                 bbox=dict(boxstyle="round,pad=0.3", facecolor="#f5f5f5",
                           edgecolor="#cccccc", alpha=0.9))
-        ax.set_title(lbl, fontsize=9.5, pad=6)
+        ax.set_title(f"({panel_letter}) {lbl}", fontsize=9.5, pad=6)
         ax.set_xlabel("R²"); ax.set_ylabel("Density")
         ax.legend(fontsize=7.2, loc="upper left")
         ax.spines["top"].set_visible(False)
