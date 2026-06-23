@@ -237,7 +237,7 @@ def fig1_protocol():
             fontweight="bold", style="italic", color="#222222")
 
     fig.suptitle("Four-Dimension Pre-Modeling Audit Protocol",
-                 fontsize=13.5, fontweight="bold", y=0.985)
+                 fontsize=12, fontweight="bold", y=0.985)
     plt.subplots_adjust(left=0.025, right=0.98, top=0.94, bottom=0.035)
     _save("Figure1_Protocol_Overview", paper_name="fig1_protocol")
 
@@ -496,7 +496,7 @@ def fig5_iid_vs_group():
 
     fig.suptitle(
         "iid vs. Group-Holdout R²  Across Six Datasets and Four Models",
-        fontsize=13, fontweight="bold", y=1.00)
+        fontsize=12, fontweight="bold", y=1.00)
     # Leave generous bottom space for the stacked off-scale annotations
     plt.subplots_adjust(left=0.06, right=0.98, top=0.90, bottom=0.22, wspace=0.18)
     _save("Figure5_iid_vs_GroupHoldout", paper_name="fig3_iid_vs_group")

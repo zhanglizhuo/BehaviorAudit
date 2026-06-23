@@ -122,7 +122,7 @@ def plot_patterns(df: pd.DataFrame) -> None:
         "Strong": "#1D9E75",
     }
 
-    fig = plt.figure(figsize=(12.2, 6.2))
+    fig = plt.figure(figsize=(12.2, 6.0))
     gs = fig.add_gridspec(1, 2, width_ratios=[1.05, 1.2], wspace=0.34)
 
     ax1 = fig.add_subplot(gs[0, 0])
@@ -192,6 +192,10 @@ def plot_patterns(df: pd.DataFrame) -> None:
             bbox=dict(boxstyle="round,pad=0.1", facecolor="white",
                       edgecolor="none", alpha=0.85),
         )
+
+    fig.suptitle(
+        "Cross-Dataset Structural Patterns and iid-to-Group Collapse",
+        fontsize=12, fontweight="bold", y=0.99)
 
     fig.text(
         0.02,
