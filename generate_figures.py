@@ -432,7 +432,7 @@ def fig4_null_separation():
 # Figure 5 – iid vs Group-Holdout R²  (grouped bar, 4 models × 6 datasets)
 #            — from JSON, replicates paper Figure 2 with all 4 models
 # ══════════════════════════════════════════════════════════════════════════════
-def fig5_iid_vs_group():
+def fig3_iid_vs_group():
     ds_grp = [d for d in ORDER
               if BY_NAME[d]["group_holdout_available"]
               and BY_NAME[d].get("group_holdout")]
@@ -553,7 +553,7 @@ def fig6_instability_strip():
 # ══════════════════════════════════════════════════════════════════════════════
 # Figure 7 – Summary Audit Heatmap  (4 dimensions × 7 datasets)
 # ══════════════════════════════════════════════════════════════════════════════
-def fig7_heatmap():
+def fig2_heatmap():
     DIMS   = ["Baseline\nGap", "Split\nStability",
               "Null\nSeparation", "Metadata\nAdequacy"]
     THRESH = [0.90, 0.50, 0.80, 0.50]   # pass thresholds
@@ -713,8 +713,8 @@ if __name__ == "__main__":
     fig2_baseline_gap()
     fig3_split_instability()
     fig4_null_separation()
-    fig5_iid_vs_group()
+    fig3_iid_vs_group()
     fig6_instability_strip()
-    fig7_heatmap()
+    fig2_heatmap()
     fig8_threshold_sensitivity()
     print("\nDone: all figure files were saved.")
