@@ -31,7 +31,7 @@ The dominant failure mode is **cross-group fragility**—not weak iid performanc
 | `generate_figures.py` | Regenerates manuscript figures from tracked result artifacts (no audit rerun needed). |
 | `scripts/` | Helper scripts for structural-pattern analysis, split-level metrics, and supplementary tables. |
 | `diagnostics/` | Tracked per-split CSV artifacts consumed by figure-generation scripts. |
-| `paper/` | LaTeX source and compiled PDF for the manuscript (gitignored; see Zenodo archive for the submission-ready PDF). |
+| `paper/` | LaTeX source files for the manuscript (compiled PDF available in the Zenodo archive). |
 
 ## Installation
 
