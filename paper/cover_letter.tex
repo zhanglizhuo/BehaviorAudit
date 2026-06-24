@@ -1,0 +1,39 @@
+\documentclass[11pt]{letter}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{mathpazo}
+\usepackage{url}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+
+\date{May 18, 2026}
+
+\signature{Yan Ma \\ Lizhuo Zhang \\ Hunan Agricultural University \\ Changsha 410128, China \\ E-mail: zhanglizhuo@hunau.edu.cn}
+
+\address{College of Education \\ Hunan Agricultural University \\ Changsha 410128, China}
+
+\begin{document}
+
+\begin{letter}{Editorial Office \\ \textit{Scientific Reports} \\ Nature Portfolio}
+
+\opening{Dear Editors,}
+
+We would like to submit the enclosed manuscript, ``Limited Structural Reliability in Public Educational Prediction Benchmarks: A Four-Dimension Audit of Seven Datasets,'' for consideration as an Article in \textit{Scientific Reports}.
+
+\textbf{Background and motivation.}
+Predictive models in education increasingly inform high-stakes decisions about students and teachers, yet the benchmarks that underpin these models are rarely stress-tested before modeling begins. In computer vision and natural language processing, benchmark-audit studies have become routine, but no comparable audit protocol exists for the educational prediction domain.
+
+\textbf{Summary of contributions.}
+This study makes three contributions. First, we propose a reusable four-dimension pre-modeling audit protocol covering baseline gap, split instability, null separation, and metadata adequacy (operationalized as group-aware holdout). Second, we validate the protocol on seven publicly available educational datasets spanning $N = 145$ to $32{,}593$, revealing that three of seven pass all four checks, three fail the metadata-adequacy dimension due to genuine cross-group fragility (two with model-invariant confounding, one with remediable linear-specific overfitting), and one lacks the grouping metadata needed for leakage-resistant validation entirely. A methodological correction during the review process allowed us to distinguish genuine fragility from feature-encoding artifacts, demonstrating that the audit can identify when an apparent failure is remediable through proper modeling. Third, a model-complexity ablation demonstrates that data-level fragility is algorithm-invariant: escalating from linear baselines to ensemble methods amplifies instability on fragile datasets rather than resolving it. A classification-metric sensitivity check confirms that audit conclusions are robust to metric choice.
+
+\textbf{Relevance to \textit{Scientific Reports}.}
+The manuscript addresses a broad methodological problem in data-driven educational research: when do public prediction benchmarks remain credible under stronger tests of reliability and generalizability? By combining benchmark auditing, learning analytics, and educational measurement, the study contributes an interdisciplinary and fully reproducible framework for evaluating whether widely used educational datasets support defensible modeling claims. The full codebase, tracked result artifacts, and figure-regeneration scripts are publicly available so that the analyses can be independently reproduced and scrutinized.
+
+\textbf{Submission and compliance statement.}
+The study is original and has not been published previously, nor is it under consideration elsewhere. All listed authors have read and approved the manuscript and have agreed to its submission. The work uses only publicly available, de-identified educational datasets and does not involve any new human-participant data collection; institutional ethical review was therefore not required. The authors declare no competing interests. Funding was provided by the Education Department of Hunan Province, China (Project Number: HNJG-2022-0608); the funder had no role in study design, data analysis, interpretation, decision to submit, or manuscript preparation. All seven audited datasets are cited in the manuscript, and the audit code and figure-generation scripts are available at \url{https://github.com/zhanglizhuo/BehaviorAudit}. Data availability and code availability statements are included in the manuscript.
+
+We believe the findings will be of broad interest to readers in educational data mining, learning analytics, educational measurement, and applied machine learning. We look forward to your consideration.
+
+\closing{Sincerely,}
+
+\end{letter}
+\end{document}

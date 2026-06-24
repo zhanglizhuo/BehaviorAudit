@@ -1,0 +1,91 @@
+\documentclass[11pt]{letter}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{parskip}
+
+\signature{Lizhuo Zhang, Ph.D.\\
+Hunan Agricultural University\\
+\href{mailto:zhanglizhuo@hunau.edu.cn}{zhanglizhuo@hunau.edu.cn}}
+\address{Lizhuo Zhang\\
+Hunan Agricultural University\\
+Changsha, Hunan, China}
+
+\begin{document}
+\begin{letter}{The Editors\\PLOS ONE}
+
+\opening{Dear Editors,}
+
+We are pleased to submit our manuscript, \textit{``A Four-Dimension
+Pre-Modeling Audit Protocol for Tabular Prediction Benchmarks: Evidence
+from Seven Public Educational Datasets,''} for consideration by PLOS ONE
+as an Original Research article.
+
+The manuscript proposes and empirically validates a reusable
+\textit{pre-modeling} audit protocol for tabular prediction benchmarks.
+The protocol integrates four well-established diagnostics into a single
+operational checklist: (i) baseline gap, (ii) split instability,
+(iii) permutation-based null separation, and (iv) metadata adequacy
+under group-aware holdout. Although each tool is standard in isolation,
+their systematic combination---with explicit operational thresholds and
+profile labels---and the cross-dataset evidence from seven public
+educational releases ($N = 145$ to $32{,}593$) are, to our knowledge, new.
+The empirical findings are striking: five of seven widely used educational
+datasets fail group-aware holdout under linear models, and three of those
+remain fragile even for ensemble models. We believe these results have
+direct implications for any tabular benchmark with nested group structure,
+not only educational ones.
+
+\textbf{Why PLOS ONE.} The paper's primary value is methodological rigor
+on a domain-relevant question rather than a single domain
+``breakthrough.'' PLOS ONE's editorial criteria---technical soundness,
+methodological clarity, and ethical standards rather than perceived
+novelty or impact---match the contribution well. Many of our findings are
+\textit{negative} in nature (most evaluated datasets fail at least one
+audit dimension); PLOS ONE has a long-standing commitment to publishing
+rigorous negative and replication-flavored work.
+
+\textbf{Prior submission history.} We previously submitted an earlier
+version of this manuscript to \textit{Education Sciences} (manuscript ID
+education-4295342). The submission was returned at the editorial stage as
+out-of-scope for the journal's Higher Education section, without
+peer review. After receiving that decision we revised the framing to
+emphasize the methodological (cross-domain) contribution rather than a
+specific education sub-field, expanded the technical disclosure
+(see below), and re-targeted the manuscript to a venue whose criteria
+align with the contribution. We disclose this history in the interest of
+full transparency. The manuscript is not under consideration at any other
+journal.
+
+\textbf{Revisions since the prior submission.} (i) The permutation-null
+analysis now stores the full empirical $R^2$ distribution (500 draws
+across 10 splits per dataset) so that the corresponding figure plots the
+real null directly rather than a parametric reference; (ii) the MM-TBA
+case now explicitly reports the disagreement between MAE-based beat rate
+($0.80$) and iid $R^2$ ($-0.067$) and explains why both signals support
+the Fragile profile; (iii) the title and abstract emphasize the
+\textit{tabular prediction benchmark} framing, with educational datasets
+positioned as the empirical testbed.
+
+\textbf{Data and code availability.} All seven datasets are public.
+The audit protocol implementation, raw run outputs (including
+permutation-null distributions), and figure-regeneration scripts are
+available in a public GitHub repository linked in the Data Availability
+statement.
+
+\textbf{Authorship and conflicts.} All listed authors meet ICMJE
+authorship criteria. The authors declare no competing interests.
+The study used existing public dataset releases only; no new human-subjects
+data were collected, and ethical review was waived under our institutional
+policy (statement included in the manuscript).
+
+\textbf{Suggested academic editors / reviewers.} Editors with expertise in
+educational data mining, learning analytics, or applied
+machine-learning methodology would be most appropriate. We are happy to
+provide reviewer suggestions on request.
+
+We thank you for considering this work and look forward to your decision.
+
+\closing{Sincerely,}
+
+\end{letter}
+\end{document}

@@ -145,7 +145,7 @@ After correction, xAPI-Edu's true group-holdout $R^2$ is **0.484** (retention 81
 ## Citation
 
 ```bibtex
-@article{ma2025audit,
+@article{ma2026audit,
   title={Are Educational Prediction Benchmarks Structurally Reliable?
          A Four-Dimension Audit Across Seven Public Datasets},
   author={Ma, Yan and Zhang, Lizhuo},

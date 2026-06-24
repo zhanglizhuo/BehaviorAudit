@@ -17,8 +17,26 @@ datasets/
 dataset_zip/
 MM-TBA/
 
-# ── Paper / manuscript assets (tracked on journal site) ──────────────────────
-paper/
+# ── Paper / manuscript assets (track source files; ignore generated/build artifacts) ─
+paper/*.pdf
+paper/*.zip
+paper/*.log
+paper/*.aux
+paper/*.out
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.png
+paper/*.jpg
+paper/*.jpeg
+paper/*.csv
+paper/*.json
+paper/Definitions
+paper/mdpi/
+paper/mdpi/
+paper/plos/
+paper/plos2025.bst
+paper/figure5_radar_audit_profiles.png
 
 # ── Backup / stale files ──────────────────────────────────────────────────────
 *.bak*

@@ -1,0 +1,218 @@
+\begin{thebibliography}{26}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Northcutt et~al.(2021)Northcutt, Athalye, and Mueller]{Northcutt2021}
+Curtis~G. Northcutt, Anish Athalye, and Jonas Mueller.
+\newblock Pervasive label errors in test sets destabilize machine learning
+  benchmarks.
+\newblock In \emph{Advances in Neural Information Processing Systems 34
+  (NeurIPS)}, pages 10929--10943, Red Hook, NY, USA, 2021. Curran Associates.
+
+\bibitem[Recht et~al.(2019)Recht, Roelofs, Schmidt, and Shankar]{Recht2019}
+Benjamin Recht, Rebecca Roelofs, Ludwig Schmidt, and Vaishaal Shankar.
+\newblock Do {ImageNet} classifiers generalize to {ImageNet}?
+\newblock In \emph{Proceedings of the 36th International Conference on Machine
+  Learning (ICML)}, pages 5389--5400, Long Beach, CA, USA, 2019. PMLR.
+
+\bibitem[Bouthillier et~al.(2021)Bouthillier, Delaunay, Bronzi, Trofimov,
+  Nichyporuk, Szeto, Mohammadi~Sepahvand, Raff, Madan, Voleti, Ebrahimi~Kahou,
+  Michalski, Arbel, Pal, Varoquaux, and Vincent]{Bouthillier2021}
+Xavier Bouthillier, Pierre Delaunay, Mirko Bronzi, Assya Trofimov, Brennan
+  Nichyporuk, Justin Szeto, Nazanin Mohammadi~Sepahvand, Edward Raff, Kanika
+  Madan, Vikram Voleti, Samira Ebrahimi~Kahou, Vincent Michalski, Tal Arbel,
+  Chris Pal, Ga{\"e}l Varoquaux, and Pascal Vincent.
+\newblock Accounting for variance in machine learning benchmarks.
+\newblock In \emph{Proceedings of Machine Learning and Systems (MLSys)}, pages
+  747--769, 2021.
+
+\bibitem[Romero and Ventura(2020)]{Romero2020}
+Crist{\'o}bal Romero and Sebasti{\'a}n Ventura.
+\newblock Educational data mining and learning analytics: An updated survey.
+\newblock \emph{WIREs Data Mining and Knowledge Discovery}, 10\penalty0
+  (3):\penalty0 e1355, 2020.
+\newblock \doi{10.1002/widm.1355}.
+
+\bibitem[Baker and Inventado(2014)]{Baker2014}
+Ryan S. J.~d. Baker and Paul~Salvador Inventado.
+\newblock Educational data mining and learning analytics.
+\newblock In \emph{Learning Analytics: From Research to Practice}, pages
+  61--75. Springer, New York, NY, USA, 2014.
+\newblock \doi{10.1007/978-1-4614-3305-7\_4}.
+
+\bibitem[Gardner et~al.(2019)Gardner, Brooks, and Baker]{Gardner2019}
+Josh Gardner, Christopher Brooks, and Ryan Baker.
+\newblock Evaluating the fairness of predictive student models through slicing
+  analysis.
+\newblock In \emph{Proceedings of the 9th International Learning Analytics and
+  Knowledge Conference}, pages 225--234, Tempe, AZ, USA, 2019.
+\newblock \doi{10.1145/3303772.3303791}.
+
+\bibitem[Chejara et~al.(2023)Chejara, Prieto, Rodriguez-Triana, Kasepalu,
+  Ruiz-Calleja, and Shankar]{Chejara2023}
+Pankaj Chejara, Luis Prieto, Maria Rodriguez-Triana, Reet Kasepalu, Adolfo
+  Ruiz-Calleja, and Shashi~Kant Shankar.
+\newblock How to build more generalizable models for collaboration quality?
+\newblock In \emph{Proceedings of the 13th International Learning Analytics and
+  Knowledge Conference}, pages 111--121, Arlington, TX, USA, 2023.
+\newblock \doi{10.1145/3576050.3576144}.
+
+\bibitem[Chejara et~al.(2024)Chejara, Prieto, Dimitriadis, Rodriguez-Triana,
+  Ruiz-Calleja, Kasepalu, and Shankar]{Chejara2024}
+Pankaj Chejara, Luis~P. Prieto, Yannis Dimitriadis, Maria Rodriguez-Triana,
+  Adolfo Ruiz-Calleja, Reet Kasepalu, and Shashi~Kant Shankar.
+\newblock The impact of attribute noise on the automated estimation of
+  collaboration quality using multimodal learning analytics in authentic
+  classrooms.
+\newblock \emph{Journal of Learning Analytics}, 11\penalty0 (2):\penalty0
+  73--90, 2024.
+\newblock \doi{10.18608/jla.2024.8253}.
+
+\bibitem[Brennan(2001)]{Brennan2001}
+Robert~L. Brennan.
+\newblock \emph{Generalizability Theory}.
+\newblock Springer, New York, NY, USA, 2001.
+\newblock \doi{10.1007/978-1-4757-3456-0}.
+
+\bibitem[Messick(1995)]{Messick1995}
+Samuel Messick.
+\newblock Validity of psychological assessment: Validation of inferences from
+  persons' responses and performances as scientific inquiry into score meaning.
+\newblock \emph{American Psychologist}, 50\penalty0 (9):\penalty0 741--749,
+  1995.
+\newblock \doi{10.1037/0003-066X.50.9.741}.
+
+\bibitem[Kane(2006)]{Kane2006}
+Michael~T. Kane.
+\newblock Validation.
+\newblock In Robert~L. Brennan, editor, \emph{Educational Measurement}, pages
+  17--64. American Council on Education/Praeger, Westport, CT, USA, 4th
+  edition, 2006.
+
+\bibitem[Gebru et~al.(2021)Gebru, Morgenstern, Vecchione, Vaughan, Wallach,
+  Daum{\'e}~III, and Crawford]{Gebru2021}
+Timnit Gebru, Jamie Morgenstern, Briana Vecchione, Jennifer~Wortman Vaughan,
+  Hanna Wallach, Hal Daum{\'e}~III, and Kate Crawford.
+\newblock Datasheets for datasets.
+\newblock \emph{Communications of the ACM}, 64\penalty0 (12):\penalty0 86--92,
+  2021.
+\newblock \doi{10.1145/3458723}.
+
+\bibitem[Sambasivan et~al.(2021)Sambasivan, Kapania, Highfill, Akrong,
+  Paritosh, and Aroyo]{Sambasivan2021}
+Nithya Sambasivan, Shivani Kapania, Hannah Highfill, Diana Akrong, Praveen
+  Paritosh, and Lora~M. Aroyo.
+\newblock Everyone wants to do the model work, not the data work: Data cascades
+  in high-stakes {AI}.
+\newblock In \emph{Proceedings of the 2021 CHI Conference on Human Factors in
+  Computing Systems}, pages 1--15, Yokohama, Japan, 2021.
+\newblock \doi{10.1145/3411764.3445518}.
+
+\bibitem[Zheng et~al.(2023)Zheng, Chiang, Sheng, Zhuang, Wu, Zhuang, Lin, Li,
+  Li, Xing, Zhang, Gonzalez, and Stoica]{Zheng2023}
+Lianmin Zheng, Wei-Lin Chiang, Ying Sheng, Siyuan Zhuang, Zhanghao Wu, Yonghao
+  Zhuang, Zi~Lin, Zhuohan Li, Dacheng Li, Eric~P. Xing, Hao Zhang, Joseph~E.
+  Gonzalez, and Ion Stoica.
+\newblock Judging {LLM}-as-a-judge with {MT-Bench} and {Chatbot Arena}.
+\newblock In \emph{Advances in Neural Information Processing Systems 36
+  (NeurIPS)}, pages 46595--46623, Red Hook, NY, USA, 2023. Curran Associates.
+
+\bibitem[Wang et~al.(2024)Wang, Li, Chen, Cai, Zhu, Lin, Cao, Kong, Liu, Liu,
+  and Sui]{Wang2024}
+Peiyi Wang, Lei Li, Liang Chen, Zefan Cai, Dawei Zhu, Binghuai Lin, Yunbo Cao,
+  Lingpeng Kong, Qi~Liu, Tianyu Liu, and Zhifang Sui.
+\newblock Large language models are not fair evaluators.
+\newblock In \emph{Proceedings of the 62nd Annual Meeting of the Association
+  for Computational Linguistics (ACL)}, pages 9440--9450, Bangkok, Thailand,
+  2024. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2024.acl-long.511}.
+
+\bibitem[Huang et~al.(2024)Huang, Bu, Zhou, Qu, Liu, Yang, Xu, and
+  Zhao]{Huang2024llm}
+Hui Huang, Xingyuan Bu, Hongli Zhou, Yingqi Qu, Jing Liu, Muyun Yang, Bing Xu,
+  and Tiejun Zhao.
+\newblock An empirical study of {LLM}-as-a-judge for {LLM} evaluation:
+  Fine-tuned judge model is not a general substitute for {GPT-4}.
+\newblock Preprint, arXiv:2403.02839, 2024.
+\newblock URL \url{https://arxiv.org/abs/2403.02839}.
+\newblock Accepted to Findings of ACL 2025.
+
+\bibitem[Ioannidis(2005)]{Ioannidis2005}
+John P.~A. Ioannidis.
+\newblock Why most published research findings are false.
+\newblock \emph{PLoS Medicine}, 2\penalty0 (8):\penalty0 e124, 2005.
+\newblock \doi{10.1371/journal.pmed.0020124}.
+
+\bibitem[Huang et~al.(2025)Huang, Zhu, Ji, Shi, Min, Guo, Ling, De~Meo, Li, and
+  Chen]{Huang2025}
+Chao Huang, Jian Zhu, Yong Ji, Wentao Shi, Yu~Min, Hao Guo, Jing Ling, Pasquale
+  De~Meo, Zhi Li, and Zhiwen Chen.
+\newblock A multi-modal dataset for teacher behavior analysis in offline
+  classrooms.
+\newblock \emph{Scientific Data}, 12:\penalty0 1115, 2025.
+\newblock \doi{10.1038/s41597-025-05426-6}.
+
+\bibitem[Yilmaz and Sekeroglu(2020)]{Yilmaz2020}
+Nevriye Yilmaz and Boran Sekeroglu.
+\newblock Student performance classification using artificial intelligence
+  techniques.
+\newblock In \emph{International Conference on Theory and Application of Soft
+  Computing, Computing with Words and Perceptions}, pages 596--603, Cham,
+  Switzerland, 2020. Springer.
+\newblock \doi{10.1007/978-3-030-35249-3\_76}.
+
+\bibitem[Amrieh et~al.(2016)Amrieh, Hamtini, and Aljarah]{Amrieh2016}
+Elaf~Abu Amrieh, Thair Hamtini, and Ibrahim Aljarah.
+\newblock Mining educational data to predict student's academic performance
+  using ensemble methods.
+\newblock \emph{International Journal of Database Theory and Application},
+  9\penalty0 (8):\penalty0 119--136, 2016.
+\newblock \doi{10.14257/ijdta.2016.9.8.13}.
+
+\bibitem[Bora and Dey(2021)]{Bora2021}
+Aniruddha Bora and Anjan~Kumar Dey.
+\newblock Student performance on an entrance examination.
+\newblock UCI Machine Learning Repository, 2021.
+\newblock URL
+  \url{https://archive.ics.uci.edu/dataset/582/student+performance+on+an+entrance+examination}.
+\newblock Accessed: 2026 Apr 30.
+
+\bibitem[Cortez and Silva(2008)]{Cortez2008}
+Paulo Cortez and Alice Silva.
+\newblock Using data mining to predict secondary school student performance.
+\newblock In \emph{Proceedings of the 5th Future Business Technology Conference
+  (FUBUTEC)}, pages 5--12, Porto, Portugal, 2008.
+
+\bibitem[Realinho et~al.(2022)Realinho, Machado, Baptista, and
+  Martins]{Realinho2022}
+Valentim Realinho, Jorge Machado, Lu{\'\i}s Baptista, and Marta~V. Martins.
+\newblock Predicting student dropout and academic success.
+\newblock \emph{Data}, 7\penalty0 (11):\penalty0 146, 2022.
+\newblock \doi{10.3390/data7110146}.
+
+\bibitem[Kuzilek et~al.(2017)Kuzilek, Hlosta, and Zdrahal]{Kuzilek2017}
+Jakub Kuzilek, Martin Hlosta, and Zdenek Zdrahal.
+\newblock Open university learning analytics dataset.
+\newblock \emph{Scientific Data}, 4:\penalty0 170171, 2017.
+\newblock \doi{10.1038/sdata.2017.171}.
+
+\bibitem[Mitchell et~al.(2019)Mitchell, Wu, Zaldivar, Barnes, Vasserman,
+  Hutchinson, Spitzer, Raji, and Gebru]{Mitchell2019}
+Margaret Mitchell, Simone Wu, Andrew Zaldivar, Parker Barnes, Lucy Vasserman,
+  Ben Hutchinson, Elena Spitzer, Inioluwa~Deborah Raji, and Timnit Gebru.
+\newblock Model cards for model reporting.
+\newblock In \emph{Proceedings of the Conference on Fairness, Accountability,
+  and Transparency (FAT*)}, pages 220--229, Atlanta, GA, USA, 2019. ACM.
+\newblock \doi{10.1145/3287560.3287596}.
+
+\bibitem[Holland et~al.(2020)Holland, Hosny, Newman, Joseph, and
+  Chmielinski]{Holland2020}
+Sarah Holland, Ahmed Hosny, Sarah Newman, Joshua Joseph, and Kasia Chmielinski.
+\newblock The dataset nutrition label.
+\newblock In \emph{Data Protection and Privacy}, pages 1--25. Hart Publishing,
+  2020.
+
+\end{thebibliography}
