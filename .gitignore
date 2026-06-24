@@ -31,12 +31,7 @@ paper/*.jpg
 paper/*.jpeg
 paper/*.csv
 paper/*.json
-paper/Definitions
-paper/mdpi/
-paper/mdpi/
-paper/plos/
-paper/plos2025.bst
-paper/figure5_radar_audit_profiles.png
+paper/*.bst
 
 # ── Backup / stale files ──────────────────────────────────────────────────────
 *.bak*
