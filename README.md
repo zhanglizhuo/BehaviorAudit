@@ -20,6 +20,8 @@ This repository accompanies the manuscript by Yan Ma and Lizhuo Zhang (revised v
 
 The dominant failure mode is **cross-group fragility**—not weak iid performance. Models that look useful under random splitting can become worse than a mean predictor when transferred to unseen schools, courses, or cohorts.
 
+![Audit heatmap across seven datasets. Green = pass, red = fail. OULAD, Dropout, and xAPI-Edu pass all four dimensions; MM-TBA fails all four; Higher Ed, UCI Student, and Entrance Exam fail on metadata adequacy.](fig2_audit_heatmap.png)
+
 ## Repository Layout
 
 | Path | Purpose |
