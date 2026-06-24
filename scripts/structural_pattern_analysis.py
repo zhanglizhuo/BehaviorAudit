@@ -22,7 +22,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 JSON_PATH = ROOT / "audit_7dataset_results.json"
-OUT_DIR = Path(os.environ.get("STRUCTURAL_OUT_DIR", str(ROOT / "outputs")))
+OUT_DIR = Path(os.environ.get("STRUCTURAL_OUT_DIR", str(ROOT / "figures")))
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 FIG_DPI = int(os.environ.get("FIG_DPI", "300"))
 

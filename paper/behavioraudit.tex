@@ -98,7 +98,7 @@ The audit examines each dataset along four diagnostic dimensions using parsimoni
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.95\textwidth]{fig1_protocol.pdf}
+\includegraphics[width=0.95\textwidth]{../figures/fig1_protocol.pdf}
 \caption{Four-dimension pre-modeling audit protocol. Seven public educational datasets are evaluated by 100 random 80/20 splits across four model families (linear, ridge, RF, GBT). Each dataset is then scored on baseline gap, split instability ($I = \mathrm{SD}/|\Delta_{\mathrm{MAE}}|$), null separation (permutation $p < 0.05$ across $\geq 80\%$ of splits), and metadata adequacy (group-holdout retention $\geq 50\%$). The number of passed dimensions defines the readiness profile (Fragile / Partial / Mostly Passing / Strong).}
 \label{fig:protocol}
 \end{figure}
@@ -195,7 +195,7 @@ Three of six testable educational datasets show evidence of group-level fragilit
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.95\textwidth]{fig2_audit_heatmap.pdf}
+\includegraphics[width=0.95\textwidth]{../figures/fig2_audit_heatmap.pdf}
 \caption{Audit summary heatmap: four-dimension normalised scores for the seven datasets. Cells show the score (0--1) and the corresponding PASS/FAIL judgement under the operational thresholds (beat rate $\geq 0.90$; $1 - I/(1+I) \geq 0.50$, i.e.\ $I < 1$; permutation significance $\geq 0.80$; group-holdout retention $\geq 0.50$ using the \emph{linear} model). The right margin lists the assigned readiness profile. Four of seven datasets fail metadata adequacy (including MM-TBA, which lacks grouping metadata); OULAD, Dropout, and xAPI-Edu pass all four dimensions.}
 \label{fig:audit_summary}
 \end{figure}
@@ -205,7 +205,7 @@ Group-holdout results reveal an important model-dependent pattern (see Fig~\ref{
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.95\textwidth]{fig3_iid_vs_group.pdf}
+\includegraphics[width=0.95\textwidth]{../figures/fig3_iid_vs_group.pdf}
 \caption{Comparison of iid $R^2$ (left panel) and group-holdout $R^2$ (right panel) across six datasets and four models. Datasets are ordered by audit profile. The contrast between iid and group-holdout performance is largest for Higher Ed, where all models collapse under group holdout. MM-TBA is omitted because it has no grouping metadata.}
 \label{fig:iid_vs_group}
 \end{figure}
@@ -248,7 +248,7 @@ The three Strong datasets confirm that the audit cleanly passes structurally sou
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.95\textwidth]{fig4_null_separation.pdf}
+\includegraphics[width=0.95\textwidth]{../figures/fig4_null_separation.pdf}
 \caption{Empirical permutation null vs.\ observed linear $R^2$ for three representative datasets. The red density is the pooled empirical null distribution from 500 permutation draws on each of 30 random 80/20 splits (15{,}000 values total per dataset); the coloured density is the observed-label $R^2$ across the same 30 splits, with vertical ticks marking individual splits and dashed/dotted lines showing the means. OULAD shows clean separation (Perm\% $= 100\%$), Higher Ed is borderline but below the pass threshold (Perm\% $= 73\%$), and MM-TBA shows substantial overlap (Perm\% $= 23\%$, median $p = 0.117$).}
 \label{fig:null}
 \end{figure}
@@ -261,7 +261,7 @@ The same comparison quantifies the practical cost of relying only on random-spli
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.95\textwidth]{fig5_structural_patterns.pdf}
+\includegraphics[width=0.95\textwidth]{../figures/fig5_structural_patterns.pdf}
 \caption{Exploratory cross-dataset structural pattern and the practical cost of skipping group-aware audit. Panel A places the seven datasets by sample size and available grouping structure; marker size denotes construct proximity (1 = distal background/context variables, 2 = mixed features, 3 = performance-proximal behavioral or administrative traces), and colour denotes readiness profile. MM-TBA is displayed at 0.35 groups because no grouping metadata are available. Panel B reports the iid-to-group collapse gap, $R^2_{iid} - R^2_{group}$, for datasets with grouping metadata. Strong datasets show small collapse gaps (all $\leq 0.13$), whereas Higher Ed (group $R^2 = -8.79$), Entrance Exam, and UCI Student show larger gaps.}
 \label{fig:structural_patterns}
 \end{figure}
@@ -272,7 +272,7 @@ The full model-complexity ablation (detailed results in Supplementary Table S1) 
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.95\textwidth]{fig6_instability_strip.pdf}
+\includegraphics[width=0.95\textwidth]{../figures/fig6_instability_strip.pdf}
 \caption{Instability ratio ($I$) for all seven datasets and four models (log scale). The dashed red line marks $I = 1$, the failure threshold where between-split variance equals the mean advantage over baseline. MM-TBA's Gradient Boosting ($I = 4.6$) and Random Forest ($I = 4.0$) are extreme outliers; structurally sound datasets (OULAD, Dropout) cluster near $I = 0.01$.}
 \label{fig:instability_strip}
 \end{figure}

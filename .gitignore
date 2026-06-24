@@ -17,21 +17,13 @@ datasets/
 dataset_zip/
 MM-TBA/
 
-# ── Paper / manuscript assets (track source files; ignore generated/build artifacts) ─
-paper/*.pdf
-paper/*.zip
+# ── Paper LaTeX build artifacts ─────────────────────────────────────────────────
 paper/*.log
 paper/*.aux
 paper/*.out
 paper/*.blg
 paper/*.fdb_latexmk
 paper/*.fls
-paper/*.png
-paper/*.jpg
-paper/*.jpeg
-paper/*.csv
-paper/*.json
-paper/*.bst
 
 # ── Backup / stale files ──────────────────────────────────────────────────────
 *.bak*

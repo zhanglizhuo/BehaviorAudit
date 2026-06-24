@@ -30,11 +30,11 @@ The dominant failure mode is **cross-group fragility**—not weak iid performanc
 | `run_7dataset_audit.py` | Full four-dimension audit that produced the main manuscript results. |
 | `run_classification_sensitivity.py` | Classification-metric sensitivity check for binary/ordinal targets. |
 | `run_audit.py` | Quick single-dataset adapter runner for smoke tests and small reruns. |
-| `generate_figures.py` | Regenerates manuscript figures from tracked result artifacts (no audit rerun needed). |
+| `generate_figures.py` | Regenerates all manuscript and supplementary figures to `figures/`. |
 | `scripts/` | Helper scripts for structural-pattern analysis, split-level metrics, and supplementary tables. |
 | `diagnostics/` | Tracked per-split CSV artifacts consumed by figure-generation scripts. |
-| `paper/` | LaTeX source files for the manuscript (compiled PDF available in the Zenodo archive). |
-| `figures/` | README figures and preview assets. |
+| `paper/` | LaTeX source files for the manuscript. |
+| `figures/` | Generated figures (PDF + PNG) for the manuscript and supplementary materials. All readers and the LaTeX paper reference this directory. |
 
 ## Installation
 
@@ -91,7 +91,7 @@ python3 generate_figures.py
 python3 scripts/structural_pattern_analysis.py
 ```
 
-Outputs land in `outputs/`. The figures match those in the manuscript.
+Outputs land in `figures/`. The figures match those in the manuscript and are referenced directly by the LaTeX source.
 
 ### B) Reproduce the Full Audit (Requires Local Datasets)
 

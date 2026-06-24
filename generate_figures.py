@@ -5,7 +5,7 @@ Inputs are the tracked result artifacts at the repository root:
 Generated figures are written to ``outputs/``.
 """
 from __future__ import annotations
-import json, math, shutil
+import json, math
 from pathlib import Path
 
 import numpy as np
@@ -25,7 +25,7 @@ JSON_PATH = HERE / "audit_7dataset_results.json"
 CSV_PATH  = HERE / "result.csv"
 # Allow overriding output directory and DPI via environment for publication runs
 import os
-OUT_DIR = Path(os.environ.get("FIG_OUT_DIR", str(HERE / "outputs")))
+OUT_DIR = Path(os.environ.get("FIG_OUT_DIR", str(HERE / "figures")))
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 FIG_DPI = int(os.environ.get("FIG_DPI", "300"))
 FONT_FAMILY = os.environ.get("FIG_FONT_FAMILY", "DejaVu Sans")
@@ -46,19 +46,21 @@ with open(JSON_PATH) as f:
 RESULTS   = _fix_nan(_raw)                        # list of dicts
 BY_NAME   = {r["dataset"]: r for r in RESULTS}   # keyed by full name
 
-# ── Load CSV (100-split raw R²) ───────────────────────────────────────────────
-CSV_DF = pd.read_csv(CSV_PATH)   # columns: dataset, seed, mae, r2, pearson
-# CSV dataset names are short; build mapping from short → full JSON key
-_short_to_full = {
-    "Dropout":     "Dropout (N=3630)",
-    "EntranceExam":"Entrance Exam (N=666)",
-    "HigherEd":    "Higher Ed (N=145)",
-    "MM-TBA":      "MM-TBA (N=186)",
-    "OULAD":       "OULAD (N=32593)",
-    "UCI":         "UCI Student (N=649)",
-    "xAPI-Edu":    "xAPI-Edu (N=480)",
-}
-CSV_DF["full_name"] = CSV_DF["dataset"].map(_short_to_full)
+# ── Load CSV (100-split raw R²; optional, used by baseline-gap / instability figs) ─
+try:
+    CSV_DF = pd.read_csv(CSV_PATH)
+    _short_to_full = {
+        "Dropout":     "Dropout (N=3630)",
+        "EntranceExam":"Entrance Exam (N=666)",
+        "HigherEd":    "Higher Ed (N=145)",
+        "MM-TBA":      "MM-TBA (N=186)",
+        "OULAD":       "OULAD (N=32593)",
+        "UCI":         "UCI Student (N=649)",
+        "xAPI-Edu":    "xAPI-Edu (N=480)",
+    }
+    CSV_DF["full_name"] = CSV_DF["dataset"].map(_short_to_full)
+except FileNotFoundError:
+    CSV_DF = None
 
 # ── Display order & metadata ──────────────────────────────────────────────────
 ORDER = [
@@ -124,22 +126,20 @@ plt.rcParams.update({
     "savefig.facecolor":  "white",
 })
 
-def _save(name: str, paper_name: str | None = None):
-    png_path = OUT_DIR / f"{name}.png"
-    pdf_path = OUT_DIR / f"{name}.pdf"
-    plt.savefig(png_path, dpi=FIG_DPI)
+def _save(name: str, fname: str | None = None):
+    out_name = fname or name
+    png_path = OUT_DIR / f"{out_name}.png"
+    pdf_path = OUT_DIR / f"{out_name}.pdf"
+    try:
+        plt.savefig(png_path, dpi=FIG_DPI)
+    except Exception:
+        pass
     try:
         plt.savefig(pdf_path, dpi=FIG_DPI)
-        if paper_name:
-            paper_pdf = OUT_DIR / f"{paper_name}.pdf"
-            shutil.copy2(pdf_path, paper_pdf)
     except Exception:
         pass
     plt.close()
-    msg = f"  wrote {name}.png / {name}.pdf"
-    if paper_name:
-        msg += f" / {paper_name}.pdf"
-    print(msg)
+    print(f"  wrote {out_name}.png / {out_name}.pdf")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -239,13 +239,16 @@ def fig1_protocol():
     fig.suptitle("Four-Dimension Pre-Modeling Audit Protocol",
                  fontsize=12, fontweight="bold", y=0.985)
     plt.subplots_adjust(left=0.025, right=0.98, top=0.94, bottom=0.035)
-    _save("Figure1_Protocol_Overview", paper_name="fig1_protocol")
+    _save("Figure1_Protocol_Overview", fname="fig1_protocol")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Figure 2 – Baseline Gap  (grouped bar + error bars from JSON summaries)
 # ══════════════════════════════════════════════════════════════════════════════
 def fig2_baseline_gap():
+    if CSV_DF is None:
+        print("  SKIP: result.csv not available")
+        return
     fig, ax = plt.subplots(figsize=(11, 5.5))
     x = np.arange(len(ORDER))
     w = 0.32
@@ -281,13 +284,16 @@ def fig2_baseline_gap():
         "with MM-TBA Below the Trivial Baseline", pad=8)
     ax.legend(fontsize=9, loc="upper left")
     plt.tight_layout()
-    _save("Figure2_Baseline_Gap", paper_name="figS1_baseline_gap")
+    _save("Figure2_Baseline_Gap", fname="figS1_baseline_gap")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Figure 3 – Split Instability  (violin + boxplot, raw 100-split R² from CSV)
 # ══════════════════════════════════════════════════════════════════════════════
 def fig3_split_instability():
+    if CSV_DF is None:
+        print("  SKIP: result.csv not available")
+        return
     fig, ax = plt.subplots(figsize=(12, 6))
 
     data_list = [CSV_DF[CSV_DF["full_name"] == d]["r2"].values for d in ORDER]
@@ -332,7 +338,7 @@ def fig3_split_instability():
     # I-annotation labels on the right (Dropout / OULAD).
     ax.legend(fontsize=9, loc="lower left")
     plt.tight_layout()
-    _save("Figure3_Split_Instability", paper_name="figS2_split_instability")
+    _save("Figure3_Split_Instability", fname="figS2_split_instability")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -419,7 +425,7 @@ def fig4_null_separation():
         "Strong datasets show clean separation; fragile datasets do not",
         fontsize=12, fontweight="bold")
     plt.tight_layout()
-    _save("Figure4_Null_Separation", paper_name="fig4_null_separation")
+    _save("Figure4_Null_Separation", fname="fig4_null_separation")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -499,7 +505,7 @@ def fig5_iid_vs_group():
         fontsize=12, fontweight="bold", y=1.00)
     # Leave generous bottom space for the stacked off-scale annotations
     plt.subplots_adjust(left=0.06, right=0.98, top=0.90, bottom=0.22, wspace=0.18)
-    _save("Figure5_iid_vs_GroupHoldout", paper_name="fig3_iid_vs_group")
+    _save("Figure5_iid_vs_GroupHoldout", fname="fig3_iid_vs_group")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -541,7 +547,7 @@ def fig6_instability_strip():
     ax.grid(axis="x", alpha=0.3, ls="--")
     ax.spines["top"].set_visible(False); ax.spines["right"].set_visible(False)
     plt.tight_layout()
-    _save("Figure6_Instability_Strip", paper_name="fig6_instability_strip")
+    _save("Figure6_Instability_Strip", fname="fig6_instability_strip")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -632,7 +638,7 @@ def fig7_heatmap():
         pad=12, fontsize=11)
     # Reserve right margin so profile labels are not clipped
     plt.subplots_adjust(left=0.10, right=0.76, top=0.88, bottom=0.10)
-    _save("Figure7_Summary_Heatmap", paper_name="fig2_audit_heatmap")
+    _save("Figure7_Summary_Heatmap", fname="fig2_audit_heatmap")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -695,7 +701,7 @@ def fig8_threshold_sensitivity():
         "but Flagged-Count Details Shift at Lenient Cutoffs",
         fontsize=12, fontweight="bold")
     plt.tight_layout()
-    _save("Figure8_Threshold_Sensitivity", paper_name="figS3_threshold_sensitivity")
+    _save("Figure8_Threshold_Sensitivity", fname="figS3_threshold_sensitivity")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
