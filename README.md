@@ -1,4 +1,4 @@
-# BehaviorAudit
+# Limited Structural Reliability in Public Educational Prediction Benchmarks: A Four-Dimension Audit of Seven Datasets
 
 **Are educational prediction benchmarks structurally reliable enough to support generalizable modeling claims?** This repository implements a four-dimension pre-modeling audit protocol that answers: **mostly no.** Across seven public educational datasets, three pass all four reliability checks (OULAD, Dropout, xAPI-Edu); the remaining four fail—most on metadata adequacy and cross-group generalization. The audit runs a standardized pipeline of baseline-gap, split-instability, permutation-null, and group-aware holdout checks before any model optimization, serving as a quality gate for educational AI benchmarks.
 
