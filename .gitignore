@@ -37,8 +37,6 @@ run_model_complexity_ablation.py
 response_letter.*
 texput.log
 
-# ── Generated intermediate outputs ───────────────────────────────────────────
-
 # ── Misc ──────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
