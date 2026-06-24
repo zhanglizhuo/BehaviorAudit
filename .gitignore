@@ -24,6 +24,16 @@ paper/
 *.bak*
 audit_7dataset_results.json.bak*
 
+# ── Legacy / exploratory scripts (not needed for paper reproduction) ─────────
+gen_radar_chart.py
+run_uci_extended.py
+run_model_complexity_ablation.py
+result.csv
+
+# ── Submission correspondence (not code) ────────────────────────────────────
+response_letter.*
+texput.log
+
 # ── Generated intermediate outputs ───────────────────────────────────────────
 outputs/
 
