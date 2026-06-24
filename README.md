@@ -1,27 +1,41 @@
 # BehaviorAudit
 
-BehaviorAudit contains the code and analysis scripts for the study "Are Educational Prediction Benchmarks Structurally Reliable? A Four-Dimension Audit Across Seven Public Datasets" by Yan Ma and Lizhuo Zhang.
+**Are educational prediction benchmarks structurally reliable enough to support generalizable modeling claims?** This repository implements a four-dimension pre-modeling audit protocol that answers: **mostly no.** Across seven public educational datasets, three pass all four reliability checks (OULAD, Dropout, xAPI-Edu); the remaining four fail—most on metadata adequacy and cross-group generalization. The audit runs a standardized pipeline of baseline-gap, split-instability, permutation-null, and group-aware holdout checks before any model optimization, serving as a quality gate for educational AI benchmarks.
 
-The repository supports two levels of reproduction:
+This repository accompanies the manuscript by Yan Ma and Lizhuo Zhang.
 
-- figure-level reproduction from the tracked result artifacts; and
-- full audit reruns when the seven public datasets are placed in the expected local directories.
+## Key Findings (TL;DR)
 
-Raw datasets are not redistributed in this repository. The scripts assume that users obtain the public datasets from their original maintainers and place them under `datasets/` as described below.
+| Dimension | What it tests | Passing rate |
+| --- | --- | --- |
+| Baseline gap | Does the model beat a trivial mean predictor? | 6 / 7 |
+| Split instability | Are conclusions stable across random partitions? | 6 / 7 |
+| Null separation | Does observed performance separate from permuted labels? | 5 / 7 |
+| Metadata adequacy | Does performance survive group-aware holdout? | 3 / 6 (one untestable) |
+
+- **3 Strong** profiles: OULAD, Dropout, xAPI-Edu (pass all 4 dimensions)
+- **2 Mostly Passing**: UCI Student, Entrance Exam (fail only group holdout)
+- **1 Partial**: Higher Ed (fails 3 / 4)
+- **1 Fragile**: MM-TBA (fails all 4; no grouping metadata available)
+
+The dominant failure mode is **cross-group fragility**—not weak iid performance. Models that look useful under random splitting can become worse than a mean predictor when transferred to unseen schools, courses, or cohorts.
 
 ## Repository Layout
 
-- `framework/`: dataset adapters, baseline models, metrics, and the lightweight audit runner.
-- `run_7dataset_audit.py`: full four-dimension audit used for the main manuscript results.
-- `run_classification_sensitivity.py`: classification-metric sensitivity analysis for binary and ordinal targets.
-- `run_audit.py`: quick single-dataset adapter runner for smoke tests and small reruns.
-- `generate_figures.py`: regenerates figure files from tracked result artifacts.
-- `diagnostics/`: tracked per-split CSV artifacts used by figure scripts.
-- `scripts/`: helper scripts for split-level metrics and structural-pattern analysis.
+| Path | Purpose |
+| --- | --- |
+| `framework/` | Dataset adapters, baseline models, metrics, and the lightweight audit runner. |
+| `run_7dataset_audit.py` | Full four-dimension audit that produced the main manuscript results. |
+| `run_classification_sensitivity.py` | Classification-metric sensitivity check for binary/ordinal targets. |
+| `run_audit.py` | Quick single-dataset adapter runner for smoke tests and small reruns. |
+| `generate_figures.py` | Regenerates manuscript figures from tracked result artifacts (no audit rerun needed). |
+| `scripts/` | Helper scripts for structural-pattern analysis, split-level metrics, and supplementary tables. |
+| `diagnostics/` | Tracked per-split CSV artifacts consumed by figure-generation scripts. |
+| `paper/` | LaTeX source and compiled PDF for the manuscript (gitignored; see Zenodo archive for the submission-ready PDF). |
 
 ## Installation
 
-Use Python 3.10 or newer.
+Tested on Python 3.8+. Use a virtual environment:
 
 ```bash
 python3 -m venv .venv
@@ -31,7 +45,7 @@ python3 -m pip install -r requirements.txt
 
 ## Dataset Placement
 
-Place each downloaded dataset under the following paths relative to the repository root:
+Raw datasets are **not** redistributed in this repository. The pipeline expects them under `datasets/` as shown below:
 
 | Dataset | Expected path |
 | --- | --- |
@@ -39,94 +53,108 @@ Place each downloaded dataset under the following paths relative to the reposito
 | Higher Ed (UCI ID 856) | `datasets/StudentExam/higher_ed_856.csv` |
 | xAPI-Edu | `datasets/xAPI-Edu/xAPI-Edu-Data.csv` |
 | Entrance Exam (UCI ID 582) | `datasets/StudentExam/student_entrance_582.csv` |
-| UCI Student | `datasets/UCI/student-por.csv` and/or `datasets/UCI/student-mat.csv` |
+| UCI Student (UCI ID 320) | `datasets/UCI/student-por.csv` (also accepts `student-mat.csv`) |
 | Student Dropout (UCI ID 697) | `datasets/StudentDropout/student_dropout.csv` |
 | OULAD | `datasets/OULAD/*.csv` |
 
-The `datasets/` directory is intentionally ignored by Git. This keeps the public repository focused on code, metadata, and reproducible outputs without redistributing third-party data.
-
-### Automated Dataset Download
-
-Run the download script to fetch all publicly available datasets:
+### Automated Download
 
 ```bash
 bash scripts/download_datasets.sh
 ```
 
-The script downloads each dataset from its original source and places it in the correct directory. See each dataset's original license for terms of use.
+Downloads each dataset from its original source. See dataset-specific licenses below.
 
-## Dataset Sources and Licensing
+### Upstream Sources and Licensing
 
-The table below lists the upstream landing pages used during repository preparation. For the four UCI-hosted datasets, the UCI landing pages currently provide direct downloads and list a `CC BY 4.0` license. For datasets distributed outside UCI, this repository intentionally shares code and reproduction instructions rather than mirroring the raw data.
-
-| Dataset | Upstream source | Licensing / reuse note |
+| Dataset | Source | License |
 | --- | --- | --- |
-| MM-TBA | Dataset paper: <https://doi.org/10.1038/s41597-025-05426-6> | This repository does not redistribute the raw TEACH media. The local `datasets/MM-TBA/README.md` describes the structure of the release, but it does not include a standalone redistribution license. Use the release channel described by the dataset authors and obtain permission before re-hosting raw files. |
-| Higher Ed (UCI ID 856) | <https://archive.ics.uci.edu/dataset/856/higher+education+students+performance+evaluation> | UCI currently lists this dataset under `CC BY 4.0`. Download the archive from the UCI landing page and place `higher_ed_856.csv` under `datasets/StudentExam/`. |
-| xAPI-Edu | Author-linked public page: <https://www.kaggle.com/datasets/aljarah/xAPI-Edu-Data> | The public Kaggle page is maintained under Ibrahim Aljarah's account and currently lists `CC BY-SA 4.0`. Mirrors of this dataset vary; when possible, prefer the author-linked page and cite Amrieh et al. (2016). |
-| Entrance Exam (UCI ID 582) | <https://archive.ics.uci.edu/dataset/582/student+performance+on+an+entrance+examination> | UCI currently lists this dataset under `CC BY 4.0`. Download the archive from UCI and place `student_entrance_582.csv` under `datasets/StudentExam/`. |
-| UCI Student (UCI ID 320) | <https://archive.ics.uci.edu/dataset/320/student+performance> | UCI currently lists this dataset under `CC BY 4.0`. The adapters use `student-por.csv` by default and can also fall back to `student-mat.csv`. |
-| Student Dropout (UCI ID 697) | <https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success> | UCI currently lists this dataset under `CC BY 4.0`. Download the archive from UCI and place `student_dropout.csv` under `datasets/StudentDropout/`. |
-| OULAD | Dataset paper: <https://doi.org/10.1038/sdata.2017.171>; historical project page: <https://analyse.kmi.open.ac.uk/open_dataset> | The Open University project page has historically hosted the CSV release, but availability can change over time. This repository does not bundle an explicit license statement for OULAD; follow the upstream terms attached to the original release and avoid redistributing the raw CSV files unless those terms clearly permit it. |
+| MM-TBA | <https://doi.org/10.1038/s41597-025-05426-6> | Not redistributed. Obtain from the authors. |
+| Higher Ed | <https://archive.ics.uci.edu/dataset/856/higher+education+students+performance+evaluation> | CC BY 4.0 (UCI) |
+| xAPI-Edu | <https://www.kaggle.com/datasets/aljarah/xAPI-Edu-Data> | CC BY-SA 4.0 (Kaggle) |
+| Entrance Exam | <https://archive.ics.uci.edu/dataset/582/student+performance+on+an+entrance+examination> | CC BY 4.0 (UCI) |
+| UCI Student | <https://archive.ics.uci.edu/dataset/320/student+performance> | CC BY 4.0 (UCI) |
+| Student Dropout | <https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success> | CC BY 4.0 (UCI) |
+| OULAD | <https://doi.org/10.1038/sdata.2017.171> | Follow upstream terms |
 
-When in doubt about licensing, the safest pattern is to share code, checksums, and placement instructions, but not the raw dataset files themselves.
+## Reproduction
 
-## Reproduce the Main Audit
+### A) Reproduce Figures Only (Fastest — No Audit Rerun Needed)
 
-After placing the datasets, run:
-
-```bash
-python3 run_7dataset_audit.py
-```
-
-The script writes the seven-dataset audit JSON to `audit_7dataset_results.json`. It uses 100 repeated 80/20 splits, 30 permutation-tested splits with 500 draws each, and leave-one-group-out validation where grouping metadata are available.
-
-## Reproduce Sensitivity Analyses
-
-Classification-metric sensitivity:
-
-```bash
-python3 run_classification_sensitivity.py
-```
-
-Structural-pattern figure and CSV:
-
-```bash
-python3 scripts/structural_pattern_analysis.py
-```
-
-Split-level linear metrics used by distribution plots:
-
-```bash
-python3 scripts/export_linear_split_r2.py
-python3 scripts/merge_linear_metrics.py
-```
-
-## Regenerate Figures
-
-The tracked JSON and CSV artifacts are sufficient to regenerate the manuscript figures without rerunning the full audit:
+All result artifacts are tracked in the repository. To regenerate every figure from the pre-computed JSON/CSV:
 
 ```bash
 python3 generate_figures.py
 python3 scripts/structural_pattern_analysis.py
 ```
 
-Generated figures are written to `outputs/`.
+Outputs land in `outputs/`. The figures match those in the manuscript.
 
-## Quick Smoke Test
+### B) Reproduce the Full Audit (Requires Local Datasets)
 
-To verify that the adapter framework can load a single local dataset and write outputs, run one dataset with a small number of seeds:
+**Step 1 — Main audit:**
+```bash
+python3 run_7dataset_audit.py
+```
+Writes `audit_7dataset_results.json` (100 repeated 80/20 splits per dataset, 30 permutation-tested splits with 500 draws each, leave-one-group-out validation).
+
+**Step 2 — Classification sensitivity:**
+```bash
+python3 run_classification_sensitivity.py
+```
+Writes `classification_sensitivity_results.json`.
+
+**Step 3 — Structural-pattern analysis:**
+```bash
+python3 scripts/structural_pattern_analysis.py
+```
+Writes `outputs/fig5_structural_patterns.pdf` and `outputs/structural_pattern_analysis.csv`.
+
+**Step 4 — Linear split metrics (for distribution plots):**
+```bash
+python3 scripts/export_linear_split_r2.py
+python3 scripts/merge_linear_metrics.py
+```
+
+**Step 5 — Regenerate figures from fresh results:**
+```bash
+python3 generate_figures.py
+```
+
+### C) Smoke Test
+
+Verify the adapter framework works with a single dataset on a few splits:
 
 ```bash
 python3 run_audit.py --dataset uci_student --seeds 0 1 --n-permutations 2 --output-dir diagnostics/smoke_uci
 ```
 
-Change `--dataset` to one of `mm_tba`, `higher_ed`, `xapi_edu`, `entrance_exam`, `uci_student`, `student_dropout`, or `oulad`.
+Supported datasets: `mm_tba`, `higher_ed`, `xapi_edu`, `entrance_exam`, `uci_student`, `student_dropout`, `oulad`.
+
+## Methodological Note: Group-Column Correction
+
+During the audit, we discovered that three datasets (UCI Student, xAPI-Edu, Entrance Exam) encode group membership as one-hot features in the original feature matrix. When left-one-group-out holdout is applied, the held-out group's indicator column becomes **zero-variance** in the training partition, causing spurious linear-model collapse (e.g., xAPI-Edu appeared to have group-holdout $R^2 = -2.03$). The pipeline automatically detects and excludes group-identifier columns before group-aware training:
+
+```python
+if bundle.group_column_indices:
+    X_gh = np.delete(X, bundle.group_column_indices, axis=1)
+```
+
+After correction, xAPI-Edu's true group-holdout $R^2$ is **0.484** (retention 81%), reclassifying it from Mostly Passing (3/4) to **Strong (4/4)**. This correction is implemented in both `run_7dataset_audit.py` and `run_classification_sensitivity.py`. New datasets should report `group_column_indices` in their adapter to benefit from this safeguard (see `framework/adapters/xapi_edu.py` for an example).
 
 ## Citation
 
-Please cite the manuscript when using this code or adapting the audit framework.
+```bibtex
+@article{ma2025audit,
+  title={Are Educational Prediction Benchmarks Structurally Reliable?
+         A Four-Dimension Audit Across Seven Public Datasets},
+  author={Ma, Yan and Zhang, Lizhuo},
+  year={2025}
+}
+```
+
+Code DOI: <https://doi.org/10.5281/zenodo.20754475>
 
 ## License
 
-The code in this repository is released under the MIT License. See `LICENSE` for details.
+Code: MIT License. See `LICENSE`. Dataset licenses are as specified by each upstream source.
