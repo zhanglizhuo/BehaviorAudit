@@ -40,7 +40,7 @@ response_letter.*
 texput.log
 
 # ── Generated intermediate outputs ───────────────────────────────────────────
-outputs/
+results/
 
 # ── Misc ──────────────────────────────────────────────────────────────────────
 .DS_Store

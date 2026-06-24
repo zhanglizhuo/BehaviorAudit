@@ -25,7 +25,7 @@ warnings.filterwarnings("ignore")
 RANDOM_SEEDS = list(range(100))
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-OUT_DIR = REPO_ROOT / "outputs"
+OUT_DIR = REPO_ROOT / "results"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 MODELS = {

@@ -111,7 +111,7 @@ Writes `classification_sensitivity_results.json`.
 ```bash
 python3 scripts/structural_pattern_analysis.py
 ```
-Writes `outputs/fig5_structural_patterns.pdf` and `outputs/structural_pattern_analysis.csv`.
+Writes `figures/fig5_structural_patterns.pdf` and `figures/structural_pattern_analysis.csv`.
 
 **Step 4 — Linear split metrics (for distribution plots):**
 ```bash

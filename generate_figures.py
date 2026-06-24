@@ -2,7 +2,7 @@
 
 Inputs are the tracked result artifacts at the repository root:
 ``audit_7dataset_results.json`` and ``result.csv``.
-Generated figures are written to ``outputs/``.
+Generated figures are written to ``figures/``.
 """
 from __future__ import annotations
 import json, math
