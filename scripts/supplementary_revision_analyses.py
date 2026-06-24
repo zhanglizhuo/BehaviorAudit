@@ -100,7 +100,7 @@ DATASET_LOADERS = {
 # ── Analysis 1: Group-holdout uncertainty (reads from main pipeline JSON) ──
 
 def analysis1_group_holdout_uncertainty() -> pd.DataFrame:
-    json_path = REPO_ROOT / "audit_7dataset_results.json"
+    json_path = REPO_ROOT / "results" / "audit_7dataset_results.json"
     with open(json_path) as f:
         data = json.load(f)
 

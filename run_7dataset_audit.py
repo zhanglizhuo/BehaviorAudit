@@ -384,7 +384,7 @@ def main():
         print(f"\nResults saved to {out_path}")
 
         # Also write a copy at repo root for figure regeneration scripts
-        root_out = Path(__file__).resolve().parent / "audit_7dataset_results.json"
+        root_out = Path(__file__).resolve().parent / "results" / "audit_7dataset_results.json"
         with open(root_out, "w") as f:
             json.dump(save_profiles, f, indent=2, default=str)
         print(f"Also saved to {root_out}")

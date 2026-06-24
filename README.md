@@ -33,6 +33,7 @@ The dominant failure mode is **cross-group fragility**—not weak iid performanc
 | `generate_figures.py` | Regenerates all manuscript and supplementary figures to `figures/`. |
 | `scripts/` | Helper scripts for structural-pattern analysis, split-level metrics, and supplementary tables. |
 | `diagnostics/` | Tracked per-split CSV artifacts consumed by figure-generation scripts. |
+| `results/` | Tracked output artifacts: audit JSON, classification JSON, supplementary CSVs, and per-seed split metrics. |
 | `paper/` | LaTeX source files for the manuscript. |
 | `figures/` | Generated figures (PDF + PNG) for the manuscript and supplementary materials. All readers and the LaTeX paper reference this directory. |
 
@@ -99,13 +100,13 @@ Outputs land in `figures/`. The figures match those in the manuscript and are re
 ```bash
 python3 run_7dataset_audit.py
 ```
-Writes `audit_7dataset_results.json` (100 repeated 80/20 splits per dataset, 30 permutation-tested splits with 500 draws each, leave-one-group-out validation).
+Writes `results/audit_7dataset_results.json` (100 repeated 80/20 splits per dataset, 30 permutation-tested splits with 500 draws each, leave-one-group-out validation).
 
 **Step 2 — Classification sensitivity:**
 ```bash
 python3 run_classification_sensitivity.py
 ```
-Writes `classification_sensitivity_results.json`.
+Writes `results/classification_sensitivity_results.json`.
 
 **Step 3 — Structural-pattern analysis:**
 ```bash

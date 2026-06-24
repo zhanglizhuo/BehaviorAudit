@@ -17,7 +17,7 @@ except Exception:
 
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-JSON_PATH = os.path.join(ROOT, "audit_7dataset_results.json")
+JSON_PATH = os.path.join(ROOT, "results", "audit_7dataset_results.json")
 CSV_PATH = os.path.join(ROOT, "diagnostics", "combined_linear_split_metrics.csv")
 
 
