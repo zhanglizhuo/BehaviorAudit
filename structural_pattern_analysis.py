@@ -20,7 +20,7 @@ import numpy as np
 import pandas as pd
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parent
 JSON_PATH = ROOT / "results" / "audit_7dataset_results.json"
 OUT_DIR = Path(os.environ.get("STRUCTURAL_OUT_DIR", str(ROOT / "figures")))
 OUT_DIR.mkdir(parents=True, exist_ok=True)

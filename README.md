@@ -31,7 +31,8 @@ The dominant failure mode is **cross-group fragility**—not weak iid performanc
 | `run_classification_sensitivity.py` | Classification-metric sensitivity check for binary/ordinal targets. |
 | `run_audit.py` | Quick single-dataset adapter runner for smoke tests and small reruns. |
 | `generate_figures.py` | Regenerates all manuscript and supplementary figures to `figures/`. |
-| `scripts/` | Helper scripts for structural-pattern analysis, split-level metrics, and supplementary tables. |
+| `structural_pattern_analysis.py` | Cross-dataset structural-pattern analysis (Fig 5). |
+| `scripts/` | Helper scripts for split-level metrics, supplementary tables, and dataset download. |
 | `diagnostics/` | Tracked per-split CSV artifacts consumed by figure-generation scripts. |
 | `results/` | Tracked output artifacts: audit JSON, classification JSON, supplementary CSVs, and per-seed split metrics. |
 | `paper/` | LaTeX source files for the manuscript. |
@@ -89,7 +90,7 @@ All result artifacts are tracked in the repository. To regenerate every figure f
 
 ```bash
 python3 generate_figures.py
-python3 scripts/structural_pattern_analysis.py
+python3 structural_pattern_analysis.py
 ```
 
 Outputs land in `figures/`. The figures match those in the manuscript and are referenced directly by the LaTeX source.
@@ -110,7 +111,7 @@ Writes `results/classification_sensitivity_results.json`.
 
 **Step 3 — Structural-pattern analysis:**
 ```bash
-python3 scripts/structural_pattern_analysis.py
+python3 structural_pattern_analysis.py
 ```
 Writes `figures/fig5_structural_patterns.pdf` and `figures/structural_pattern_analysis.csv`.
 
