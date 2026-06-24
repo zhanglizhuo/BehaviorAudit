@@ -1,0 +1,13 @@
+dataset,model,n_groups_tested,group_r2_mean,group_r2_sd,group_r2_min,group_r2_max
+Higher Ed (N=145),linear,4,-8.787,7.373,-18.648,-0.975
+Higher Ed (N=145),ridge,4,-8.581,7.24,-18.354,-0.969
+Higher Ed (N=145),rf,4,-12.999,16.202,-35.591,-0.169
+Higher Ed (N=145),gbt,4,-10.628,13.104,-29.107,-0.597
+UCI Student (N=649),linear,2,-0.097,0.154,-0.206,0.012
+UCI Student (N=649),ridge,2,-0.094,0.151,-0.201,0.012
+UCI Student (N=649),rf,2,0.018,0.154,-0.091,0.127
+UCI Student (N=649),gbt,2,-0.057,0.192,-0.193,0.079
+OULAD (N=32593),linear,22,0.41,0.166,0.041,0.654
+OULAD (N=32593),ridge,22,0.41,0.166,0.041,0.654
+OULAD (N=32593),rf,22,0.482,0.216,-0.052,0.747
+OULAD (N=32593),gbt,22,0.533,0.169,0.039,0.752
