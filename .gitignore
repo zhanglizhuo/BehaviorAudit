@@ -33,8 +33,6 @@ audit_7dataset_results.json.bak*
 gen_radar_chart.py
 run_uci_extended.py
 run_model_complexity_ablation.py
-result.csv
-
 # ── Submission correspondence (not code) ────────────────────────────────────
 response_letter.*
 texput.log

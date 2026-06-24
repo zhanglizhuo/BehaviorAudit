@@ -22,7 +22,7 @@ warnings.filterwarnings("ignore")
 # ── Paths ─────────────────────────────────────────────────────────────────────
 HERE     = Path(__file__).parent
 JSON_PATH = HERE / "audit_7dataset_results.json"
-CSV_PATH  = HERE / "result.csv"
+CSV_PATH  = HERE / "results" / "result.csv"
 # Allow overriding output directory and DPI via environment for publication runs
 import os
 OUT_DIR = Path(os.environ.get("FIG_OUT_DIR", str(HERE / "figures")))
