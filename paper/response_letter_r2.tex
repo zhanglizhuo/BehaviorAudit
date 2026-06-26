@@ -1,0 +1,117 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[top=1in,left=1in,right=1in,bottom=1in]{geometry}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+\title{\vspace*{-0.8in}\textbf{Response to Reviewers --- Second Revision}}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Manuscript:} A Four-Dimension Pre-Modeling Audit Protocol for Educational Prediction Benchmarks\\
+\textbf{Journal:} Scientific Reports\\
+\textbf{Revision:} Second round
+
+\vspace{0.2in}
+\noindent Dear Editor and Reviewers,
+
+We thank the reviewers for their careful reading of our revised manuscript. Below we address each remaining comment point by point. All changes are described with specific line references.
+
+\section*{Response to Reviewer 1}
+
+\textbf{Recommendation:} Accept with minor suggestion.
+
+\textbf{Comment:} The authors may wish to cite Saşmaz (2026), which uses a multi-model machine learning framework on PISA 2022 data and is relevant to the benchmarking methodology discussed here.
+
+\textbf{Response:} We thank the reviewer for this suggestion. We have added a critical citation of \citet{Sasmaz2026} to the Discussion section (line~351). The added sentence notes that, while \citet{Sasmaz2026} applies a multi-model framework with stratified $k$-fold cross-validation to PISA 2022 data, it does not report group-aware holdout results, illustrating the persistent gap between current evaluation practice and the audit standards proposed here. We believe this framing strengthens rather than dilutes our argument.
+
+\section*{Response to Reviewer 2}
+
+\textbf{Recommendation:} Minor revision (second round).
+
+\vspace{0.2in}
+\noindent We thank Reviewer~2 for the close reading and for pushing us to clarify four important points.
+
+\subsection*{Comment 2-1: Feature set alignment for fair retention-ratio calculation}
+
+\textbf{Reviewer:} The retention ratio currently compares group-holdout $R^2$ (with group identifiers excluded) against iid $R^2$ (with group identifiers included). This asymmetry needs to be addressed.
+
+\textbf{Response:} We agree and have made the following changes:
+
+\begin{itemize}
+  \item Modified \texttt{run\_7dataset\_audit.py} (lines~238--244) to run IID splits on the same clean feature matrix (group-identifier columns excluded) when the adapter reports such columns. The clean iid $R^2$ is stored as \texttt{iid\_r2\_clean} in the output profile.
+  \item Updated the retention-ratio logic (line~337) to use \texttt{iid\_r2\_clean} when available, ensuring apples-to-apples comparison.
+  \item Re-ran the full pipeline and updated all affected numbers:
+    \begin{itemize}
+      \item xAPI-Edu: iid $R^2$ 0.599 $\to$ 0.614, retention 81\% $\to$ 79\% (profile unchanged: Strong)
+      \item UCI Student: iid $R^2$ 0.262 $\to$ 0.242, retention $-37\%$ $\to$ $-40\%$ (profile unchanged: Mostly Passing)
+      \item Entrance Exam: iid $R^2$ unchanged at 0.438 (no group-identifier features)
+    \end{itemize}
+  \item Updated all affected numbers in the main text (xAPI-Edu 0.614, UCI Student 0.242, retention ratios 79\% and $-40\%$).
+  \item Removed stale values (0.599, 0.262, 81\%, $-37\%$) from the manuscript.
+  \item Updated \texttt{results/audit\_7dataset\_results.json} with the corrected canonical values.
+  \item Regenerated all figures.
+\end{itemize}
+
+No profile boundaries were crossed for any dataset, and the three key substantive conclusions remain unchanged.
+
+\subsection*{Comment 2-2: Structural versus model-dependent fragility}
+
+\textbf{Reviewer:} Ridge and ensemble models recover group-holdout performance for Entrance Exam. Failure of the unregularized linear model alone is insufficient to establish structural fragility. Persistent failures across model families should be distinguished from model-dependent or partly remediable failures.
+
+\textbf{Response:} We fully agree and have revised the manuscript throughout to draw this distinction clearly:
+
+\begin{itemize}
+  \item \textbf{Finding~1} (line~333): Now explicitly distinguishes ``structural fragility'' (Higher Ed: all models $R^2 < -8$; UCI Student: linear $-0.097$, RF $0.018$, GBT $-0.057$) from ``linear-model-only failure that is partly remediable by ensemble models'' (Entrance Exam: RF $R^2 \approx 0.32$ vs. linear $-0.060$).
+  \item \textbf{Finding~2} (line~335): Retitled to ``Structural fragility persists across model families, while model-dependent failures are partly remediable.'' Includes Entrance Exam's ensemble recovery as a counterexample.
+  \item \textbf{Finding~4} (line~339): Now notes that Entrance Exam's iid-to-group gap is ``partly closed by ensemble models.''
+  \item \textbf{Conclusion~(1)} (line~369): Separates structural collapse from model-dependent failure.
+  \item \textbf{Conclusion~(2)} (line~371): Retitled from ``Fragility persists across model families'' to ``Structural collapse versus model-dependent failure.''
+  \item \textbf{Detailed-results section} (line~194): Adds sentence: ``The nature of the failure differs: UCI Student and Higher Ed exhibit structural fragility (all model families collapse), whereas Entrance Exam's failure is linear-model-specific and partly remediable---its RF group $R^2$ reaches approximately $0.32$.''
+  \item \textbf{Table~1 caption} (line~188): Replaced ``flags the structural fragility of the base benchmark'' with language describing the audit's role as flagging the weakest link, with the detailed breakdown distinguishing structurally invariant collapse from model-dependent failure.
+  \item \textbf{Line~260}: Replaced ``fragile or partially fragile datasets'' with ``datasets with metadata-adequacy failures'' and annotated each dataset's failure pattern.
+  \item Remaining uses of ``fragility'' in the abstract and general discussion are retained as high-level descriptors of the cross-group generalization failure phenomenon.
+\end{itemize}
+
+\subsection*{Comment 2-3: Feature-attribution scope limitation}
+
+\textbf{Reviewer:} The feature-attribution analysis is computed under iid splits only. The connections drawn to audit dimensions are interesting but not directly supported. Either compute group-aware attributions or clearly limit scope.
+
+\textbf{Response:} We have chosen to clearly limit the scope rather than write new group-aware attribution code. At the end of the feature-attribution section (line~322), we added:
+
+\emph{``We note that this feature-attribution analysis is conducted under iid random splits and does not directly evaluate attribution stability under group-aware holdout; the connections drawn to the audit profiles describe the alignment between split-level attribution stability and dataset readiness rather than establishing a causal link to cross-group behavior.''}
+
+\subsection*{Comment 2-4: RF importance type and feature-name mapping}
+
+\textbf{Reviewer:} (a) Report the type of feature importance used (impurity-based or permutation-based). (b) Add a table mapping feature codes to meaningful names.
+
+\textbf{Response:} (a) In the feature-attribution section (line~318), we now specify: ``Random Forest feature importances (impurity-based, using scikit-learn's default \texttt{feature\_importances\_}).'' 
+
+(b) We added a new Supplementary Table~S7 (page~9 of the supplementary PDF) mapping all feature codes (e.g., f5, f28, f3) used in Tables~S5--S6 to human-readable feature names for UCI Student, Higher Ed, and OULAD. The table covers every feature that appears in the top-10 coefficient and importance tables.
+
+\section*{Response to Reviewer 3}
+
+\textbf{Recommendation:} Not assigned to this revision.
+
+\textbf{Response:} As noted in our previous response, the scope and methods of this paper---a pre-modeling audit protocol for educational prediction datasets---remain distinct from automated short-answer scoring or LLM-based assessment. We respectfully reiterate that Reviewer~3's concerns, which focus on LLM grading reliability and rubric design, address a different task and a different stage of the educational AI pipeline. We defer to the editor's judgment on whether the current reviewer panel is appropriate for this manuscript.
+
+\vspace{0.3in}
+\noindent We hope these revisions fully address all remaining concerns. We are grateful for the reviewers' constructive feedback, which has substantially improved the clarity and precision of the manuscript.
+
+\vspace{0.1in}
+\noindent Respectfully,\\
+Yan Ma \and Lizhuo Zhang
+
+\newpage
+\bibliographystyle{unsrtnat}
+\bibliography{behavioraudit}
+
+\end{document}

@@ -218,10 +218,20 @@ def audit_dataset(name, adapter, dataset_root, n_repeats=100):
     print(f"  N={len(y)}, Features={X.shape[1]}, Groups={len(set(group_ids)) if group_ids else 'N/A'}")
     print(f"  Target: mean={y.mean():.4f}, std={y.std():.4f}, range=[{y.min():.2f}, {y.max():.2f}]")
 
-    # 1. Repeated splits
+    # 1. Repeated splits (full feature set)
     print(f"\n  --- Repeated 80/20 splits (n={n_repeats}) ---")
     results = run_repeated_splits(X, y, n_repeats)
     summaries = summarize_results(results, n_repeats)
+
+    # 1b. IID splits on clean feature set (exclude group identifiers)
+    if bundle.group_column_indices:
+        X_iid_clean = np.delete(X, bundle.group_column_indices, axis=1)
+        print(f"  Also running IID on clean X (excluding {len(bundle.group_column_indices)} group-identifier column(s))")
+        results_clean = run_repeated_splits(X_iid_clean, y, n_repeats)
+        summaries_clean = summarize_results(results_clean, n_repeats)
+        iid_r2_clean = summaries_clean["linear"]["r2_mean"]
+    else:
+        iid_r2_clean = summaries["linear"]["r2_mean"]
 
     for mname in MODELS:
         s = summaries[mname]
@@ -288,6 +298,7 @@ def audit_dataset(name, adapter, dataset_root, n_repeats=100):
         "group_r2_linear": gh_summary["linear"]["r2_mean"] if gh_summary else None,
         "group_r2_worst": gh_summary["linear"]["worst_r2"] if gh_summary else None,
         "iid_r2_linear": lin["r2_mean"],
+        "iid_r2_clean": float(iid_r2_clean),
         # Model complexity
         "summaries": summaries,
         "group_holdout": gh_summary,
@@ -322,9 +333,10 @@ def print_comparison_table(profiles):
         # D3: null separation
         d3 = p["perm_sig_rate"] >= 0.80
         dim_pass += d3
-        # D4: metadata adequacy
-        if p["group_holdout_available"] and p["iid_r2_linear"] > 0:
-            r2_retention = p["group_r2_linear"] / (p["iid_r2_linear"] + 1e-8)
+        # D4: metadata adequacy (use clean-feature iid R² when available)
+        iid_ref = p.get("iid_r2_clean", p["iid_r2_linear"])
+        if p["group_holdout_available"] and iid_ref > 0:
+            r2_retention = p["group_r2_linear"] / (iid_ref + 1e-8)
             d4 = r2_retention >= 0.50
         elif p["group_holdout_available"]:
             d4 = p["group_r2_linear"] > 0

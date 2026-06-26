@@ -51,7 +51,7 @@ Higher Ed & Linear & $1.695 \pm 0.199$ & $0.041$ & $0.469$ & $0.90$ & $0.83$ \\
  & Random Forest & $1.193 \pm 0.130$ & $0.521$ & $0.744$ & $0.18$ & $1.00$ \\
  & Gradient Boosting & $1.273 \pm 0.146$ & $0.464$ & $0.711$ & $0.23$ & $1.00$ \\
 \midrule
-xAPI-Edu & Linear & $0.363 \pm 0.025$ & $0.599$ & $0.786$ & $0.12$ & $1.00$ \\
+xAPI-Edu & Linear & $0.363 \pm 0.025$ & $0.614$ & $0.786$ & $0.12$ & $1.00$ \\
  & Ridge & $0.357 \pm 0.023$ & $0.626$ & $0.799$ & $0.11$ & $1.00$ \\
  & Random Forest & $0.308 \pm 0.023$ & $0.682$ & $0.830$ & $0.09$ & $1.00$ \\
  & Gradient Boosting & $0.327 \pm 0.024$ & $0.663$ & $0.818$ & $0.10$ & $1.00$ \\
@@ -61,7 +61,7 @@ Entrance Exam & Linear & $0.598 \pm 0.033$ & $0.438$ & $0.670$ & $0.12$ & $1.00$
  & Random Forest & $0.612 \pm 0.036$ & $0.372$ & $0.628$ & $0.14$ & $1.00$ \\
  & Gradient Boosting & $0.595 \pm 0.033$ & $0.442$ & $0.671$ & $0.12$ & $1.00$ \\
 \midrule
-UCI Student & Linear & $2.011 \pm 0.148$ & $0.262$ & $0.530$ & $0.36$ & $1.00$ \\
+UCI Student & Linear & $2.011 \pm 0.148$ & $0.242$ & $0.530$ & $0.36$ & $1.00$ \\
  & Ridge & $2.010 \pm 0.148$ & $0.263$ & $0.530$ & $0.36$ & $1.00$ \\
  & Random Forest & $2.005 \pm 0.151$ & $0.285$ & $0.548$ & $0.37$ & $1.00$ \\
  & Gradient Boosting & $2.046 \pm 0.151$ & $0.257$ & $0.531$ & $0.41$ & $1.00$ \\
@@ -107,7 +107,7 @@ Higher Ed & 145 & 31 & Grade [0,7] & $\mu=3.5$, $\sigma=2.2$ & 9 & 2/16/66 \\
 
 \begin{table}[!h]
 \centering
-\caption{Train-test $R^2$ gap across 100 repeated 80/20 splits. The gap (train $R^2$ -- test $R^2$) quantifies how much of the apparent iid signal is lost on held-out samples from the same distribution. On UCI Student, the linear-model train-test gap (0.138) is small relative to the iid-to-group-holdout collapse (0.262 to $-0.097$), confirming that the group-holdout failure is not attributable to ordinary overfitting. On OULAD, both gaps remain small.}
+\caption{Train-test $R^2$ gap across 100 repeated 80/20 splits. The gap (train $R^2$ -- test $R^2$) quantifies how much of the apparent iid signal is lost on held-out samples from the same distribution. On UCI Student, the linear-model train-test gap (0.138) is small relative to the iid-to-group-holdout collapse (0.242 to $-0.097$), confirming that the group-holdout failure is not attributable to ordinary overfitting. On OULAD, both gaps remain small.}
 \label{tab:train_test_gap}
 \small
 \begin{tabular}{l l r r r r}
@@ -259,7 +259,74 @@ OULAD & f3 & 0.282 & 0.011 & 0.038 \\
 \end{table}
 
 \clearpage
-\section*{S7 Supplementary Figures}
+\section*{S7 Feature-Name Mapping}
+
+\begin{table}[!h]
+\centering
+\caption{Mapping from feature codes used in Supplementary Tables~S5--S6 to human-readable feature names for the three datasets included in the feature-attribution stability analysis. Feature codes correspond to zero-indexed column positions in the preprocessed feature matrix after one-hot encoding.}
+\label{tab:feature_mapping}
+\small
+\begin{tabular}{l l l}
+\toprule
+Dataset & Code & Feature name \\
+\midrule
+UCI Student & f0 & age \\
+ & f1 & Medu \\
+ & f2 & Fedu \\
+ & f3 & traveltime \\
+ & f4 & studytime \\
+ & f5 & failures \\
+ & f7 & freetime \\
+ & f8 & goout \\
+ & f9 & Dalc \\
+ & f10 & Walc \\
+ & f11 & health \\
+ & f12 & absences \\
+ & f13 & school\_GP \\
+ & f14 & school\_MS \\
+ & f15 & sex\_F \\
+ & f16 & sex\_M \\
+ & f17 & address\_R \\
+ & f23 & Mjob\_at\_home \\
+ & f30 & Fjob\_other \\
+ & f35 & reason\_other \\
+ & f37 & guardian\_father \\
+\midrule
+Higher Ed & f0 & Student Age \\
+ & f1 & Sex \\
+ & f2 & Graduated high-school type \\
+ & f3 & Scholarship type \\
+ & f4 & Additional work \\
+ & f7 & Total salary if available \\
+ & f8 & Transportation to the university \\
+ & f9 & Accomodation type in Cyprus \\
+ & f10 & Mother's education \\
+ & f11 & Father's education \\
+ & f12 & Number of sisters/brothers \\
+ & f15 & Father's occupation \\
+ & f17 & Reading frequency (non-scientific) \\
+ & f25 & Listening in classes \\
+ & f27 & Flip-classroom \\
+ & f28 & Cumulative GPA last semester (/4.00) \\
+\midrule
+OULAD & f0 & num\_of\_prev\_attempts \\
+ & f1 & vle\_total\_clicks \\
+ & f2 & vle\_active\_weeks \\
+ & f3 & assessment\_count \\
+ & f4 & assessment\_score\_mean \\
+ & f5 & assessment\_score\_std \\
+ & f6 & age\_band\_0--35 \\
+ & f7 & age\_band\_35--55 \\
+ & f8 & age\_band\_55$\leq$ \\
+ & f9 & age\_band\_nan \\
+ & f24 & region\_West Midlands Region \\
+ & f36 & imd\_band\_30--40\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\clearpage
+\section*{S8 Supplementary Figures}
 
 \begin{figure}[!h]
 \centering

@@ -1,4 +1,4 @@
-\begin{thebibliography}{26}
+\begin{thebibliography}{27}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -214,5 +214,13 @@ Sarah Holland, Ahmed Hosny, Sarah Newman, Joshua Joseph, and Kasia Chmielinski.
 \newblock The dataset nutrition label.
 \newblock In \emph{Data Protection and Privacy}, pages 1--25. Hart Publishing,
   2020.
+
+\bibitem[{\c{C}}elik et~al.(2026){\c{C}}elik, Do{\u{g}}anl{\i}, and
+  {\.{S}}a{\c{s}}maz]{Sasmaz2026}
+Sadullah {\c{C}}elik, Bilge Do{\u{g}}anl{\i}, and Emel {\.{S}}a{\c{s}}maz.
+\newblock Comparative analysis of global education performances based on {PISA}
+  2022 results: an assessment with statistical and machine learning methods.
+\newblock \emph{Quality \& Quantity}, 2026.
+\newblock \doi{10.1007/s11135-026-02915-7}.
 
 \end{thebibliography}
