@@ -107,27 +107,27 @@ Higher Ed & 145 & 31 & Grade [0,7] & $\mu=3.5$, $\sigma=2.2$ & 9 & 2/16/66 \\
 
 \begin{table}[!h]
 \centering
-\caption{Train-test $R^2$ gap across 100 repeated 80/20 splits. The gap (train $R^2$ -- test $R^2$) quantifies how much of the apparent iid signal is lost on held-out samples from the same distribution. On UCI Student, the linear-model train-test gap (0.138) is small relative to the iid-to-group-holdout collapse (0.242 to $-0.097$), confirming that the group-holdout failure is not attributable to ordinary overfitting. On OULAD, both gaps remain small.}
+\caption{Train-test $R^2$ gap across 100 repeated 80/20 splits using the same preprocessing pipeline as the main audit (pre-standardise, then split). The gap (train $R^2$ -- test $R^2$) quantifies how much of the apparent iid signal is lost on held-out samples from the same distribution. On UCI Student, the linear-model train-test gap (0.105) is small relative to the iid-to-group-holdout collapse (0.242 to $-0.097$), confirming that the group-holdout failure is not attributable to ordinary overfitting. On OULAD, both gaps remain small.}
 \label{tab:train_test_gap}
 \small
 \begin{tabular}{l l r r r r}
 \toprule
 Dataset & Model & Train $R^2$ mean & Test $R^2$ mean & Gap mean & Gap SD \\
 \midrule
-UCI Student & Linear & 0.353 & 0.214 & 0.138 & 0.104 \\
- & Ridge & 0.353 & 0.215 & 0.138 & 0.104 \\
- & RF & 0.895 & 0.240 & 0.655 & 0.103 \\
- & GBT & 0.606 & 0.232 & 0.374 & 0.100 \\
+UCI Student & Linear & 0.347 & 0.242 & 0.105 & 0.091 \\
+ & Ridge & 0.347 & 0.242 & 0.105 & 0.091 \\
+ & RF & 0.898 & 0.276 & 0.622 & 0.081 \\
+ & GBT & 0.714 & 0.244 & 0.470 & 0.103 \\
 \midrule
-Higher Ed & Linear & 0.457 & $-0.050$ & 0.507 & 0.316 \\
- & Ridge & 0.457 & $-0.039$ & 0.496 & 0.309 \\
- & RF & 0.877 & 0.101 & 0.775 & 0.156 \\
- & GBT & 0.847 & 0.069 & 0.778 & 0.159 \\
+Higher Ed & Linear & 0.550 & 0.041 & 0.509 & 0.299 \\
+ & Ridge & 0.550 & 0.054 & 0.496 & 0.292 \\
+ & RF & 0.937 & 0.518 & 0.419 & 0.140 \\
+ & GBT & 0.919 & 0.494 & 0.425 & 0.141 \\
 \midrule
-OULAD & Linear & 0.282 & 0.268 & 0.014 & 0.026 \\
- & Ridge & 0.282 & 0.268 & 0.014 & 0.026 \\
- & RF & 0.908 & 0.363 & 0.546 & 0.028 \\
- & GBT & 0.431 & 0.382 & 0.049 & 0.027 \\
+OULAD & Linear & 0.282 & 0.268 & 0.014 & 0.024 \\
+ & Ridge & 0.282 & 0.268 & 0.014 & 0.024 \\
+ & RF & 0.912 & 0.376 & 0.536 & 0.024 \\
+ & GBT & 0.468 & 0.399 & 0.069 & 0.024 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -185,16 +185,16 @@ UCI Student & f5 & $-0.867$ & 0.064 & 0.00 \\
  & f37 & $-0.228$ & 0.056 & 0.00 \\
  & f23 & $-0.221$ & 0.114 & 0.01 \\
 \midrule
-Higher Ed & f28 & 0.661 & 0.126 & 0.00 \\
- & f0 & $-0.651$ & 0.126 & 0.00 \\
- & f17 & 0.613 & 0.118 & 0.00 \\
- & f1 & 0.539 & 0.121 & 0.00 \\
- & f8 & $-0.407$ & 0.100 & 0.00 \\
- & f25 & 0.405 & 0.115 & 0.00 \\
- & f4 & 0.398 & 0.120 & 0.00 \\
- & f9 & 0.309 & 0.112 & 0.00 \\
- & f2 & 0.308 & 0.093 & 0.00 \\
- & f15 & $-0.294$ & 0.094 & 0.00 \\
+Higher Ed & f30 & 0.986 & 0.120 & 0.00 \\
+ & f28 & 0.769 & 0.104 & 0.00 \\
+ & f1  & 0.732 & 0.120 & 0.00 \\
+ & f0  & $-0.540$ & 0.128 & 0.00 \\
+ & f17 & 0.529 & 0.104 & 0.00 \\
+ & f8  & $-0.429$ & 0.088 & 0.00 \\
+ & f4  & 0.420 & 0.128 & 0.00 \\
+ & f2  & 0.392 & 0.108 & 0.00 \\
+ & f19 & $-0.342$ & 0.131 & 0.00 \\
+ & f3  & $-0.298$ & 0.113 & 0.00 \\
 \midrule
 OULAD & f3 & 0.159 & 0.003 & 0.00 \\
  & f8 & $-0.144$ & 0.008 & 0.00 \\
@@ -233,16 +233,16 @@ UCI Student & f5 & 0.195 & 0.015 & 0.079 \\
  & f35 & 0.037 & 0.008 & 0.209 \\
  & f9 & 0.037 & 0.007 & 0.185 \\
 \midrule
-Higher Ed & f28 & 0.129 & 0.027 & 0.212 \\
- & f1 & 0.079 & 0.025 & 0.321 \\
- & f3 & 0.065 & 0.017 & 0.257 \\
- & f27 & 0.049 & 0.013 & 0.256 \\
- & f10 & 0.045 & 0.009 & 0.202 \\
- & f12 & 0.044 & 0.008 & 0.175 \\
- & f11 & 0.041 & 0.008 & 0.193 \\
- & f7 & 0.040 & 0.014 & 0.359 \\
- & f0 & 0.039 & 0.011 & 0.281 \\
- & f15 & 0.037 & 0.008 & 0.208 \\
+Higher Ed & f30 & 0.517 & 0.057 & 0.110 \\
+ & f28 & 0.106 & 0.026 & 0.245 \\
+ & f1  & 0.035 & 0.021 & 0.611 \\
+ & f16 & 0.022 & 0.006 & 0.273 \\
+ & f10 & 0.022 & 0.006 & 0.278 \\
+ & f27 & 0.020 & 0.008 & 0.413 \\
+ & f25 & 0.020 & 0.005 & 0.273 \\
+ & f15 & 0.020 & 0.004 & 0.214 \\
+ & f3  & 0.019 & 0.005 & 0.284 \\
+ & f12 & 0.019 & 0.005 & 0.279 \\
 \midrule
 OULAD & f3 & 0.282 & 0.011 & 0.038 \\
  & f2 & 0.271 & 0.011 & 0.039 \\
@@ -297,17 +297,17 @@ Higher Ed & f0 & Student Age \\
  & f2 & Graduated high-school type \\
  & f3 & Scholarship type \\
  & f4 & Additional work \\
- & f7 & Total salary if available \\
  & f8 & Transportation to the university \\
- & f9 & Accomodation type in Cyprus \\
  & f10 & Mother's education \\
- & f11 & Father's education \\
  & f12 & Number of sisters/brothers \\
  & f15 & Father's occupation \\
+ & f16 & Weekly study hours \\
  & f17 & Reading frequency (non-scientific) \\
+ & f19 & Attendance to seminars/conferences \\
  & f25 & Listening in classes \\
  & f27 & Flip-classroom \\
  & f28 & Cumulative GPA last semester (/4.00) \\
+ & f30 & Course ID \\
 \midrule
 OULAD & f0 & num\_of\_prev\_attempts \\
  & f1 & vle\_total\_clicks \\

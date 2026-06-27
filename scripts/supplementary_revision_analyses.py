@@ -10,17 +10,20 @@ Three supplementary analyses requested by Scientific Reports reviewers:
 Run with: python3 scripts/supplementary_revision_analyses.py
 """
 from __future__ import annotations
-import json, os
+import json, os, sys
 import numpy as np
 import pandas as pd
 from pathlib import Path
 from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 from sklearn.preprocessing import StandardScaler
 import warnings
 warnings.filterwarnings("ignore")
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from framework.baselines import split_indices
+from framework.adapters import HigherEdAdapter
 
 RANDOM_SEEDS = list(range(100))
 
@@ -51,16 +54,17 @@ def load_uci_student(root: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray | N
 
 
 def load_higher_ed(root: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray | None]:
-    path = root / "datasets" / "StudentExam" / "higher_ed_856.csv"
-    df = pd.read_csv(path)
-    # Identify target column (contains "OUTPUT Grade")
-    target_col = [c for c in df.columns if "OUTPUT" in c and "Grade" in c][0]
-    y = df[target_col].values.astype(float)
-    groups = df["Course ID"].values if "Course ID" in df.columns else None
-    drop_cols = [target_col, "Course ID"] if groups is not None else [target_col]
-    df = df.drop(columns=drop_cols)
-    df = pd.get_dummies(df, drop_first=True)
-    return df.values.astype(float), y, groups
+    # Use the same adapter as the main pipeline to guarantee identical preprocessing.
+    adapter = HigherEdAdapter()
+    bundle = adapter.load(dataset_root=str(root / "datasets" / "StudentExam"))
+    X = bundle.X
+    y = bundle.y
+    groups = np.array(bundle.group_ids) if bundle.group_ids else None
+    # Remove group-identifier columns to get the clean feature set (matches
+    # run_7dataset_audit.py lines 227-228 where X_iid_clean is created).
+    if bundle.group_column_indices:
+        X = np.delete(X, bundle.group_column_indices, axis=1)
+    return X, y, groups
 
 
 def load_oulad(root: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray | None]:
@@ -141,18 +145,20 @@ def analysis1_group_holdout_uncertainty() -> pd.DataFrame:
 # ── Analysis 2: Train-test gap ──────────────────────────────────────────────
 
 def analysis2_train_test_gap(dataset_name: str, X, y, n_splits: int = 100):
+    # Pre-scale once, then split (matches run_7dataset_audit.py lines 215-228 + split_indices)
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
     records = []
     for model_name, model_template in MODELS.items():
         train_r2s, test_r2s = [], []
         for seed in RANDOM_SEEDS[:n_splits]:
-            X_tr, X_te, y_tr, y_te = train_test_split(
-                X, y, test_size=0.2, random_state=seed
-            )
-            scaler = StandardScaler().fit(X_tr)
+            train_idx, test_idx = split_indices(len(y), 0.8, seed=seed)
+            X_tr, X_te = X_scaled[train_idx], X_scaled[test_idx]
+            y_tr, y_te = y[train_idx], y[test_idx]
             model = type(model_template)(**model_template.get_params())
-            model.fit(scaler.transform(X_tr), y_tr)
-            train_r2s.append(r2_score(y_tr, model.predict(scaler.transform(X_tr))))
-            test_r2s.append(r2_score(y_te, model.predict(scaler.transform(X_te))))
+            model.fit(X_tr, y_tr)
+            train_r2s.append(r2_score(y_tr, model.predict(X_tr)))
+            test_r2s.append(r2_score(y_te, model.predict(X_te)))
 
         train_r2s = np.array(train_r2s)
         test_r2s = np.array(test_r2s)
@@ -179,13 +185,14 @@ def analysis3_feature_attribution_stability(
 ):
     feature_names = [f"f{i}" for i in range(X.shape[1])]
     X_arr = np.asarray(X)
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X_arr)
 
     # Linear coefficients
     coefs = []
     for seed in RANDOM_SEEDS[:n_splits]:
-        X_tr, _, y_tr, _ = train_test_split(X_arr, y, test_size=0.2, random_state=seed)
-        scaler = StandardScaler().fit(X_tr)
-        model = LinearRegression().fit(scaler.transform(X_tr), y_tr)
+        train_idx, test_idx = split_indices(len(y), 0.8, seed=seed)
+        model = LinearRegression().fit(X_scaled[train_idx], y[train_idx])
         coefs.append(model.coef_)
     coefs = np.array(coefs)
 
@@ -208,10 +215,9 @@ def analysis3_feature_attribution_stability(
     # RF importances
     importances = []
     for seed in RANDOM_SEEDS[:n_splits]:
-        X_tr, _, y_tr, _ = train_test_split(X_arr, y, test_size=0.2, random_state=seed)
-        scaler = StandardScaler().fit(X_tr)
+        train_idx, test_idx = split_indices(len(y), 0.8, seed=seed)
         model = RandomForestRegressor(n_estimators=100, random_state=seed).fit(
-            scaler.transform(X_tr), y_tr
+            X_scaled[train_idx], y[train_idx]
         )
         importances.append(model.feature_importances_)
     importances = np.array(importances)

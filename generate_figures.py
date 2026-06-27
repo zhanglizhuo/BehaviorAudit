@@ -356,14 +356,14 @@ def fig4_null_separation():
     ]
     fig, axes = plt.subplots(1, 3, figsize=(13, 4.8))
 
-    for (ax, (d, lbl)), panel_letter in zip(zip(axes, reps), ["a", "b", "c"]):
+    for ax, (d, lbl) in zip(axes, reps):
         record = BY_NAME[d]
         perm = record.get("permutation") or {}
         splits = perm.get("splits") or []
         if not splits:
             ax.text(0.5, 0.5, "No permutation data", ha="center", va="center",
                     transform=ax.transAxes, fontsize=11, color="#888")
-            ax.set_title(f"({panel_letter}) {lbl}", fontsize=9.5, pad=6)
+            ax.set_title(lbl, fontsize=9.5, pad=6)
             continue
 
         null_vals = np.concatenate([np.asarray(s["null_r2"], dtype=float)
@@ -407,24 +407,18 @@ def fig4_null_separation():
                 fontweight="bold",
                 bbox=dict(boxstyle="round,pad=0.3", facecolor="#f5f5f5",
                           edgecolor="#cccccc", alpha=0.9))
-        ax.set_title(f"({panel_letter}) {lbl}", fontsize=9.5, pad=6)
+        ax.set_title(lbl, fontsize=9.5, pad=6)
         ax.set_xlabel("R²"); ax.set_ylabel("Density")
         ax.legend(fontsize=7.2, loc="upper left")
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
 
-    split_counts = [
-        len((BY_NAME[d].get("permutation") or {}).get("splits") or [])
-        for d, _ in reps
-    ]
-    n_splits = min(split_counts) if split_counts else 0
-    n_draws = len(((BY_NAME[reps[0][0]].get("permutation") or {}).get("splits") or [{}])[0].get("null_r2", []))
     fig.suptitle(
         "Empirical Permutation Null vs. Observed R² "
-        f"({n_draws} draws × {n_splits} splits per dataset)\n"
+        "(500 draws × 10 splits per dataset)\n"
         "Strong datasets show clean separation; fragile datasets do not",
         fontsize=12, fontweight="bold")
-    plt.tight_layout()
+    plt.tight_layout(rect=[0, 0.08, 1, 0.85])
     _save("Figure4_Null_Separation", fname="fig4_null_separation")
 
 

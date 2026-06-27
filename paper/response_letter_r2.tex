@@ -4,6 +4,7 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{xcolor}
+\usepackage[round,authoryear]{natbib}
 \usepackage[colorlinks=true,allcolors=blue]{hyperref}
 
 \setlength{\parindent}{0pt}
@@ -53,7 +54,7 @@ We thank the reviewers for their careful reading of our revised manuscript. Belo
     \begin{itemize}
       \item xAPI-Edu: iid $R^2$ 0.599 $\to$ 0.614, retention 81\% $\to$ 79\% (profile unchanged: Strong)
       \item UCI Student: iid $R^2$ 0.262 $\to$ 0.242, retention $-37\%$ $\to$ $-40\%$ (profile unchanged: Mostly Passing)
-      \item Entrance Exam: iid $R^2$ unchanged at 0.438 (no group-identifier features)
+      \item Entrance Exam: iid $R^2$ unchanged at 0.438 (board features have negligible impact on iid performance)
     \end{itemize}
   \item Updated all affected numbers in the main text (xAPI-Edu 0.614, UCI Student 0.242, retention ratios 79\% and $-40\%$).
   \item Removed stale values (0.599, 0.262, 81\%, $-37\%$) from the manuscript.
