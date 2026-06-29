@@ -32,7 +32,7 @@ We thank the reviewers for their careful reading of our revised manuscript. Belo
 
 \textbf{Comment:} The authors may wish to cite Saşmaz (2026), which uses a multi-model machine learning framework on PISA 2022 data and is relevant to the benchmarking methodology discussed here.
 
-\textbf{Response:} We thank the reviewer for this suggestion. We have added a critical citation of \citet{Sasmaz2026} to the Discussion section (line~351). The added sentence notes that, while \citet{Sasmaz2026} applies a multi-model framework with stratified $k$-fold cross-validation to PISA 2022 data, it does not report group-aware holdout results, illustrating the persistent gap between current evaluation practice and the audit standards proposed here. We believe this framing strengthens rather than dilutes our argument.
+\textbf{Response:} We thank the reviewer for this suggestion. We have added a critical citation of \citet{Sasmaz2026} to the Discussion section (lines~351--352). The added sentence notes that, while \citet{Sasmaz2026} applies a multi-model framework with stratified $k$-fold cross-validation to PISA 2022 data, it does not report group-aware holdout results, illustrating the persistent gap between current evaluation practice and the audit standards proposed here. We believe this framing strengthens rather than dilutes our argument.
 
 \section*{Response to Reviewer 2}
 
@@ -102,7 +102,24 @@ No profile boundaries were crossed for any dataset, and the three key substantiv
 
 \textbf{Recommendation:} Not assigned to this revision.
 
-\textbf{Response:} As noted in our previous response, the scope and methods of this paper---a pre-modeling audit protocol for educational prediction datasets---remain distinct from automated short-answer scoring or LLM-based assessment. We respectfully reiterate that Reviewer~3's concerns, which focus on LLM grading reliability and rubric design, address a different task and a different stage of the educational AI pipeline. We defer to the editor's judgment on whether the current reviewer panel is appropriate for this manuscript.
+\textbf{Response:} We thank Reviewer~3 for the detailed comments. Before addressing the substance, we provide a brief overview of our manuscript to correct what appears to be a mismatch in the review assignment.
+
+\textbf{Our manuscript in brief:}
+\begin{itemize}
+  \item \textit{Title:} Limited Structural Reliability in Public Educational Prediction Benchmarks: A Four-Dimension Audit of Seven Datasets
+  \item \textit{Keywords:} educational prediction, benchmark auditing, group-aware validation, dataset reliability, learning analytics
+  \item \textit{Research object:} Seven public educational prediction datasets (N = 145 to 32,593), spanning K-12, higher education, entrance examination, and online learning.
+  \item \textit{Method:} A four-dimension pre-modeling audit protocol: (1) baseline gap, (2) split instability, (3) null separation, (4) metadata adequacy via group-aware holdout. Models: linear regression, ridge, Random Forest, Gradient Boosting. No SHAP, LIME, ELI5, CatBoost, or class-imbalance treatment is involved.
+  \item \textit{Conclusion:} Three of seven datasets pass all four checks. The dominant failure mode is cross-group fragility. Audit profiles are robust to metric choice.
+\end{itemize}
+
+Reviewer~3's comments---focusing on CatBoost, SHAP/LIME/ELI5, class imbalance (76.66\%/23.34\% split), Borda Count model selection, and a 560{,}000+ record Moroccan administrative dataset---describe a manuscript that is entirely different from ours. We were therefore unable to address those specific comments in our previous revision, and we apologise that this was not made sufficiently clear at the time.
+
+Notwithstanding this mismatch, the literature on post-modeling interpretability in learning analytics---including work on counterfactual explanations and the effect of class-balancing techniques on explanation quality \citep{Cavus2024ce,Cavus2024benchmark}---is directly relevant to the downstream use of datasets like OULAD. That OULAD supports analyses as demanding as counterfactual explanation benchmarking is consistent with its Strong (4/4) audit profile in our study: datasets that fail group-aware holdout are unlikely to provide the stable distributional foundation needed for reliable post-modeling interpretability work. We have added the following sentence to the Discussion (line~352):
+
+\emph{``That OULAD supports post-modeling interpretability analyses as demanding as counterfactual explanation benchmarking \citep{Cavus2024ce,Cavus2024benchmark} is consistent with its Strong (4/4) audit profile: datasets that fail group-aware holdout are unlikely to provide the stable distributional foundation needed for reliable post-modeling interpretability work.''}
+
+We hope this clarifies the scope of our manuscript and demonstrates our appreciation for the complementary line of work represented by the studies cited above. We remain willing to address any further comments that pertain directly to our submission. We defer to the editor's judgment on whether the current reviewer panel is appropriate for this manuscript.
 
 \vspace{0.3in}
 \noindent We hope these revisions fully address all remaining concerns. We are grateful for the reviewers' constructive feedback, which has substantially improved the clarity and precision of the manuscript.
