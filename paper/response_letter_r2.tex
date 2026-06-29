@@ -48,7 +48,7 @@ We thank the reviewers for their careful reading of our revised manuscript. Belo
 \textbf{Response:} We agree and have made the following changes:
 
 \begin{itemize}
-  \item Modified \texttt{run\_7dataset\_audit.py} (lines~238--244) to run IID splits on the same clean feature matrix (group-identifier columns excluded) when the adapter reports such columns. The clean iid $R^2$ is stored as \texttt{iid\_r2\_clean} in the output profile.
+  \item Modified \texttt{run\_7dataset\_audit.py} (lines~226--234) to run IID splits on the same clean feature matrix (group-identifier columns excluded) when the adapter reports such columns. The clean iid $R^2$ is stored as \texttt{iid\_r2\_clean} in the output profile.
   \item Updated the retention-ratio logic (line~337) to use \texttt{iid\_r2\_clean} when available, ensuring apples-to-apples comparison.
   \item Re-ran the full pipeline and updated all affected numbers:
     \begin{itemize}
@@ -115,7 +115,7 @@ No profile boundaries were crossed for any dataset, and the three key substantiv
 
 Reviewer~3's comments---focusing on CatBoost, SHAP/LIME/ELI5, class imbalance (76.66\%/23.34\% split), Borda Count model selection, and a 560{,}000+ record Moroccan administrative dataset---describe a manuscript that is entirely different from ours. We were therefore unable to address those specific comments in our previous revision, and we apologise that this was not made sufficiently clear at the time.
 
-Notwithstanding this mismatch, the literature on post-modeling interpretability in learning analytics---including work on counterfactual explanations and the effect of class-balancing techniques on explanation quality \citep{Cavus2024ce,Cavus2024benchmark}---is directly relevant to the downstream use of datasets like OULAD. That OULAD supports analyses as demanding as counterfactual explanation benchmarking is consistent with its Strong (4/4) audit profile in our study: datasets that fail group-aware holdout are unlikely to provide the stable distributional foundation needed for reliable post-modeling interpretability work. We have added the following sentence to the Discussion (line~352):
+Notwithstanding this mismatch, the literature on post-modeling interpretability in learning analytics---including work on counterfactual explanations and the effect of class-balancing techniques on explanation quality \citep{Cavus2024ce,Cavus2024benchmark}---is directly relevant to the downstream use of datasets like OULAD. That OULAD supports analyses as demanding as counterfactual explanation benchmarking is consistent with its Strong (4/4) audit profile in our study: datasets that fail group-aware holdout are unlikely to provide the stable distributional foundation needed for reliable post-modeling interpretability work. We have added the following sentence to the Discussion (line~351):
 
 \emph{``That OULAD supports post-modeling interpretability analyses as demanding as counterfactual explanation benchmarking \citep{Cavus2024ce,Cavus2024benchmark} is consistent with its Strong (4/4) audit profile: datasets that fail group-aware holdout are unlikely to provide the stable distributional foundation needed for reliable post-modeling interpretability work.''}
 

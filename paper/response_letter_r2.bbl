@@ -6,8 +6,8 @@
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
 \bibitem[{\c{C}}elik et~al.(2026){\c{C}}elik, Do{\u{g}}anl{\i}, and
-  {\.{S}}a{\c{s}}maz]{Sasmaz2026}
-Sadullah {\c{C}}elik, Bilge Do{\u{g}}anl{\i}, and Emel {\.{S}}a{\c{s}}maz.
+  {\c{S}}a{\c{s}}maz]{Sasmaz2026}
+Sadullah {\c{C}}elik, Bilge Do{\u{g}}anl{\i}, and Emel {\c{S}}a{\c{s}}maz.
 \newblock Comparative analysis of global education performances based on {PISA}
   2022 results: an assessment with statistical and machine learning methods.
 \newblock \emph{Quality \& Quantity}, 2026.
@@ -30,5 +30,6 @@ Mustafa Cavus and Jakub Kuzilek.
   Education and the Leveraging Large Language Models for Next Generation
   Educational Technologies Workshops co-located with {EDM} 2024}, volume 3840
   of \emph{{CEUR} Workshop Proceedings}, 2024{\natexlab{b}}.
+\newblock URL \url{https://ceur-ws.org/Vol-3840/HEXED24_paper1.pdf}.
 
 \end{thebibliography}
