@@ -354,7 +354,7 @@ def fig4_null_separation():
         ("Higher Ed (N=145)",  "Higher Ed — Partial: marginal"),
         ("MM-TBA (N=186)",     "MM-TBA — Fragile: no separation"),
     ]
-    fig, axes = plt.subplots(1, 3, figsize=(13, 4.8))
+    fig, axes = plt.subplots(1, 3, figsize=(13, 5.3))
 
     for ax, (d, lbl) in zip(axes, reps):
         record = BY_NAME[d]
@@ -417,8 +417,8 @@ def fig4_null_separation():
         "Empirical Permutation Null vs. Observed R² "
         "(500 draws × 30 splits per dataset)\n"
         "Strong datasets show clean separation; fragile datasets do not",
-        fontsize=12, fontweight="bold")
-    plt.tight_layout(rect=[0, 0.08, 1, 0.85])
+        fontsize=12, fontweight="bold", y=0.915)
+    plt.tight_layout(rect=[0, 0.08, 1, 0.92])
     _save("Figure4_Null_Separation", fname="fig4_null_separation")
 
 
@@ -496,9 +496,9 @@ def fig3_iid_vs_group():
 
     fig.suptitle(
         "iid vs. Group-Holdout R²  Across Six Datasets and Four Models",
-        fontsize=12, fontweight="bold", y=1.00)
+        fontsize=12, fontweight="bold", y=0.99)
     # Leave generous bottom space for the stacked off-scale annotations
-    plt.subplots_adjust(left=0.06, right=0.98, top=0.90, bottom=0.22, wspace=0.18)
+    plt.subplots_adjust(left=0.06, right=0.98, top=0.87, bottom=0.22, wspace=0.18)
     _save("Figure5_iid_vs_GroupHoldout", fname="fig3_iid_vs_group")
 
 
@@ -660,7 +660,7 @@ def fig8_threshold_sensitivity():
                 arrowprops=dict(arrowstyle="->", color="#555555", lw=1.2))
     ax.set_xlabel("Instability threshold  (I cutoff)")
     ax.set_ylabel("Number of datasets flagged")
-    ax.set_title("Panel A:  Instability Threshold Sensitivity\n"
+    ax.set_title("(a)  Instability Threshold Sensitivity\n"
                  "(only the highest-instability dataset remains flagged at I = 1.0)", fontsize=10)
     ax.set_ylim(-0.3, 7.8); ax.set_yticks(range(8))
     ax.legend(fontsize=9)
@@ -683,7 +683,7 @@ def fig8_threshold_sensitivity():
                 arrowprops=dict(arrowstyle="->", color="#555555", lw=1.2))
     ax.set_xlabel("Beat-rate threshold")
     ax.set_ylabel("Number of datasets flagged")
-    ax.set_title("Panel B:  Beat-Rate Threshold Sensitivity\n"
+    ax.set_title("(b)  Beat-Rate Threshold Sensitivity\n"
                  "(two datasets are flagged once the cutoff reaches about 0.84)", fontsize=10)
     ax.set_ylim(-0.3, 7.8); ax.set_yticks(range(8))
     ax.legend(fontsize=9)
@@ -693,8 +693,8 @@ def fig8_threshold_sensitivity():
     fig.suptitle(
         "Audit Conclusions Are Robust to Threshold Choice\n"
         "but Flagged-Count Details Shift at Lenient Cutoffs",
-        fontsize=12, fontweight="bold", y=0.98)
-    plt.tight_layout(rect=[0, 0, 1, 0.90])
+        fontsize=12, fontweight="bold", y=0.915)
+    plt.tight_layout(rect=[0, 0.08, 1, 0.92])
     _save("Figure8_Threshold_Sensitivity", fname="figS3_threshold_sensitivity")
 
 
