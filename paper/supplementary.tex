@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{array}
+\usepackage{float}
 \usepackage{xcolor}
 \usepackage[colorlinks=true,allcolors=blue]{hyperref}
 
@@ -213,7 +214,7 @@ OULAD & f3 & 0.175 & 0.005 & 0.00 \\
 \clearpage
 \section*{S6 Random Forest Importance Stability}
 
-\begin{table}[!h]
+\begin{table}[H]
 \centering
 \caption{Top-10 Random Forest feature importance stability across 100 repeated 80/20 splits. The coefficient of variation (CV = SD / mean) quantifies relative uncertainty. On OULAD, all top-10 CVs are below 0.12, indicating stable importance rankings. On UCI Student, CVs range from 0.08 to 0.20; on Higher Ed, from 0.18 to 0.41, reflecting greater split sensitivity in smaller datasets.}
 \label{tab:rf_importance_stability}
@@ -261,7 +262,7 @@ OULAD & f3 & 0.512 & 0.006 & 0.012 \\
 \clearpage
 \section*{S7 Feature-Name Mapping}
 
-\begin{table}[!h]
+\begin{table}[H]
 \centering
 \caption{Mapping from feature codes used in Supplementary Tables~S5--S6 to human-readable feature names for the three datasets included in the feature-attribution stability analysis. Feature codes correspond to zero-indexed column positions in the preprocessed feature matrix after one-hot encoding. Group-identifier columns (school for UCI Student, Course ID for Higher Ed) are excluded from the feature matrix, so their corresponding features do not appear in the tables.}
 \label{tab:feature_mapping}
@@ -324,7 +325,7 @@ OULAD & f0 & num\_of\_prev\_attempts \\
 \clearpage
 \section*{S8 Cross-Model Attribution Agreement}
 
-\begin{table}[!h]
+\begin{table}[H]
 \centering
 \caption{Cross-model Spearman rank correlation between linear-model absolute standardized coefficients and Random Forest impurity-based importances across 100 repeated 80/20 splits. $\rho_{\mathrm{all}}$ uses all features; $\rho_{\mathrm{top10}}$ uses the top-10 features by linear absolute coefficient in each split. On OULAD, cross-model agreement is high and stable across splits ($\rho_{\mathrm{top10}} = 0.817$, SD 0.065). On UCI Student and Higher Ed, agreement is weaker and more variable, consistent with their lower-readiness profiles.}
 \label{tab:cross_model_spearman}

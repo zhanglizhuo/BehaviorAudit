@@ -1,4 +1,4 @@
-\begin{thebibliography}{29}
+\begin{thebibliography}{26}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -110,35 +110,6 @@ Nithya Sambasivan, Shivani Kapania, Hannah Highfill, Diana Akrong, Praveen
 \newblock In \emph{Proceedings of the 2021 CHI Conference on Human Factors in
   Computing Systems}, pages 1--15, Yokohama, Japan, 2021.
 \newblock \doi{10.1145/3411764.3445518}.
-
-\bibitem[Zheng et~al.(2023)Zheng, Chiang, Sheng, Zhuang, Wu, Zhuang, Lin, Li,
-  Li, Xing, Zhang, Gonzalez, and Stoica]{Zheng2023}
-Lianmin Zheng, Wei-Lin Chiang, Ying Sheng, Siyuan Zhuang, Zhanghao Wu, Yonghao
-  Zhuang, Zi~Lin, Zhuohan Li, Dacheng Li, Eric~P. Xing, Hao Zhang, Joseph~E.
-  Gonzalez, and Ion Stoica.
-\newblock Judging {LLM}-as-a-judge with {MT-Bench} and {Chatbot Arena}.
-\newblock In \emph{Advances in Neural Information Processing Systems 36
-  (NeurIPS)}, pages 46595--46623, Red Hook, NY, USA, 2023. Curran Associates.
-
-\bibitem[Wang et~al.(2024)Wang, Li, Chen, Cai, Zhu, Lin, Cao, Kong, Liu, Liu,
-  and Sui]{Wang2024}
-Peiyi Wang, Lei Li, Liang Chen, Zefan Cai, Dawei Zhu, Binghuai Lin, Yunbo Cao,
-  Lingpeng Kong, Qi~Liu, Tianyu Liu, and Zhifang Sui.
-\newblock Large language models are not fair evaluators.
-\newblock In \emph{Proceedings of the 62nd Annual Meeting of the Association
-  for Computational Linguistics (ACL)}, pages 9440--9450, Bangkok, Thailand,
-  2024. Association for Computational Linguistics.
-\newblock \doi{10.18653/v1/2024.acl-long.511}.
-
-\bibitem[Huang et~al.(2024)Huang, Bu, Zhou, Qu, Liu, Yang, Xu, and
-  Zhao]{Huang2024llm}
-Hui Huang, Xingyuan Bu, Hongli Zhou, Yingqi Qu, Jing Liu, Muyun Yang, Bing Xu,
-  and Tiejun Zhao.
-\newblock An empirical study of {LLM}-as-a-judge for {LLM} evaluation:
-  Fine-tuned judge model is not a general substitute for {GPT-4}.
-\newblock Preprint, arXiv:2403.02839, 2024.
-\newblock URL \url{https://arxiv.org/abs/2403.02839}.
-\newblock Accepted to Findings of ACL 2025.
 
 \bibitem[Ioannidis(2005)]{Ioannidis2005}
 John P.~A. Ioannidis.
