@@ -318,7 +318,7 @@ Entrance Exam & Logistic & $0.512 \pm 0.039$ & $0.762$ & $0.188$ & $0.390$ & $0.
 \subsection{Feature-Attribution Stability}
 \label{sec:feat_attribution}
 
-A supporting analysis evaluates whether the predictive signal captured by the model is stable across repeated splits, or whether it reflects split-specific noise. For UCI Student, Higher Ed, and OULAD (chosen to span Fragile-to-Strong profiles), linear-model standardized coefficients and Random Forest feature importances (impurity-based, using scikit-learn's default \texttt{feature\_importances\_}) are tracked across 100 repeated 80/20 splits (Supplementary Tables~S5--S6).
+To assess whether the predictive signal reflects stable structure or split-specific noise, we track linear-model standardized coefficients and Random Forest feature importances (impurity-based, using scikit-learn's default \texttt{feature\_importances\_}) across 100 repeated 80/20 splits for UCI Student, Higher Ed, and OULAD (chosen to span Fragile-to-Strong profiles; Supplementary Tables~S5--S6).
 
 On OULAD, the top-10 linear coefficients show very low cross-split standard deviations (SD $\leq 0.006$) with zero sign flips, indicating consistent directional relationships. Random Forest importances are similarly stable, with coefficients of variation (CV) below 0.12 for the top-10 features. On UCI Student, coefficient SDs are larger (up to 0.097 for f9, which shows a 3\% sign-flip rate), and RF importance CVs range from 0.08 to 0.20, reflecting greater uncertainty about feature rankings. On Higher Ed, the pattern is most pronounced: coefficient SDs reach 0.134 (f0), and RF importance CVs range from 0.18 to 0.41, meaning that feature rankings for the smallest dataset ($N=145$) vary substantially across splits.
 

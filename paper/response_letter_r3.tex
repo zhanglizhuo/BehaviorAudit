@@ -70,19 +70,19 @@ either the analysis supports the audit profiles or it does not.
 clear, positive scope statement.
 
 \begin{itemize}
-\item The opening sentence now reads: ``To assess whether predictive
-  signal reflects stable structure or split-specific noise, we track
-  linear-model standardized coefficients and Random Forest feature
-  importances across 100 repeated 80/20 splits.''
+\item The opening sentence now reads: ``To assess whether the
+  predictive signal reflects stable structure or split-specific noise,
+  we track linear-model standardized coefficients and Random Forest
+  feature importances across 100 repeated 80/20 splits.''
 \item The concluding sentence---previously a negation---now reads:
-  ``Because the feature-attribution analysis is conducted under iid random
-  splits, it measures split-level attribution stability as a proxy for
-  dataset readiness; evaluating attribution robustness under group-aware
-  holdout is a natural next step.''
+  ``Together, these results show that iid-based attribution stability
+  provides a proxy for dataset readiness: Strong datasets maintain
+  stable attribution patterns across splits, while Fragile datasets
+  exhibit split-dependent rankings.''
 \end{itemize}
 
 The section now states what the analysis does without apologising for
-what it does not do.  (behavioraudit.tex, lines~318,~326)
+what it does not do.  (behavioraudit.tex, lines~321,~325)
 
 \subsection*{Comment~R3-2: Cross-model attribution agreement}
 
@@ -118,7 +118,7 @@ agreement is high and remarkably stable across splits; on UCI Student and
 Higher Ed, the agreement is lower and substantially more variable.  We
 have added a paragraph in the feature-attribution section discussing
 these results and their alignment with the audit profiles.
-(Supplementary Table~S8; behavioraudit.tex, lines~324--325)
+  (Supplementary Table~S8; behavioraudit.tex, line~325)
 
 \subsection*{Comment~R3-3: Group-identifier features in attribution tables}
 
@@ -241,13 +241,13 @@ clarity:
 \begin{itemize}
 \item \textbf{Before:} ``all features are standardised before model
   fitting''
-\item \textbf{After:} ``Within each split, all features are Z-score
-  standardised using parameters fitted exclusively on the training
+  \item \textbf{After:} ``Within each split, all features are Z-score
+  standardized using parameters fitted exclusively on the training
   partition and applied to the corresponding test partition.''
 \end{itemize}
 
 The supplementary Table~S3 caption has been updated similarly.
-(behavioraudit.tex, line~136; supplementary.tex, Table~S3 caption)
+(behavioraudit.tex, line~137; supplementary.tex, Table~S3 caption)
 
 \subsection*{Comment~R3-7: Supplementary quality control}
 
