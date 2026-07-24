@@ -415,7 +415,7 @@ def fig4_null_separation():
 
     fig.suptitle(
         "Empirical Permutation Null vs. Observed R² "
-        "(500 draws × 10 splits per dataset)\n"
+        "(500 draws × 30 splits per dataset)\n"
         "Strong datasets show clean separation; fragile datasets do not",
         fontsize=12, fontweight="bold")
     plt.tight_layout(rect=[0, 0.08, 1, 0.85])
@@ -693,9 +693,8 @@ def fig8_threshold_sensitivity():
     fig.suptitle(
         "Audit Conclusions Are Robust to Threshold Choice\n"
         "but Flagged-Count Details Shift at Lenient Cutoffs",
-        fontsize=12, fontweight="bold", y=1.02)
-    plt.tight_layout()
-    fig.subplots_adjust(top=0.86)
+        fontsize=12, fontweight="bold", y=0.98)
+    plt.tight_layout(rect=[0, 0, 1, 0.90])
     _save("Figure8_Threshold_Sensitivity", fname="figS3_threshold_sensitivity")
 
 
