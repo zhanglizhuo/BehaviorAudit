@@ -30,7 +30,7 @@
 
 This document contains supplementary tables and figures for the main manuscript.
 
-\section*{S1 Supplementary Table}
+\section*{S1 Model-Complexity Ablation}
 
 \begin{table}[!h]
 \centering
@@ -84,7 +84,7 @@ OULAD & Linear & $0.296 \pm 0.002$ & $0.471$ & $0.687$ & $0.010$ & $1.00$ \\
 
 \begin{table}[!h]
 \centering
-\caption{Exploratory data analysis summary for the seven audited datasets. All releases contain zero missing values. The datasets that fail the audit (MM-TBA, Higher Ed, UCI Student) do not show distinctive EDA red flags---such as extreme imbalance or redundant features---that would pre-emptively disqualify them; the fragility is only revealed through the four-dimension audit.}
+\caption{Exploratory data analysis summary for the seven audited datasets. All releases contain zero missing values. The datasets that fail the audit (MM-TBA, Entrance Exam, Higher Ed, UCI Student) each fail at least one dimension, yet none show distinctive EDA red flags---such as extreme imbalance or redundant features---that would pre-emptively disqualify them; the fragility is only revealed through the four-dimension audit.}
 \label{tab:eda_summary}
 \small
 \begin{tabular}{l r r l l r r r}
@@ -137,27 +137,27 @@ OULAD & Linear & 0.284 & 0.270 & 0.014 & 0.024 \\
 
 \begin{table}[!h]
 \centering
-\caption{Across-group variation in group-holdout $R^2$. The SD quantifies how consistent the group-holdout performance is across held-out groups. For UCI Student (2 schools), the linear-model SD of 0.154 with a narrow range ($-0.206$ to $0.012$) confirms uniform collapse rather than group-specific failure. For OULAD (22 cohorts), the across-cohort SD of 0.166 and full range ($0.041$ to $0.654$) reflect positive---though variable---cross-group generalization.}
+\caption{Across-group variation in group-holdout $R^2$. The SD quantifies how consistent the group-holdout performance is across held-out groups. For UCI Student (2 schools), the linear-model SD of 0.109 with a narrow range ($-0.206$ to $0.012$) confirms uniform collapse rather than group-specific failure. For OULAD (22 cohorts), the across-cohort SD of 0.162 and full range ($0.041$ to $0.654$) reflect positive---though variable---cross-group generalization.}
 \label{tab:group_holdout_uncertainty}
 \small
 \begin{tabular}{l l r r r r}
 \toprule
 Dataset & Model & Groups tested & Mean $R^2$ & SD $R^2$ & Min / Max $R^2$ \\
 \midrule
-UCI Student & Linear & 2 & $-0.097$ & 0.154 & $-0.206$ / 0.012 \\
- & Ridge & 2 & $-0.094$ & 0.151 & $-0.201$ / 0.012 \\
- & RF & 2 & 0.018 & 0.154 & $-0.091$ / 0.127 \\
- & GBT & 2 & $-0.057$ & 0.192 & $-0.193$ / 0.079 \\
+UCI Student & Linear & 2 & $-0.097$ & 0.109 & $-0.206$ / 0.012 \\
+ & Ridge & 2 & $-0.094$ & 0.106 & $-0.201$ / 0.012 \\
+ & RF & 2 & 0.018 & 0.109 & $-0.091$ / 0.127 \\
+ & GBT & 2 & $-0.057$ & 0.136 & $-0.193$ / 0.079 \\
 \midrule
-Higher Ed & Linear & 4 & $-8.79$ & 7.37 & $-18.65$ / $-0.975$ \\
- & Ridge & 4 & $-8.58$ & 7.24 & $-18.35$ / $-0.969$ \\
- & RF & 4 & $-13.0$ & 16.20 & $-35.59$ / $-0.169$ \\
- & GBT & 4 & $-10.6$ & 13.10 & $-29.11$ / $-0.597$ \\
+Higher Ed & Linear & 4 & $-8.79$ & 6.39 & $-18.65$ / $-0.975$ \\
+ & Ridge & 4 & $-8.58$ & 6.27 & $-18.35$ / $-0.969$ \\
+ & RF & 4 & $-13.0$ & 14.0 & $-35.59$ / $-0.169$ \\
+ & GBT & 4 & $-10.6$ & 11.3 & $-29.11$ / $-0.597$ \\
 \midrule
-OULAD & Linear & 22 & 0.410 & 0.166 & 0.041 / 0.654 \\
- & Ridge & 22 & 0.410 & 0.166 & 0.041 / 0.654 \\
- & RF & 22 & 0.482 & 0.216 & $-0.052$ / 0.747 \\
- & GBT & 22 & 0.533 & 0.169 & 0.039 / 0.752 \\
+OULAD & Linear & 22 & 0.410 & 0.162 & 0.041 / 0.654 \\
+ & Ridge & 22 & 0.410 & 0.162 & 0.041 / 0.654 \\
+ & RF & 22 & 0.482 & 0.211 & $-0.052$ / 0.747 \\
+ & GBT & 22 & 0.533 & 0.165 & 0.039 / 0.752 \\
 \bottomrule
 \end{tabular}
 \end{table}
