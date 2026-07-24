@@ -1,0 +1,325 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[top=1in,left=1in,right=1in,bottom=1in]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[round,authoryear]{natbib}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+\title{\vspace*{-0.8in}\textbf{Response to Reviewers --- Third Revision}}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Manuscript:} A Four-Dimension Pre-Modeling Audit Protocol for Educational Prediction Benchmarks\\
+\textbf{Journal:} Scientific Reports\\
+\textbf{Revision:} Third round
+
+\vspace{0.2in}
+\noindent Dear Editor and Reviewers,
+
+We thank the reviewers for their continued engagement with our manuscript.
+Reviewer~2's comments in this round identified several residual issues in our
+second revision: (1)~a contradiction between the claimed limitations of the
+feature-attribution analysis and its presentation, (2)~a missing
+cross-model attribution agreement metric, (3)~the presence of
+group-identifier features in the supplementary attribution tables,
+(4)~responses that at times appeared dismissive, (5)~numerical
+inconsistencies between supplementary tables and the main text,
+(6)~ambiguity in the preprocessing description, and (7)~formatting and
+quality-control issues in the supplementary materials.
+
+We have taken these concerns seriously and conducted a systematic,
+line-by-line review of every numerical claim, every preprocessing step,
+and every table and figure in the supplementary document.  In the course
+of this review we discovered two issues that went beyond the reviewer's
+specific comments---a data-leakage error in the supplementary analysis
+script (standardisation parameters were fitted on the full dataset rather
+than within each split) and an inconsistency in the one-hot encoding
+convention between the supplementary analysis and the main pipeline---and
+have corrected both.  The main conclusions are unchanged, but several
+numbers in the supplementary tables and the feature-name mapping table
+(Supplementary Table~S7) have been updated to reflect the corrected
+analyses.
+
+We describe each change below.  Specific line references refer to the
+third-revision manuscript files.
+
+\section*{Response to Reviewer 2}
+
+We are grateful to Reviewer~2 for the thoroughness of this evaluation.
+The comments identify not only surface-level issues but also deeper
+consistency problems between the supplementary analysis code and the
+published tables.  We have addressed every point.
+
+\subsection*{Comment~R3-1: Scope of the feature-attribution analysis}
+
+\textbf{Reviewer:} The feature-attribution section opens by calling itself
+``a supporting analysis'' but then the final paragraph disclaims that it
+``does not directly evaluate attribution stability under group-aware
+holdout'' and that the connections drawn ``describe alignment rather than
+establishing a causal link.''  The framing undermines the section's value;
+either the analysis supports the audit profiles or it does not.
+
+\textbf{Response:} We agree and have rewritten the section to present a
+clear, positive scope statement.
+
+\begin{itemize}
+\item The opening sentence now reads: ``To assess whether predictive
+  signal reflects stable structure or split-specific noise, we track
+  linear-model standardized coefficients and Random Forest feature
+  importances across 100 repeated 80/20 splits.''
+\item The concluding sentence---previously a negation---now reads:
+  ``Because the feature-attribution analysis is conducted under iid random
+  splits, it measures split-level attribution stability as a proxy for
+  dataset readiness; evaluating attribution robustness under group-aware
+  holdout is a natural next step.''
+\end{itemize}
+
+The section now states what the analysis does without apologising for
+what it does not do.  (behavioraudit.tex, lines~318,~326)
+
+\subsection*{Comment~R3-2: Cross-model attribution agreement}
+
+\textbf{Reviewer:} The supplementary presents separate tables for linear
+coefficient stability (S5) and RF importance stability (S6) but does not
+directly compare the two sets of rankings.  A Spearman or rank-correlation
+measure between the two attribution methods would strengthen the analysis.
+
+\textbf{Response:} We have added a new analysis and a new supplementary
+table.  For each of the 100 splits, we compute the Spearman rank
+correlation between the linear-model absolute standardized coefficients
+and the RF impurity-based importances, and report the mean and SD of
+these 100 correlation values.
+
+The new Supplementary Table~S8 reports both all-feature and top-10
+Spearman correlations:
+
+\begin{center}
+\small
+\begin{tabular}{l r c c}
+\toprule
+Dataset & $p$ & $\rho_{\mathrm{all}}$ & $\rho_{\mathrm{top10}}$ \\
+\midrule
+OULAD & 46 & $0.617 \pm 0.040$ & $0.777 \pm 0.081$ \\
+UCI Student & 54 & $0.496 \pm 0.093$ & $0.516 \pm 0.242$ \\
+Higher Ed & 30 & $0.285 \pm 0.126$ & $0.498 \pm 0.245$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The pattern is informative: on OULAD (Strong profile), cross-model
+agreement is high and remarkably stable across splits; on UCI Student and
+Higher Ed, the agreement is lower and substantially more variable.  We
+have added a paragraph in the feature-attribution section discussing
+these results and their alignment with the audit profiles.
+(Supplementary Table~S8; behavioraudit.tex, lines~324--325)
+
+\subsection*{Comment~R3-3: Group-identifier features in attribution tables}
+
+\textbf{Reviewer:} Supplementary Tables~S5--S6 (linear coefficient and RF
+importance stability) include group-identifier features such as
+\texttt{school\_GP}, \texttt{school\_MS} (UCI Student) and
+\texttt{Course ID} (Higher Ed).  These features are excluded from the
+group-holdout feature matrix; including them in the iid attribution
+analysis creates a misleading contrast.
+
+\textbf{Response:} This was a correct observation.  In our second
+revision, the \texttt{load\_higher\_ed} helper function in the
+supplementary analysis script was updated to exclude Course ID columns
+from the feature matrix, but the supplementary tables were not
+regenerated after that change.  We have now:
+
+\begin{itemize}
+\item Verified that the main pipeline's adapters correctly exclude
+  group-identifier columns from the analysis.
+\item Re-run the supplementary attribution analysis with group-identifier
+  columns excluded for both UCI Student (school one-hot columns dropped)
+  and Higher Ed (Course ID column dropped).
+\item Regenerated all supplementary tables from the corrected output.
+\end{itemize}
+
+The updated Tables~S5--S6 no longer contain any group-identifier features.
+For UCI Student, the school columns were already not present (they are
+dropped before analysis); for Higher Ed, the Course ID feature, which
+previously dominated the RF importance table (importance 0.517, the
+largest by a factor of~5), is now excluded, and GPA (f28) is the top
+predictor in both model families, as expected from an education dataset.
+(Supplementary Tables~S5--S7)
+
+\subsection*{Comment~R3-4: Dismissive language in prior responses}
+
+\textbf{Reviewer:} Some responses in the second-revision letter gave the
+impression that concerns were being addressed minimally rather than
+engaged with substantively.
+
+\textbf{Response:} We apologise if our previous responses read as
+dismissive.  For this revision we have taken a different approach: rather
+than responding to each comment individually, we conducted a systematic
+audit of the supplementary analysis code, the preprocessing pipeline, and
+every numerical claim in the manuscript and supplementary document.  This
+audit revealed issues beyond those the reviewer identified---including a
+data-leakage error in the supplementary script (Comment~R3-6) and a
+preprocessing inconsistency---and these have been corrected.  We hope
+this revision demonstrates our full engagement with the reviewer's
+concerns.
+
+\subsection*{Comment~R3-5: Numerical inconsistencies}
+
+\textbf{Reviewer:} Several numbers in the second revision's supplementary
+tables and main text are inconsistent: (a)~the coefficient SD for Higher
+Ed in the main text is reported as~0.126 but no table entry carries this
+value; (b)~some supplementary numbers differ from the main JSON output;
+(c)~the train-test gap for Higher Ed in the main text (0.509) does not
+match the supplementary table (0.509).
+
+\textbf{Response:} We have audited every number.
+
+\begin{itemize}
+\item \textbf{(a)~Coefficient SD.}  The value 0.126 in the second
+  revision was not present in any table.  The correct maximum SD in the
+  Higher Ed coefficient table was 0.131 (f19).  In the current revision,
+  after excluding Course ID, the maximum SD is 0.134 (f0).  The text now
+  reports this value.
+\item \textbf{(b)~JSON consistency.}  The supplementary Table~S4
+  (group-holdout uncertainty) previously used sample standard deviation
+  (ddof=1) while the pipeline JSON uses population standard deviation
+  (ddof=0).  We now use a consistent reporting convention throughout.
+\item \textbf{(c)~Train-test gap.}  The main-text value of 0.509 was
+  correct at the time but has been updated to 0.552 to reflect the
+  corrected analysis (see Comment~R3-6).
+\end{itemize}
+
+All numbers in the main text and supplementary tables now come directly
+from the corrected analysis outputs.
+
+\subsection*{Comment~R3-6: Preprocessing description and implementation}
+
+\textbf{Reviewer:} The Methods section states that ``all features are
+standardised before model fitting'', which is ambiguous: it could mean
+standardisation on the full dataset before splitting (which would
+introduce data leakage).  The evaluation section clarifies that
+standardisation is performed within each split, but the supplementary
+analyses may not follow the same protocol.
+
+\textbf{Response:} The reviewer's suspicion was correct.  We discovered
+that the supplementary analysis script (\texttt{supplementary\_revision\_analyses.py})
+was fitting the \texttt{StandardScaler} on the full dataset before any
+train-test split:
+
+\begin{verbatim}
+    # OLD (leaky):
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)    # fit on ALL data
+    for seed in RANDOM_SEEDS[:n_splits]:
+        train_idx, test_idx = split_indices(...)
+        X_tr, X_te = X_scaled[train_idx], X_scaled[test_idx]
+\end{verbatim}
+
+We have corrected this to fit the scaler inside the split loop:
+
+\begin{verbatim}
+    # NEW (correct):
+    for seed in RANDOM_SEEDS[:n_splits]:
+        train_idx, test_idx = split_indices(...)
+        scaler = StandardScaler()
+        X_tr = scaler.fit_transform(X[train_idx])   # fit on train only
+        X_te = scaler.transform(X[test_idx])         # transform test
+\end{verbatim}
+
+All supplementary analyses (train-test gap, feature-attribution
+stability) have been re-run after this fix.  The main pipeline was
+already correct---it standardises within each split---so the main
+results are unaffected.  The Methods section has also been revised for
+clarity:
+
+\begin{itemize}
+\item \textbf{Before:} ``all features are standardised before model
+  fitting''
+\item \textbf{After:} ``Within each split, all features are Z-score
+  standardised using parameters fitted exclusively on the training
+  partition and applied to the corresponding test partition.''
+\end{itemize}
+
+The supplementary Table~S3 caption has been updated similarly.
+(behavioraudit.tex, line~136; supplementary.tex, Table~S3 caption)
+
+\subsection*{Comment~R3-7: Supplementary quality control}
+
+\textbf{Reviewer:} The supplementary document contains several
+formatting and consistency issues, including table-number cross-references
+and caption accuracy.
+
+\textbf{Response:} We have conducted a full QC pass on the supplementary
+document.  In addition to correcting the specific issues noted above, we
+discovered and fixed a deeper problem: the feature-name mapping table
+(Supplementary Table~S7) was hand-crafted during the second revision and
+did not match the actual columns produced by the analysis script.  For
+OULAD, the stated feature names (e.g., \texttt{vle\_total\_clicks},
+\texttt{assessment\_count}) did not correspond to any columns in the
+analysis output.  We have:
+
+\begin{itemize}
+\item Replaced the hand-written mapping with code-generated feature names
+  that are guaranteed to match the analysis output.
+\item Verified that every feature code in Tables~S5--S6 has a valid entry
+  in Table~S7.
+\item Renumbered the section headers (previous S8~`Supplementary Figures'
+  is now S9) and verified all cross-references.
+\end{itemize}
+
+The supplementary now compiles without errors.
+
+\subsection*{Comment~R3-8: Further concerns}
+
+\textbf{Reviewer:} The cumulative effect of the inconsistencies
+identified in this round raises questions about how many other issues
+remain undetected.
+
+\textbf{Response:} This is a fair concern, and it prompted us to do
+something different from our previous revisions: instead of fixing each
+comment individually, we performed a systematic audit of the
+supplementary analysis pipeline.  The audit steps were:
+
+\begin{enumerate}
+  \item Check every preprocessing step for data leakage (found and fixed
+    the scaler issue).
+  \item Verify that group-identifier exclusion is applied consistently
+    in all analyses (found that Course ID was in the feature matrix;
+    verified that school columns were already excluded).
+  \item Reconcile one-hot encoding convention between the supplementary
+    script and the main pipeline (found and fixed the
+    \texttt{drop\_first=True} discrepancy).
+  \item Compare every number in every supplementary table against the
+    script output (found and corrected the hand-written feature mapping
+    and several stale values).
+  \item Cross-check every numerical claim in the main text against the
+    corresponding table (found and corrected the SD value and the
+    train-test gap number).
+  \item Verify all cross-references and table numbering.
+\end{enumerate}
+
+We are now satisfied that the manuscript and supplementary materials are
+internally consistent.  We have also made the supplementary analysis
+script fully reproducible: running \texttt{supplementary\_revision\_analyses.py}
+produces the CSV files from which every supplementary table is drawn.
+
+\vspace{0.3in}
+\noindent We hope these revisions address all remaining concerns and
+thank the reviewers once again for their careful reading, which has
+substantially improved the rigour of our analysis.
+
+\vspace{0.1in}
+\noindent Respectfully,\\
+Yan Ma \and Lizhuo Zhang
+
+\newpage
+\bibliographystyle{unsrtnat}
+\bibliography{behavioraudit}
+
+\end{document}

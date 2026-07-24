@@ -107,7 +107,7 @@ Higher Ed & 145 & 31 & Grade [0,7] & $\mu=3.5$, $\sigma=2.2$ & 9 & 2/16/66 \\
 
 \begin{table}[!h]
 \centering
-\caption{Train-test $R^2$ gap across 100 repeated 80/20 splits using the same preprocessing pipeline as the main audit (pre-standardise, then split). The gap (train $R^2$ -- test $R^2$) quantifies how much of the apparent iid signal is lost on held-out samples from the same distribution. On UCI Student, the linear-model train-test gap (0.105) is small relative to the iid-to-group-holdout collapse (0.242 to $-0.097$), confirming that the group-holdout failure is not attributable to ordinary overfitting. On OULAD, both gaps remain small.}
+\caption{Train-test $R^2$ gap across 100 repeated 80/20 splits. Within each split, Z-score parameters are fitted exclusively on the training partition and applied to the test partition. The gap (train $R^2$ -- test $R^2$) quantifies how much of the apparent iid signal is lost on held-out samples from the same distribution. On UCI Student, the linear-model train-test gap (0.105) is small relative to the iid-to-group-holdout collapse (0.242 to $-0.097$), confirming that the group-holdout failure is not attributable to ordinary overfitting. On OULAD, both gaps remain small.}
 \label{tab:train_test_gap}
 \small
 \begin{tabular}{l l r r r r}
@@ -116,18 +116,18 @@ Dataset & Model & Train $R^2$ mean & Test $R^2$ mean & Gap mean & Gap SD \\
 \midrule
 UCI Student & Linear & 0.347 & 0.242 & 0.105 & 0.091 \\
  & Ridge & 0.347 & 0.242 & 0.105 & 0.091 \\
- & RF & 0.898 & 0.276 & 0.622 & 0.081 \\
- & GBT & 0.714 & 0.244 & 0.470 & 0.103 \\
+ & RF & 0.895 & 0.265 & 0.630 & 0.084 \\
+ & GBT & 0.603 & 0.259 & 0.345 & 0.090 \\
 \midrule
-Higher Ed & Linear & 0.550 & 0.041 & 0.509 & 0.299 \\
- & Ridge & 0.550 & 0.054 & 0.496 & 0.292 \\
- & RF & 0.937 & 0.518 & 0.419 & 0.140 \\
- & GBT & 0.919 & 0.494 & 0.425 & 0.141 \\
+Higher Ed & Linear & 0.460 & $-0.092$ & 0.552 & 0.335 \\
+ & Ridge & 0.459 & $-0.079$ & 0.539 & 0.328 \\
+ & RF & 0.877 & 0.085 & 0.793 & 0.143 \\
+ & GBT & 0.850 & 0.054 & 0.796 & 0.171 \\
 \midrule
-OULAD & Linear & 0.282 & 0.268 & 0.014 & 0.024 \\
- & Ridge & 0.282 & 0.268 & 0.014 & 0.024 \\
- & RF & 0.912 & 0.376 & 0.536 & 0.024 \\
- & GBT & 0.468 & 0.399 & 0.069 & 0.024 \\
+OULAD & Linear & 0.284 & 0.270 & 0.014 & 0.024 \\
+ & Ridge & 0.284 & 0.270 & 0.014 & 0.024 \\
+ & RF & 0.909 & 0.374 & 0.535 & 0.026 \\
+ & GBT & 0.432 & 0.386 & 0.045 & 0.025 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -167,45 +167,45 @@ OULAD & Linear & 22 & 0.410 & 0.166 & 0.041 / 0.654 \\
 
 \begin{table}[!h]
 \centering
-\caption{Top-10 linear-model standardized coefficient stability across 100 repeated 80/20 splits for the three illustrative datasets. The sign-flip rate is the proportion of splits where the coefficient sign differs from the sign of the mean coefficient. On OULAD, all top-10 features show zero sign flips with low SD, indicating stable directional relationships. On UCI Student and Higher Ed, sign-flip rates remain zero for the top features but SDs are proportionally larger, reflecting greater uncertainty about effect magnitude.}
+\caption{Top-10 linear-model standardized coefficient stability across 100 repeated 80/20 splits for the three illustrative datasets. The sign-flip rate is the proportion of splits where the coefficient sign differs from the sign of the mean coefficient. On OULAD, all top-10 features show zero sign flips with low SD, indicating stable directional relationships. On UCI Student, sign-flip rates are near zero for most top features but f9 shows a 3\% rate and f2 a 4\% rate, indicating occasional directional instability; SDs are proportionally larger than on OULAD. On Higher Ed, sign-flip rates are near zero for most top features (f9: 2\%) with SDs reflecting greater uncertainty about effect magnitude.}
 \label{tab:linear_coef_stability}
 \small
 \begin{tabular}{l l r r r}
 \toprule
 Dataset & Feature & Mean coef & SD coef & Sign-flip rate \\
 \midrule
-UCI Student & f5 & $-0.867$ & 0.064 & 0.00 \\
- & f35 & 0.550 & 0.062 & 0.00 \\
- & f4 & 0.394 & 0.059 & 0.00 \\
- & f30 & $-0.341$ & 0.060 & 0.00 \\
- & f14 & 0.289 & 0.068 & 0.00 \\
- & f17 & 0.260 & 0.066 & 0.00 \\
- & f11 & $-0.255$ & 0.060 & 0.00 \\
- & f13 & $-0.251$ & 0.068 & 0.00 \\
- & f37 & $-0.228$ & 0.056 & 0.00 \\
- & f23 & $-0.221$ & 0.114 & 0.01 \\
+UCI Student & f5 & $-0.862$ & 0.063 & 0.00 \\
+ & f4 & 0.393 & 0.057 & 0.00 \\
+ & f49 & 0.270 & 0.032 & 0.00 \\
+ & f48 & $-0.270$ & 0.032 & 0.00 \\
+ & f11 & $-0.253$ & 0.051 & 0.00 \\
+ & f30 & 0.229 & 0.061 & 0.00 \\
+ & f33 & $-0.217$ & 0.054 & 0.00 \\
+ & f9 & $-0.202$ & 0.097 & 0.03 \\
+ & f2 & 0.199 & 0.086 & 0.04 \\
+ & f22 & 0.190 & 0.047 & 0.00 \\
 \midrule
-Higher Ed & f30 & 0.986 & 0.120 & 0.00 \\
- & f28 & 0.769 & 0.104 & 0.00 \\
- & f1  & 0.732 & 0.120 & 0.00 \\
- & f0  & $-0.540$ & 0.128 & 0.00 \\
- & f17 & 0.529 & 0.104 & 0.00 \\
- & f8  & $-0.429$ & 0.088 & 0.00 \\
- & f4  & 0.420 & 0.128 & 0.00 \\
- & f2  & 0.392 & 0.108 & 0.00 \\
- & f19 & $-0.342$ & 0.131 & 0.00 \\
- & f3  & $-0.298$ & 0.113 & 0.00 \\
+Higher Ed & f28 & 0.669 & 0.123 & 0.00 \\
+ & f0  & $-0.662$ & 0.134 & 0.00 \\
+ & f17 & 0.618 & 0.121 & 0.00 \\
+ & f1  & 0.506 & 0.119 & 0.00 \\
+ & f8  & $-0.418$ & 0.103 & 0.00 \\
+ & f25 & 0.402 & 0.119 & 0.00 \\
+ & f4  & 0.401 & 0.132 & 0.00 \\
+ & f2  & 0.332 & 0.108 & 0.00 \\
+ & f15 & $-0.304$ & 0.103 & 0.00 \\
+ & f9  & 0.300 & 0.109 & 0.02 \\
 \midrule
 OULAD & f3 & 0.159 & 0.003 & 0.00 \\
- & f8 & $-0.144$ & 0.008 & 0.00 \\
- & f2 & 0.138 & 0.003 & 0.00 \\
- & f5 & $-0.135$ & 0.007 & 0.00 \\
- & f6 & $-0.076$ & 0.007 & 0.00 \\
- & f7 & $-0.059$ & 0.005 & 0.00 \\
- & f24 & $-0.051$ & 0.004 & 0.00 \\
- & f4 & $-0.045$ & 0.008 & 0.00 \\
+ & f2 & 0.137 & 0.003 & 0.00 \\
+ & f6 & $-0.060$ & 0.003 & 0.00 \\
+ & f9 & $-0.053$ & 0.002 & 0.00 \\
+ & f5 & 0.048 & 0.003 & 0.00 \\
+ & f10 & 0.046 & 0.003 & 0.00 \\
+ & f31 & $-0.042$ & 0.005 & 0.00 \\
  & f1 & $-0.040$ & 0.003 & 0.00 \\
- & f0 & $-0.035$ & 0.003 & 0.00 \\
+ & f0 & $-0.034$ & 0.003 & 0.00 \\
+ & f33 & $-0.034$ & 0.006 & 0.00 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -215,45 +215,45 @@ OULAD & f3 & 0.159 & 0.003 & 0.00 \\
 
 \begin{table}[!h]
 \centering
-\caption{Top-10 Random Forest feature importance stability across 100 repeated 80/20 splits. The coefficient of variation (CV = SD / mean) quantifies relative uncertainty. On OULAD, all top-10 CVs are below 0.12, indicating stable importance rankings. On UCI Student, CVs range from 0.08 to 0.21; on Higher Ed, from 0.18 to 0.36, reflecting greater split sensitivity in smaller datasets.}
+\caption{Top-10 Random Forest feature importance stability across 100 repeated 80/20 splits. The coefficient of variation (CV = SD / mean) quantifies relative uncertainty. On OULAD, all top-10 CVs are below 0.12, indicating stable importance rankings. On UCI Student, CVs range from 0.08 to 0.20; on Higher Ed, from 0.18 to 0.41, reflecting greater split sensitivity in smaller datasets.}
 \label{tab:rf_importance_stability}
 \small
 \begin{tabular}{l l r r r}
 \toprule
 Dataset & Feature & Mean importance & SD importance & CV \\
 \midrule
-UCI Student & f5 & 0.195 & 0.015 & 0.079 \\
- & f12 & 0.071 & 0.007 & 0.099 \\
- & f0 & 0.048 & 0.005 & 0.110 \\
- & f8 & 0.046 & 0.006 & 0.139 \\
- & f7 & 0.042 & 0.005 & 0.124 \\
- & f4 & 0.041 & 0.006 & 0.147 \\
- & f10 & 0.039 & 0.005 & 0.138 \\
- & f2 & 0.038 & 0.004 & 0.118 \\
- & f35 & 0.037 & 0.008 & 0.209 \\
- & f9 & 0.037 & 0.007 & 0.185 \\
+UCI Student & f5 & 0.193 & 0.015 & 0.076 \\
+ & f12 & 0.068 & 0.007 & 0.100 \\
+ & f8 & 0.047 & 0.006 & 0.125 \\
+ & f0 & 0.044 & 0.005 & 0.107 \\
+ & f7 & 0.039 & 0.005 & 0.121 \\
+ & f4 & 0.038 & 0.006 & 0.145 \\
+ & f2 & 0.036 & 0.004 & 0.123 \\
+ & f10 & 0.036 & 0.005 & 0.130 \\
+ & f9 & 0.036 & 0.007 & 0.198 \\
+ & f6 & 0.034 & 0.005 & 0.155 \\
 \midrule
-Higher Ed & f30 & 0.517 & 0.057 & 0.110 \\
- & f28 & 0.106 & 0.026 & 0.245 \\
- & f1  & 0.035 & 0.021 & 0.611 \\
- & f16 & 0.022 & 0.006 & 0.273 \\
- & f10 & 0.022 & 0.006 & 0.278 \\
- & f27 & 0.020 & 0.008 & 0.413 \\
- & f25 & 0.020 & 0.005 & 0.273 \\
- & f15 & 0.020 & 0.004 & 0.214 \\
- & f3  & 0.019 & 0.005 & 0.284 \\
- & f12 & 0.019 & 0.005 & 0.279 \\
+Higher Ed & f28 & 0.131 & 0.028 & 0.212 \\
+ & f1  & 0.073 & 0.030 & 0.409 \\
+ & f3  & 0.064 & 0.016 & 0.243 \\
+ & f27 & 0.053 & 0.014 & 0.255 \\
+ & f10 & 0.046 & 0.010 & 0.211 \\
+ & f12 & 0.044 & 0.008 & 0.178 \\
+ & f11 & 0.040 & 0.009 & 0.212 \\
+ & f16 & 0.039 & 0.008 & 0.205 \\
+ & f0  & 0.038 & 0.010 & 0.255 \\
+ & f7  & 0.037 & 0.011 & 0.291 \\
 \midrule
-OULAD & f3 & 0.282 & 0.011 & 0.038 \\
- & f2 & 0.271 & 0.011 & 0.039 \\
- & f8 & 0.048 & 0.003 & 0.066 \\
- & f1 & 0.039 & 0.002 & 0.041 \\
- & f5 & 0.025 & 0.001 & 0.057 \\
- & f4 & 0.023 & 0.002 & 0.088 \\
- & f24 & 0.020 & 0.001 & 0.061 \\
- & f0 & 0.019 & 0.001 & 0.073 \\
- & f36 & 0.015 & 0.001 & 0.049 \\
- & f9 & 0.014 & 0.002 & 0.112 \\
+OULAD & f3 & 0.271 & 0.009 & 0.033 \\
+ & f2 & 0.264 & 0.010 & 0.038 \\
+ & f9 & 0.047 & 0.003 & 0.069 \\
+ & f1 & 0.037 & 0.001 & 0.040 \\
+ & f6 & 0.025 & 0.001 & 0.058 \\
+ & f5 & 0.023 & 0.002 & 0.080 \\
+ & f0 & 0.018 & 0.001 & 0.068 \\
+ & f10 & 0.014 & 0.002 & 0.118 \\
+ & f28 & 0.014 & 0.001 & 0.073 \\
+ & f26 & 0.013 & 0.001 & 0.063 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -263,7 +263,7 @@ OULAD & f3 & 0.282 & 0.011 & 0.038 \\
 
 \begin{table}[!h]
 \centering
-\caption{Mapping from feature codes used in Supplementary Tables~S5--S6 to human-readable feature names for the three datasets included in the feature-attribution stability analysis. Feature codes correspond to zero-indexed column positions in the preprocessed feature matrix after one-hot encoding.}
+\caption{Mapping from feature codes used in Supplementary Tables~S5--S6 to human-readable feature names for the three datasets included in the feature-attribution stability analysis. Feature codes correspond to zero-indexed column positions in the preprocessed feature matrix after one-hot encoding. Group-identifier columns (school for UCI Student, Course ID for Higher Ed) are excluded from the feature matrix, so their corresponding features do not appear in the tables.}
 \label{tab:feature_mapping}
 \small
 \begin{tabular}{l l l}
@@ -271,62 +271,79 @@ OULAD & f3 & 0.282 & 0.011 & 0.038 \\
 Dataset & Code & Feature name \\
 \midrule
 UCI Student & f0 & age \\
- & f1 & Medu \\
  & f2 & Fedu \\
- & f3 & traveltime \\
  & f4 & studytime \\
  & f5 & failures \\
+ & f6 & famrel \\
  & f7 & freetime \\
  & f8 & goout \\
  & f9 & Dalc \\
  & f10 & Walc \\
  & f11 & health \\
  & f12 & absences \\
- & f13 & school\_GP \\
- & f14 & school\_MS \\
- & f15 & sex\_F \\
- & f16 & sex\_M \\
- & f17 & address\_R \\
- & f23 & Mjob\_at\_home \\
- & f30 & Fjob\_other \\
- & f35 & reason\_other \\
- & f37 & guardian\_father \\
+ & f22 & Mjob\_health \\
+ & f30 & Fjob\_teacher \\
+ & f33 & reason\_other \\
+ & f48 & higher\_no \\
+ & f49 & higher\_yes \\
 \midrule
 Higher Ed & f0 & Student Age \\
  & f1 & Sex \\
  & f2 & Graduated high-school type \\
  & f3 & Scholarship type \\
  & f4 & Additional work \\
+ & f7 & Total salary if available \\
  & f8 & Transportation to the university \\
+ & f9 & Accomodation type in Cyprus \\
  & f10 & Mother's education \\
- & f12 & Number of sisters/brothers \\
+ & f11 & Father's education \\
+ & f12 & Number of sisters/brothers (if available) \\
  & f15 & Father's occupation \\
  & f16 & Weekly study hours \\
- & f17 & Reading frequency (non-scientific) \\
- & f19 & Attendance to seminars/conferences \\
+ & f17 & Reading frequency (non-scientific books/journals) \\
  & f25 & Listening in classes \\
  & f27 & Flip-classroom \\
- & f28 & Cumulative GPA last semester (/4.00) \\
- & f30 & Course ID \\
+ & f28 & Cumulative grade point average in the last semester (/4.00) \\
 \midrule
 OULAD & f0 & num\_of\_prev\_attempts \\
- & f1 & vle\_total\_clicks \\
- & f2 & vle\_active\_weeks \\
- & f3 & assessment\_count \\
- & f4 & assessment\_score\_mean \\
- & f5 & assessment\_score\_std \\
- & f6 & age\_band\_0--35 \\
- & f7 & age\_band\_35--55 \\
- & f8 & age\_band\_55$\leq$ \\
- & f9 & age\_band\_nan \\
- & f24 & region\_West Midlands Region \\
- & f36 & imd\_band\_30--40\% \\
+ & f1 & studied\_credits \\
+ & f2 & score \\
+ & f3 & sum\_click \\
+ & f5 & code\_module\_BBB \\
+ & f6 & code\_module\_CCC \\
+ & f9 & code\_module\_FFF \\
+ & f10 & code\_module\_GGG \\
+ & f26 & highest\_education\_A Level or Equivalent \\
+ & f28 & highest\_education\_Lower Than A Level \\
+ & f31 & imd\_band\_0--10\% \\
+ & f33 & imd\_band\_20--30\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \clearpage
-\section*{S8 Supplementary Figures}
+\section*{S8 Cross-Model Attribution Agreement}
+
+\begin{table}[!h]
+\centering
+\caption{Cross-model Spearman rank correlation between linear-model absolute standardized coefficients and Random Forest impurity-based importances across 100 repeated 80/20 splits. $\rho_{\mathrm{all}}$ uses all features; $\rho_{\mathrm{top10}}$ uses the top-10 features by linear absolute coefficient in each split. On OULAD, cross-model agreement is high and stable across splits ($\rho_{\mathrm{top10}} = 0.777$, SD 0.081). On UCI Student and Higher Ed, agreement is weaker and more variable, consistent with their lower-readiness profiles.}
+\label{tab:cross_model_spearman}
+\small
+\begin{tabular}{l r r r r r}
+\toprule
+Dataset & $p$ & \multicolumn{2}{c}{$\rho_{\mathrm{all}}$} & \multicolumn{2}{c}{$\rho_{\mathrm{top10}}$} \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-6}
+ & & Mean & SD & Mean & SD \\
+\midrule
+UCI Student & 54 & 0.496 & 0.093 & 0.516 & 0.242 \\
+Higher Ed & 30 & 0.285 & 0.126 & 0.498 & 0.245 \\
+OULAD & 46 & 0.617 & 0.040 & 0.777 & 0.081 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\clearpage
+\section*{S9 Supplementary Figures}
 
 \begin{figure}[!h]
 \centering
@@ -341,6 +358,8 @@ OULAD & f0 & num\_of\_prev\_attempts \\
 \caption{Split instability: violin and box plots of the linear-model $R^2$ across 100 random 80/20 splits for each dataset, ordered by readiness profile. The instability ratio $I$ is annotated above each violin. Strong datasets (OULAD, Dropout) have tight distributions ($I < 0.03$); MM-TBA's distribution is broad and centred on negative $R^2$ ($I = 2.21$), reproducing Table~2 visually.}
 \label{fig:s_split_instability}
 \end{figure}
+
+\clearpage
 
 \begin{figure}[!h]
 \centering

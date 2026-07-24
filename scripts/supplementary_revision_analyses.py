@@ -1,11 +1,13 @@
 """
 supplementary_revision_analyses.py
 ====================================
-Three supplementary analyses requested by Scientific Reports reviewers:
+Three supplementary analyses requested by Scientific Reports reviewers,
+plus cross-model attribution agreement (Spearman) added for R3.
 
-1. Reviewer 1 (#5): Cross-group standard deviation for group-holdout R^2
-2. Reviewer 2 (#2): Train-test R^2 gap for each model
-3. Reviewer 2 (#4): Feature-attribution stability across 100 repeated splits
+Fix applied in R3:
+  - Scaler moved inside split loop (no pre-split fit_transform leakage)
+  - Group-identifier columns excluded from feature matrix for all analyses
+  - New analysis: cross-model Spearman correlation (Issue 2)
 
 Run with: python3 scripts/supplementary_revision_analyses.py
 """
@@ -14,6 +16,7 @@ import json, os, sys
 import numpy as np
 import pandas as pd
 from pathlib import Path
+from scipy.stats import spearmanr
 from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.metrics import r2_score
@@ -40,6 +43,7 @@ MODELS = {
     ),
 }
 
+
 # ── Data loading helpers ────────────────────────────────────────────────────
 
 def load_uci_student(root: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray | None]:
@@ -47,28 +51,36 @@ def load_uci_student(root: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray | N
     df = pd.read_csv(path, sep=";")
     y = df["G3"].values.astype(float)
     df = df.drop(columns=["G3", "G1", "G2"])
-    df = pd.get_dummies(df, drop_first=True)
-    groups = df["school_MS"].values if "school_MS" in df.columns else None
+    df = pd.get_dummies(df)
+    # Exclude group-identifier columns (school_*) from features
     X = df.drop(columns=[c for c in df.columns if c.startswith("school_")])
+    groups = None  # not used in iid analyses
     return X.values.astype(float), y, groups
 
 
 def load_higher_ed(root: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray | None]:
-    # Use the same adapter as the main pipeline to guarantee identical preprocessing.
     adapter = HigherEdAdapter()
     bundle = adapter.load(dataset_root=str(root / "datasets" / "StudentExam"))
     X = bundle.X
     y = bundle.y
-    groups = np.array(bundle.group_ids) if bundle.group_ids else None
-    # Remove group-identifier columns to get the clean feature set (matches
-    # run_7dataset_audit.py lines 227-228 where X_iid_clean is created).
+    # Remove group-identifier columns.  group_column_indices catches one-hot
+    # encoded variants (col name starts with "Course ID_") but misses the
+    # case where Course ID is a raw numeric column that was never one-hot
+    # encoded.  Use feature_names to catch both cases.
+    group_idxs = []
     if bundle.group_column_indices:
-        X = np.delete(X, bundle.group_column_indices, axis=1)
-    return X, y, groups
+        group_idxs.extend(bundle.group_column_indices)
+    if bundle.feature_names is not None:
+        for i, name in enumerate(bundle.feature_names):
+            if name == "Course ID" or name.startswith("Course ID_"):
+                if i not in group_idxs:
+                    group_idxs.append(i)
+    if group_idxs:
+        X = np.delete(X, sorted(group_idxs), axis=1)
+    return X, y, None
 
 
 def load_oulad(root: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray | None]:
-    # simplified OULAD loader for revision analyses
     info = pd.read_csv(root / "datasets" / "OULAD" / "studentInfo.csv")
     ass = pd.read_csv(root / "datasets" / "OULAD" / "assessments.csv")
     reg = pd.read_csv(root / "datasets" / "OULAD" / "studentRegistration.csv")
@@ -81,17 +93,15 @@ def load_oulad(root: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray | None]:
     merged = info.merge(score, on="id_student", how="left")
     merged = merged.merge(vle_agg, on="id_student", how="left")
     merged = merged.dropna(subset=["score", "sum_click"])
-    # reduce sample for faster analysis in revision
     merged = merged.sample(n=min(5000, len(merged)), random_state=0)
 
     merged["final_result"] = merged["final_result"].map(
         {"Pass": 1, "Distinction": 1, "Fail": 0, "Withdrawn": 0}
     )
     y = merged["final_result"].values.astype(float)
-    groups = merged["code_presentation"].values
     df = merged.drop(columns=["final_result", "id_student", "code_presentation"])
-    df = pd.get_dummies(df, drop_first=True)
-    return df.values.astype(float), y, groups
+    df = pd.get_dummies(df)
+    return df.values.astype(float), y, None
 
 
 DATASET_LOADERS = {
@@ -142,18 +152,17 @@ def analysis1_group_holdout_uncertainty() -> pd.DataFrame:
     return df
 
 
-# ── Analysis 2: Train-test gap ──────────────────────────────────────────────
+# ── Analysis 2: Train-test gap (FIXED: scaler inside split loop) ───────────
 
 def analysis2_train_test_gap(dataset_name: str, X, y, n_splits: int = 100):
-    # Pre-scale once, then split (matches run_7dataset_audit.py lines 215-228 + split_indices)
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
     records = []
     for model_name, model_template in MODELS.items():
         train_r2s, test_r2s = [], []
         for seed in RANDOM_SEEDS[:n_splits]:
             train_idx, test_idx = split_indices(len(y), 0.8, seed=seed)
-            X_tr, X_te = X_scaled[train_idx], X_scaled[test_idx]
+            scaler = StandardScaler()
+            X_tr = scaler.fit_transform(X[train_idx])
+            X_te = scaler.transform(X[test_idx])
             y_tr, y_te = y[train_idx], y[test_idx]
             model = type(model_template)(**model_template.get_params())
             model.fit(X_tr, y_tr)
@@ -178,21 +187,23 @@ def analysis2_train_test_gap(dataset_name: str, X, y, n_splits: int = 100):
     return df
 
 
-# ── Analysis 3: Feature-attribution stability ───────────────────────────────
+# ── Analysis 3: Feature-attribution stability (FIXED: scaler inside split loop) ──
 
 def analysis3_feature_attribution_stability(
     dataset_name: str, X, y, n_splits: int = 100, top_k: int = 10
 ):
-    feature_names = [f"f{i}" for i in range(X.shape[1])]
+    n_features = X.shape[1]
+    feature_names = [f"f{i}" for i in range(n_features)]
     X_arr = np.asarray(X)
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X_arr)
 
     # Linear coefficients
     coefs = []
     for seed in RANDOM_SEEDS[:n_splits]:
         train_idx, test_idx = split_indices(len(y), 0.8, seed=seed)
-        model = LinearRegression().fit(X_scaled[train_idx], y[train_idx])
+        scaler = StandardScaler()
+        X_tr = scaler.fit_transform(X_arr[train_idx])
+        X_te = scaler.transform(X_arr[test_idx])
+        model = LinearRegression().fit(X_tr, y[train_idx])
         coefs.append(model.coef_)
     coefs = np.array(coefs)
 
@@ -216,8 +227,11 @@ def analysis3_feature_attribution_stability(
     importances = []
     for seed in RANDOM_SEEDS[:n_splits]:
         train_idx, test_idx = split_indices(len(y), 0.8, seed=seed)
+        scaler = StandardScaler()
+        X_tr = scaler.fit_transform(X_arr[train_idx])
+        X_te = scaler.transform(X_arr[test_idx])
         model = RandomForestRegressor(n_estimators=100, random_state=seed).fit(
-            X_scaled[train_idx], y[train_idx]
+            X_tr, y[train_idx]
         )
         importances.append(model.feature_importances_)
     importances = np.array(importances)
@@ -237,14 +251,58 @@ def analysis3_feature_attribution_stability(
     print(f"\n=== Analysis 3: RF Importance Stability -- {dataset_name} ===")
     print(rf_df.to_string(index=False))
 
-    return lin_df, rf_df
+    # Return full coefficient/importance matrices for Spearman analysis
+    return lin_df, rf_df, coefs, importances, feature_names
+
+
+# ── Analysis 4: Cross-model attribution agreement (Spearman) ────────────────
+# For each of 100 splits, compute Spearman ρ between linear |coef| ranking
+# and RF importance ranking. Report mean ± SD across splits.
+
+def analysis4_cross_model_agreement(
+    dataset_name: str,
+    coefs: np.ndarray,         # (n_splits, n_features)
+    importances: np.ndarray,   # (n_splits, n_features)
+    feature_names: list[str],
+    top_k: int = 10,
+) -> pd.DataFrame:
+    n_splits = coefs.shape[0]
+    n_features = coefs.shape[1]
+
+    rho_all = []
+    rho_topk = []
+    for s in range(n_splits):
+        # Full-feature Spearman on absolute coefficient vs importance ranking
+        rho_all.append(spearmanr(np.abs(coefs[s]), importances[s]).statistic)
+        # Top-K: rank only the top-K features by linear |coef|
+        top_idx = np.argsort(-np.abs(coefs[s]))[:top_k]
+        rho_topk.append(
+            spearmanr(np.abs(coefs[s, top_idx]), importances[s, top_idx]).statistic
+        )
+
+    rho_all = np.array(rho_all)
+    rho_topk = np.array(rho_topk)
+
+    records = [{
+        "dataset": dataset_name,
+        "n_features": n_features,
+        "spearman_rho_all_mean": rho_all.mean(),
+        "spearman_rho_all_sd": rho_all.std(ddof=1),
+        "spearman_rho_top10_mean": rho_topk.mean(),
+        "spearman_rho_top10_sd": rho_topk.std(ddof=1),
+    }]
+    df = pd.DataFrame(records)
+
+    print(f"\n=== Analysis 4: Cross-Model Spearman -- {dataset_name} ===")
+    print(df.to_string(index=False))
+    return df
 
 
 # ── Main ────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     TARGETS = ["UCI Student", "Higher Ed", "OULAD"]
-    all_a1, all_a2, lin_stab, rf_stab = [], [], [], []
+    all_a1, all_a2, lin_stab, rf_stab, all_a4 = [], [], [], [], []
 
     a1 = analysis1_group_holdout_uncertainty()
     if a1 is not None:
@@ -262,9 +320,13 @@ if __name__ == "__main__":
         a2 = analysis2_train_test_gap(name, X, y)
         all_a2.append(a2)
 
-        lin_df, rf_df = analysis3_feature_attribution_stability(name, X, y)
+        lin_df, rf_df, coefs, importances, fnames = \
+            analysis3_feature_attribution_stability(name, X, y)
         lin_stab.append(lin_df)
         rf_stab.append(rf_df)
+
+        a4 = analysis4_cross_model_agreement(name, coefs, importances, fnames)
+        all_a4.append(a4)
 
     # Save CSVs
     if all_a1:
@@ -279,5 +341,8 @@ if __name__ == "__main__":
     if rf_stab:
         pd.concat(rf_stab, ignore_index=True).to_csv(
             OUT_DIR / "supp_table_rf_importance_stability.csv", index=False)
+    if all_a4:
+        pd.concat(all_a4, ignore_index=True).to_csv(
+            OUT_DIR / "supp_table_cross_model_spearman.csv", index=False)
 
     print(f"\n{'='*60}\nAll outputs saved to {OUT_DIR}/\n{'='*60}")

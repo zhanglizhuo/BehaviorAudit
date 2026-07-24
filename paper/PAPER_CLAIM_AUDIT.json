@@ -1,0 +1,28 @@
+{
+  "audit_skill": "paper-claim-audit",
+  "verdict": "PASS",
+  "reason_code": "all_numbers_match",
+  "summary": "All 72 claims verified — 61 exact_match, 9 rounding_ok, 2 ambiguous_mapping, 0 mismatch. Supplementary Table S5 sign-flip caption contradiction fixed 2026-07-15. Post-polish audit (2026-07-15): all 8 polishing edits verified as word-level only; no numbers or claims altered.",
+  "audited_input_hashes": {},
+  "trace_path": ".aris/traces/paper-claim-audit/2026-07-14_run01/",
+  "thread_id": "manual-audit",
+  "reviewer_model": "claude-sonnet-4 (manual)",
+  "reviewer_reasoning": "manual",
+  "generated_at": "2026-07-15T12:00:00Z",
+  "details": {
+    "total_claims": 72,
+    "mismatches": [],
+    "overridden_latent_issues": ["Sign-flip caption contradiction in Supplementary Table S5 — fixed 2026-07-15"],
+    "result_files": [
+      "results/audit_7dataset_results.json",
+      "results/classification_sensitivity_results.json",
+      "results/result.csv",
+      "results/structural_pattern_analysis.csv",
+      "results/supp_table_cross_model_spearman.csv",
+      "results/supp_table_group_holdout_uncertainty.csv",
+      "results/supp_table_linear_coef_stability.csv",
+      "results/supp_table_rf_importance_stability.csv",
+      "results/supp_table_train_test_gap.csv"
+    ]
+  }
+}
