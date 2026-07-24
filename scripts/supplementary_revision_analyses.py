@@ -82,25 +82,35 @@ def load_higher_ed(root: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray | Non
 
 def load_oulad(root: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray | None]:
     info = pd.read_csv(root / "datasets" / "OULAD" / "studentInfo.csv")
-    ass = pd.read_csv(root / "datasets" / "OULAD" / "assessments.csv")
-    reg = pd.read_csv(root / "datasets" / "OULAD" / "studentRegistration.csv")
     vle = pd.read_csv(root / "datasets" / "OULAD" / "studentVle.csv")
     sa = pd.read_csv(root / "datasets" / "OULAD" / "studentAssessment.csv")
 
-    score = sa.groupby("id_student")["score"].mean().reset_index()
-    vle_agg = vle.groupby("id_student")["sum_click"].sum().reset_index()
+    vle_agg = vle.groupby("id_student").agg(
+        vle_total_clicks=("sum_click", "sum"),
+        vle_active_weeks=("date", "nunique"),
+    ).reset_index()
+    assess_agg = sa.groupby("id_student").agg(
+        assessment_count=("id_assessment", "count"),
+        assessment_score_mean=("score", "mean"),
+        assessment_score_std=("score", "std"),
+    ).reset_index()
 
-    merged = info.merge(score, on="id_student", how="left")
-    merged = merged.merge(vle_agg, on="id_student", how="left")
-    merged = merged.dropna(subset=["score", "sum_click"])
+    merged = info.merge(vle_agg, on="id_student", how="left")
+    merged = merged.merge(assess_agg, on="id_student", how="left")
     merged = merged.sample(n=min(5000, len(merged)), random_state=0)
 
     merged["final_result"] = merged["final_result"].map(
         {"Pass": 1, "Distinction": 1, "Fail": 0, "Withdrawn": 0}
     )
     y = merged["final_result"].values.astype(float)
-    df = merged.drop(columns=["final_result", "id_student", "code_presentation"])
-    df = pd.get_dummies(df)
+
+    features = [
+        "age_band", "gender", "region", "highest_education", "imd_band",
+        "num_of_prev_attempts", "vle_total_clicks", "vle_active_weeks",
+        "assessment_count", "assessment_score_mean", "assessment_score_std",
+    ]
+    df = pd.get_dummies(merged[features], dummy_na=True)
+    df = df.fillna(0).astype(float)
     return df.values.astype(float), y, None
 
 
