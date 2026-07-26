@@ -109,26 +109,6 @@ The analysis adopts operational thresholds rather than universal normative cutof
 
 The rationale for each threshold is empirical rather than universal. The $I = 1$ cutoff has a direct interpretation: when between-split variability equals the reported gain, a single random split has roughly coin-flip odds of showing improvement. The beat-rate threshold of 0.90 follows the same logic: if a model fails to outperform a trivial baseline in more than 10\% of splits, the gain is not reliably reproducible. The permutation-consistency threshold of 80\% mirrors the conventional power standard ($1 - \beta = 0.80$). The 50\% group-holdout retention threshold marks the point below which more than half of the iid signal is attributable to within-group structure. These thresholds are empirically motivated starting points rather than universal normative cutoffs. Supplementary Figure~S3 shows that the main conclusions are robust to threshold variation within $\pm 20\%$ of each adopted value, confirming that the reported profiles are not artifacts of borderline cutoff choices. The thresholds are summarized in Table~\ref{tab:decision_criteria}.
 
-\begin{table}[htbp]
-\centering
-\caption{Operational decision criteria derived from the seven-dataset audit. Thresholds are empirically motivated and intended as practical starting points.}
-\label{tab:decision_criteria}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{p{2.5cm} p{2.8cm} p{2.5cm} p{4.5cm}}
-\toprule
-Audit dimension & Pass criterion & Fail indicator & Recommended action on failure \\
-\midrule
-Baseline gap & $\Delta_{\mathrm{MAE}} > 0$ with beat rate $\geq 0.90$ across $\geq 50$ splits & Beat rate $< 0.80$ or $\Delta_{\mathrm{MAE}}$ smaller than cross-split SD & Do not escalate to complex models; investigate target quality and feature relevance \\
-
-Split instability & $I < 1.0$ (model variability smaller than gain) & $I \geq 1.0$ & Increase sample size, reduce feature dimensionality, or improve split design \\
-
-Null separation & Permutation $p < 0.05$ consistent across $\geq 80\%$ of splits & Inconsistent or non-significant separation & Treat as insufficient evidence; do not publish benchmark claims \\
-
-Metadata adequacy & Group holdout retains $\geq 50\%$ of iid $R^2$ under the linear reference model & $R^2$ collapse under group holdout & Add grouping metadata; run group-aware validation before deployment \\
-\bottomrule
-\end{tabular}}%
-\end{table}
-
 \subsection{Datasets}
 Seven public educational datasets are audited (Table~\ref{tab:dataset_overview}). They were selected to span sample sizes from $N = 145$ to $32{,}593$, multiple educational settings (K-12, higher education, entrance examination, and online learning), continuous and discrete targets, and grouping structures ranging from 2 to 22 groups, plus one release with no grouping metadata. The aim is not exhaustive coverage of educational AI datasets, but a stress test of the audit protocol across the dataset types most commonly used in educational prediction studies.
 
@@ -412,6 +392,26 @@ For reuse, the procedure is summarized as a four-step audit checklist:
 If all four checks pass, the dataset supports cautious benchmark claims. If one or two fail, targeted remediation may be sufficient. If three or more fail, the dataset is better treated as a research-stage resource requiring substantial revision before benchmark conclusions are drawn.
 
 The contribution is not the checklist itself, but the finding that many public educational prediction benchmarks fail for a structural reason: their apparent signal does not survive stronger tests of cross-group generalization. The protocol exposes this reliability problem before benchmark claims are treated as evidence of generalizable educational AI performance.
+
+\begin{table}[H]
+\centering
+\caption{Operational decision criteria derived from the seven-dataset audit. Thresholds are empirically motivated and intended as practical starting points.}
+\label{tab:decision_criteria}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{p{2.5cm} p{2.8cm} p{2.5cm} p{4.5cm}}
+\toprule
+Audit dimension & Pass criterion & Fail indicator & Recommended action on failure \\
+\midrule
+Baseline gap & $\Delta_{\mathrm{MAE}} > 0$ with beat rate $\geq 0.90$ across $\geq 50$ splits & Beat rate $< 0.80$ or $\Delta_{\mathrm{MAE}}$ smaller than cross-split SD & Do not escalate to complex models; investigate target quality and feature relevance \\
+
+Split instability & $I < 1.0$ (model variability smaller than gain) & $I \geq 1.0$ & Increase sample size, reduce feature dimensionality, or improve split design \\
+
+Null separation & Permutation $p < 0.05$ consistent across $\geq 80\%$ of splits & Inconsistent or non-significant separation & Treat as insufficient evidence; do not publish benchmark claims \\
+
+Metadata adequacy & Group holdout retains $\geq 50\%$ of iid $R^2$ under the linear reference model & $R^2$ collapse under group holdout & Add grouping metadata; run group-aware validation before deployment \\
+\bottomrule
+\end{tabular}}%
+\end{table}
 
 \section*{Author contributions statement}
 Conceptualization, Y.M. and L.Z.; methodology, Y.M. and L.Z.; software, L.Z.;
