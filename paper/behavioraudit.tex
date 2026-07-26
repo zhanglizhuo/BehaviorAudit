@@ -109,6 +109,26 @@ The analysis adopts operational thresholds rather than universal normative cutof
 
 The rationale for each threshold is empirical rather than universal. The $I = 1$ cutoff has a direct interpretation: when between-split variability equals the reported gain, a single random split has roughly coin-flip odds of showing improvement. The beat-rate threshold of 0.90 follows the same logic: if a model fails to outperform a trivial baseline in more than 10\% of splits, the gain is not reliably reproducible. The permutation-consistency threshold of 80\% mirrors the conventional power standard ($1 - \beta = 0.80$). The 50\% group-holdout retention threshold marks the point below which more than half of the iid signal is attributable to within-group structure. These thresholds are empirically motivated starting points rather than universal normative cutoffs. Supplementary Figure~S3 shows that the main conclusions are robust to threshold variation within $\pm 20\%$ of each adopted value, confirming that the reported profiles are not artifacts of borderline cutoff choices. The thresholds are summarized in Table~\ref{tab:decision_criteria}.
 
+\begin{table}[htbp]
+\centering
+\caption{Operational decision criteria derived from the seven-dataset audit. Thresholds are empirically motivated and intended as practical starting points.}
+\label{tab:decision_criteria}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{p{2.5cm} p{2.8cm} p{2.5cm} p{4.5cm}}
+\toprule
+Audit dimension & Pass criterion & Fail indicator & Recommended action on failure \\
+\midrule
+Baseline gap & $\Delta_{\mathrm{MAE}} > 0$ with beat rate $\geq 0.90$ across $\geq 50$ splits & Beat rate $< 0.80$ or $\Delta_{\mathrm{MAE}}$ smaller than cross-split SD & Do not escalate to complex models; investigate target quality and feature relevance \\
+
+Split instability & $I < 1.0$ (model variability smaller than gain) & $I \geq 1.0$ & Increase sample size, reduce feature dimensionality, or improve split design \\
+
+Null separation & Permutation $p < 0.05$ consistent across $\geq 80\%$ of splits & Inconsistent or non-significant separation & Treat as insufficient evidence; do not publish benchmark claims \\
+
+Metadata adequacy & Group holdout retains $\geq 50\%$ of iid $R^2$ under the linear reference model & $R^2$ collapse under group holdout & Add grouping metadata; run group-aware validation before deployment \\
+\bottomrule
+\end{tabular}}%
+\end{table}
+
 \subsection{Datasets}
 Seven public educational datasets are audited (Table~\ref{tab:dataset_overview}). They were selected to span sample sizes from $N = 145$ to $32{,}593$, multiple educational settings (K-12, higher education, entrance examination, and online learning), continuous and discrete targets, and grouping structures ranging from 2 to 22 groups, plus one release with no grouping metadata. The aim is not exhaustive coverage of educational AI datasets, but a stress test of the audit protocol across the dataset types most commonly used in educational prediction studies.
 
@@ -162,7 +182,7 @@ Unless otherwise noted, all $\pm$ values denote cross-split standard deviations 
 
 \subsection{Cross-Dataset Audit Summary}
 
-Table 2 presents the main audit results across all seven datasets, ordered by instability ratio.
+Table~\ref{tab:seven_dataset_audit} presents the main audit results across all seven datasets, ordered by instability ratio.
 
 \begin{table*}[htbp]
 \centering
@@ -204,7 +224,7 @@ A negative group-holdout $R^2$ has a concrete interpretation: the model's predic
 \end{figure}
 
 \Needspace{4\baselineskip}
-Group-holdout results reveal an important model-dependent pattern (see Fig~\ref{fig:iid_vs_group} for a visual comparison of iid vs.\ group-holdout $R^2$). While unregularized linear regression collapses under group holdout on several datasets due to overfitting (especially on high-dimensional one-hot-encoded features), regularized and ensemble models often retain positive $R^2$. Table 3 shows this pattern.
+Group-holdout results reveal an important model-dependent pattern (see Fig~\ref{fig:iid_vs_group} for a visual comparison of iid vs.\ group-holdout $R^2$). While unregularized linear regression collapses under group holdout on several datasets due to overfitting (especially on high-dimensional one-hot-encoded features), regularized and ensemble models often retain positive $R^2$.  Table~\ref{tab:group_holdout_detail} shows this pattern.
 
 \begin{figure}[!t]
 \centering
@@ -241,13 +261,6 @@ A dedicated train-test $R^2$ gap analysis (Supplementary Table~S3) further separ
 
 \subsection{Per-Dataset Results}
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.95\textwidth]{../figures/fig4_null_separation.pdf}
-\caption{Empirical permutation null vs.\ observed linear $R^2$ for three representative datasets. The red density is the pooled empirical null distribution from 500 permutation draws on each of 30 random 80/20 splits (15{,}000 values total per dataset); the coloured density is the observed-label $R^2$ across the same 30 splits, with vertical ticks marking individual splits and dashed/dotted lines showing the means. OULAD shows clean separation (Perm\% $= 100\%$), Higher Ed is borderline but below the pass threshold (Perm\% $= 73\%$), and MM-TBA shows substantial overlap (Perm\% $= 23\%$, median $p = 0.117$).}
-\label{fig:null}
-\end{figure}
-
 The three Strong datasets confirm that the audit cleanly passes structurally sound data. \textbf{OULAD} achieves $R^2 = 0.471$, $I = 0.010$, permutation significance $= 1.00$, and group-holdout $R^2 = 0.410$ across 22 cohorts. \textbf{Dropout} achieves $R^2 = 0.651$, $I = 0.021$, and group-holdout $R^2 = 0.527$ across 16 of 17 course programs (one program excluded for $n < 10$). \textbf{xAPI-Edu} achieves $R^2 = 0.614$, $I = 0.124$, and group-holdout $R^2 = 0.484$ (retention 79\%) across 12 topics after correcting for the group-column encoding artifact described in Section~\ref{sec:models_eval}.
 
 \textbf{xAPI-Edu} (Strong) passes all four dimensions. Its linear-model group-holdout $R^2$ of 0.484 (retention 79\%) confirms that the apparent collapse in prior analyses was an artifact of Topic being included as a one-hot feature; with Topic features excluded, all models show positive group $R^2$ (0.48--0.59). \textbf{Entrance Exam} (Mostly Passing) passes the first three dimensions but fails linear-model group holdout ($R^2 = -0.060$, retention $-14\%$), while ensemble models recover moderate performance (RF $R^2 \approx 0.32$).
@@ -255,6 +268,13 @@ The three Strong datasets confirm that the audit cleanly passes structurally sou
 \textbf{UCI Student} (Mostly Passing) shows persistent cross-school confounding: iid $R^2 = 0.242$ drops to $-0.097$ under school-level holdout (retention $-40\%$), with RF ($0.018$) and GBT ($-0.057$) also near zero even after school features are excluded from the group-holdout feature matrix. \textbf{Higher Ed} (Partial) is borderline on baseline gap (beat rate $= 0.83$) and instability ($I = 0.90$), lacks consistent null separation (Perm\% $= 0.73$), and shows catastrophic group-holdout collapse for all models (linear $-8.79$, RF $-13.0$).
 
 \textbf{MM-TBA} (Fragile) fails all four dimensions: $I = 2.21$, beat rate $= 0.80$, permutation significance $= 0.23$, and no grouping metadata. The linear model's iid $R^2 = -0.067$ is itself negative, meaning the model's squared-error fit is worse than the variance-only mean baseline even though the MAE-based beat rate is $0.80$. This metric disagreement is diagnostic of fragility rather than a contradiction. GBT worsens the picture ($I = 4.60$, beat rate $= 0.45$). Fig~\ref{fig:null} contrasts the empirical permutation null (500 draws $\times$ 30 splits per dataset) with the observed linear $R^2$ for OULAD, Higher Ed, and MM-TBA, illustrating how the null-separation dimension distinguishes Strong, borderline, and Fragile cases.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\textwidth]{../figures/fig4_null_separation.pdf}
+\caption{Empirical permutation null vs.\ observed linear $R^2$ for three representative datasets. The red density is the pooled empirical null distribution from 500 permutation draws on each of 30 random 80/20 splits (15{,}000 values total per dataset); the coloured density is the observed-label $R^2$ across the same 30 splits, with vertical ticks marking individual splits and dashed/dotted lines showing the means. OULAD shows clean separation (Perm\% $= 100\%$), Higher Ed is borderline but below the pass threshold (Perm\% $= 73\%$), and MM-TBA shows substantial overlap (Perm\% $= 23\%$, median $p = 0.117$).}
+\label{fig:null}
+\end{figure}
 
 \subsection{Cross-Dataset Structural Patterns and iid-to-Group Collapse}
 
@@ -282,9 +302,9 @@ The full model-complexity ablation (detailed results in Supplementary Table S1) 
 
 \subsection{Classification-Metric Sensitivity Check}
 
-To verify that the regression-framing audit conclusions are not an artifact of metric choice, the four datasets with binary or ordinal targets were re-evaluated under classification-appropriate metrics (Table 4).
+To verify that the regression-framing audit conclusions are not an artifact of metric choice, the four datasets with binary or ordinal targets were re-evaluated under classification-appropriate metrics (Table~\ref{tab:classification_sensitivity}).
 
-Classification-metric results confirm the regression-framing conclusions (Table 4). OULAD, Dropout, and xAPI-Edu retain Strong profiles (iid accuracy 0.74--0.91, $I_{\mathrm{acc}} \leq 0.14$, group-holdout AUC $\geq 0.86$). Entrance Exam shows the weakest performance (Logistic iid accuracy 51.2\% on a 4-class task with majority baseline 30.5\%, group-holdout AUC $= 0.68$--$0.73$), consistent with the regression-framing assessment of moderate but fragile signal; the low absolute accuracy partly reflects the inherent difficulty of 4-class ordinal prediction.
+Classification-metric results confirm the regression-framing conclusions (Table~\ref{tab:classification_sensitivity}). OULAD, Dropout, and xAPI-Edu retain Strong profiles (iid accuracy 0.74--0.91, $I_{\mathrm{acc}} \leq 0.14$, group-holdout AUC $\geq 0.86$). Entrance Exam shows the weakest performance (Logistic iid accuracy 51.2\% on a 4-class task with majority baseline 30.5\%, group-holdout AUC $= 0.68$--$0.73$), consistent with the regression-framing assessment of moderate but fragile signal; the low absolute accuracy partly reflects the inherent difficulty of 4-class ordinal prediction.
 
 \begin{table*}[!ht]
 \centering
@@ -378,28 +398,6 @@ This study asked whether public educational prediction benchmarks are structural
 (5) \textbf{Model-dependent group holdout.} Regularized and ensemble models sometimes survive group holdout where linear regression collapses, indicating that metadata adequacy should be evaluated jointly with model capacity.
 
 (6) \textbf{Metric robustness.} A classification-metric sensitivity check confirms that audit profiles are robust to metric choice.
-
-The audit points to the following operational decision criteria:
-
-\begin{table}[htbp]
-\centering
-\caption{Operational decision criteria derived from the seven-dataset audit. Thresholds are empirically motivated and intended as practical starting points.}
-\label{tab:decision_criteria}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{p{2.5cm} p{2.8cm} p{2.5cm} p{4.5cm}}
-\toprule
-Audit dimension & Pass criterion & Fail indicator & Recommended action on failure \\
-\midrule
-Baseline gap & $\Delta_{\mathrm{MAE}} > 0$ with beat rate $\geq 0.90$ across $\geq 50$ splits & Beat rate $< 0.80$ or $\Delta_{\mathrm{MAE}}$ smaller than cross-split SD & Do not escalate to complex models; investigate target quality and feature relevance \\
-
-Split instability & $I < 1.0$ (model variability smaller than gain) & $I \geq 1.0$ & Increase sample size, reduce feature dimensionality, or improve split design \\
-
-Null separation & Permutation $p < 0.05$ consistent across $\geq 80\%$ of splits & Inconsistent or non-significant separation & Treat as insufficient evidence; do not publish benchmark claims \\
-
-Metadata adequacy & Group holdout retains $\geq 50\%$ of iid $R^2$ under the linear reference model & $R^2$ collapse under group holdout & Add grouping metadata; run group-aware validation before deployment \\
-\bottomrule
-\end{tabular}}%
-\end{table}
 
 For reuse, the procedure is summarized as a four-step audit checklist:
 

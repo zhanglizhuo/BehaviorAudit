@@ -61,8 +61,8 @@ Hui Huang, Xingyuan Bu, Hongli Zhou, Yingqi Qu, Jing Liu, Muyun Yang, Bing Xu,
 \bibitem[Romero and Ventura(2020)]{Romero2020}
 Crist{\'o}bal Romero and Sebasti{\'a}n Ventura.
 \newblock Educational data mining and learning analytics: An updated survey.
-\newblock \emph{WIREs Data Mining and Knowledge Discovery}, 10\penalty0
-  (3):\penalty0 e1355, 2020.
+\newblock \emph{WIREs Data Min. Knowl. Discov.}, 10\penalty0 (3):\penalty0
+  e1355, 2020.
 \newblock \doi{10.1002/widm.1355}.
 
 \bibitem[Baker and Inventado(2014)]{Baker2014}
@@ -110,8 +110,7 @@ Robert~L. Brennan.
 Samuel Messick.
 \newblock Validity of psychological assessment: Validation of inferences from
   persons' responses and performances as scientific inquiry into score meaning.
-\newblock \emph{American Psychologist}, 50\penalty0 (9):\penalty0 741--749,
-  1995.
+\newblock \emph{Am. Psychol.}, 50\penalty0 (9):\penalty0 741--749, 1995.
 \newblock \doi{10.1037/0003-066X.50.9.741}.
 
 \bibitem[Kane(2006)]{Kane2006}
@@ -168,8 +167,8 @@ Nevriye Yilmaz and Boran Sekeroglu.
 Elaf~Abu Amrieh, Thair Hamtini, and Ibrahim Aljarah.
 \newblock Mining educational data to predict student's academic performance
   using ensemble methods.
-\newblock \emph{International Journal of Database Theory and Application},
-  9\penalty0 (8):\penalty0 119--136, 2016.
+\newblock \emph{Int. J. Database Theory Appl.}, 9\penalty0 (8):\penalty0
+  119--136, 2016.
 \newblock \doi{10.14257/ijdta.2016.9.8.13}.
 
 \bibitem[Bora and Dey(2021)]{Bora2021}
@@ -213,23 +212,22 @@ Margaret Mitchell, Simone Wu, Andrew Zaldivar, Parker Barnes, Lucy Vasserman,
 Sarah Holland, Ahmed Hosny, Sarah Newman, Joshua Joseph, and Kasia Chmielinski.
 \newblock The dataset nutrition label.
 \newblock In \emph{Data Protection and Privacy}, pages 1--25. Hart Publishing,
-  2020.
+  Oxford, UK, 2020.
 
 \bibitem[{\c{C}}elik et~al.(2026){\c{C}}elik, Do{\u{g}}anl{\i}, and
   {\c{S}}a{\c{s}}maz]{Sasmaz2026}
 Sadullah {\c{C}}elik, Bilge Do{\u{g}}anl{\i}, and Emel {\c{S}}a{\c{s}}maz.
 \newblock Comparative analysis of global education performances based on {PISA}
   2022 results: an assessment with statistical and machine learning methods.
-\newblock \emph{Quality \& Quantity}, 2026.
+\newblock \emph{Qual. Quant.}, 2026.
 \newblock \doi{10.1007/s11135-026-02915-7}.
 
 \bibitem[Cavus and Kuzilek(2024{\natexlab{a}})]{Cavus2024ce}
 Mustafa Cavus and Jakub Kuzilek.
 \newblock An effect analysis of the balancing techniques on the counterfactual
   explanations of student success prediction models.
-\newblock \emph{Journal of Measurement and Evaluation in Education and
-  Psychology}, 15\penalty0 (Special Issue):\penalty0 302--317,
-  2024{\natexlab{a}}.
+\newblock \emph{J. Meas. Eval. Educ. Psychol.}, 15\penalty0 (Special
+  Issue):\penalty0 302--317, 2024{\natexlab{a}}.
 \newblock \doi{10.21031/epod.1526704}.
 
 \bibitem[Cavus and Kuzilek(2024{\natexlab{b}})]{Cavus2024benchmark}
