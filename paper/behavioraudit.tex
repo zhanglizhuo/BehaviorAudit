@@ -389,10 +389,6 @@ For reuse, the procedure is summarized as a four-step audit checklist:
 
 (4) \textbf{Audit metadata adequacy}: does performance survive group-aware holdout, and are the provenance fields needed for leakage-resistant validation present in the release?
 
-If all four checks pass, the dataset supports cautious benchmark claims. If one or two fail, targeted remediation may be sufficient. If three or more fail, the dataset is better treated as a research-stage resource requiring substantial revision before benchmark conclusions are drawn.
-
-The contribution is not the checklist itself, but the finding that many public educational prediction benchmarks fail for a structural reason: their apparent signal does not survive stronger tests of cross-group generalization. The protocol exposes this reliability problem before benchmark claims are treated as evidence of generalizable educational AI performance.
-
 The audit points to the following operational decision criteria:
 
 \begin{table}[H]
@@ -414,6 +410,10 @@ Metadata adequacy & Group holdout retains $\geq 50\%$ of iid $R^2$ under the lin
 \bottomrule
 \end{tabular}}%
 \end{table}
+
+If all four checks pass, the dataset supports cautious benchmark claims. If one or two fail, targeted remediation may be sufficient. If three or more fail, the dataset is better treated as a research-stage resource requiring substantial revision before benchmark conclusions are drawn.
+
+The contribution is not the checklist itself, but the finding that many public educational prediction benchmarks fail for a structural reason: their apparent signal does not survive stronger tests of cross-group generalization. The protocol exposes this reliability problem before benchmark claims are treated as evidence of generalizable educational AI performance.
 
 \section*{Author contributions statement}
 Conceptualization, Y.M. and L.Z.; methodology, Y.M. and L.Z.; software, L.Z.;
