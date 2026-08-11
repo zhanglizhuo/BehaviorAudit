@@ -34,7 +34,7 @@ gen_radar_chart.py
 run_uci_extended.py
 run_model_complexity_ablation.py
 # ── Submission correspondence (not code) ────────────────────────────────────
-response_letter.*
+response_letter*
 texput.log
 
 # ── Misc ──────────────────────────────────────────────────────────────────────
